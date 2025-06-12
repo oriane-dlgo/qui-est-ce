@@ -10,6 +10,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, characterList: Mutable
     private val characterList: MutableList<Personnage>
     private val fakeCharacter: Personnage
     private var characterPicked: MutableList<Personnage>
+    private lateinit var characterGuess : Personnage
     private var boardList: List<MutableList<Personnage>>
     private var roundCounter: Int
     private var question: String
@@ -59,12 +60,15 @@ class Match(matchId: Int, playerId: IdentificationJoueur, characterList: Mutable
         }
     }
 
-    fun makeGuess(player: IdentificationJoueur, character: Personnage) {
-        TODO()
+    fun makeGuess(player: Int , characterIndex: Int) : Personnage{
+        var character = this.boardList[player][characterIndex]
+        this.characterGuess = character
+        this.question = "GUESS"
+        return character
     }
 
-    fun checkGuess(player: IdentificationJoueur, character: Personnage) {
-        TODO()
+    fun checkGuess(player: Int) : Boolean{
+        return this.characterGuess == this.characterPicked[player]
     }
 
     fun nextRound() {
@@ -73,20 +77,25 @@ class Match(matchId: Int, playerId: IdentificationJoueur, characterList: Mutable
         this.roundCounter += 1
     }
 
-    fun endOfMatch() {
-        TODO()
+    fun endOfMatch(player : Int) {
+        this.winner = this.playersList[player]
+        this.question = ""
+        this.answer = ""
+        this.saved = true
     }
 
 
     /// Fonctions de recuperations de variables
     fun getId() = this.matchId
     fun getPlayerList() = this.playersList
+    fun getCharacterPicked()= this.characterPicked
     fun getBoardList() = this.boardList
     fun getQuestion() = this.question
     fun getAnswer() = this.answer
     fun getState() = this.saved
     fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
+    fun getGuess() = this.characterGuess
 
     fun getBoardByName(player: Int): List<String> {
         return boardList[player].mapIndexed { index, perso -> "${index + 1}. ${perso.prenom}" }
