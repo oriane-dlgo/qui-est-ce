@@ -1,8 +1,14 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        flatDir {
+            dirs("libs")
+        }
     }
+
 }
+
+
 
 /*
 plugins {
