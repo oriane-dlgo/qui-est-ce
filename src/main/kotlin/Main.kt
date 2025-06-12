@@ -4,7 +4,7 @@ import kotlin.random.Random
 fun main() {
     println("Hello, World!")
     var client: QuiEstCeClient
-    client = QuiEstCeClient("localhost", 8080)
+    client = QuiEstCeClient("172.26.69.145", 8080)
     // configuration à modifier bien entendu
     client.requeteEssai()
 }
