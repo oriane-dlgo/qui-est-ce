@@ -10,8 +10,24 @@ fun main() {
     // configuration à modifier bien entendu
     serveur.requeteEssai()
 
+    // ** Lancement du "Qui Est-ce ? - Bash Edition" **
+    println("Launch Bash Edition ? y/n")
+    if(readln()=="y") bashEdition()
 
-    // TESTS
+
+
+
+    
+
+
+
+
+
+}
+
+
+fun bashEdition(){
+
     // Initialisation de variables
     val client = Client()
     var playerQ = 1
@@ -35,7 +51,15 @@ fun main() {
     var keepPlaying: Boolean = true
     while (keepPlaying) {
 
-
+        for (i in 0..space) println()
+        println("""
+╔═══════════════════════════════════════════════════════════════════╗
+║#  °     °     °     ° #     =========     #  °     °     °     ° #║
+║...~~~'''~~~...~~~'''~~~     C KI LA ?     ~~~'''~~~...~~~'''~~~...║
+║'''~~~...~~~'''~~~...~~~   Bash Edition    ~~~...~~~'''~~~...~~~'''║
+║# _     _     _     _  #     =========     # _     _     _     _  #║
+╚═══════════════════════════════════════════════════════════════════╝
+""")
         // Demande de creation de partie
         var check: Boolean = false
         while (!check) {
