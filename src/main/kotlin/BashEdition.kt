@@ -1,82 +1,22 @@
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
-import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.Personnage
-import modele.Client
-
-fun main() {
-    println("C ki la ?")
-    var server: QuiEstCeClient
-    server = QuiEstCeClient("localhost", 8080) //"172.26.69.145", 8080
-    // configuration à modifier bien entendu
-    server.requeteEssai()
-    val client = Client(server)
-
-    println("** Tests **\n\n")
-
-    var listPlayer = mutableListOf(
-        Joueur("Ferreira", "Gaetan"),
-        Joueur("Renard", "Clara"),
-        Joueur("Delgado", "Oriane"),
-        Joueur("kaw", " "),
-        Joueur("Filmont", "Felix"),
-        Joueur("Chelli", "Enzo"),
-        Joueur("Cochard", "Bastian")
-    )
-
-    //client.playerCreate(server, listPlayer[3])
-
-    println()
-    println("Player list :")
-    println(client.getPlayerList())
-    println()
+import modele.*
 
 
-    startBashEdition(server)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ** Lancement du "Qui Est-ce ? - Bash Edition" **
-    //println("Launch Bash Edition ? y/n")
-    //if(readln()=="y") startBashEdition(server)
-}
-
-/*
-fun bashEdition(server : QuiEstCeClient){
-
-    // Initialisation de variables
+fun startBashEdition(server: QuiEstCeClient) {
+// TESTS
+// Initialisation de variables
     val client = Client(server)
     var playerQ = 1
     var playerR = 2
     var space = 50
 
-    // Initialisation de deux fake IDJoueur
-    var listPlayer = mutableListOf(
-        Joueur("Ferreira", "Gaetan"),
-        Joueur("Renard", "Clara"),
-        Joueur("Delgado", "Oriane"),
-        Joueur("kaw", " "),
-        Joueur("Filmont", "Felix"),
-        Joueur("Chelli", "Enzo"),
-        Joueur("Cochard", "Bastian")
-    )
+// Initialisation de deux fake IDJoueur
+    var player1Id = IdentificationJoueur(7, "K")
+    var player2Id = IdentificationJoueur(11, "W")
 
-    // Initialisation d'une fake liste de personnages
+// Initialisation d'une fake liste de personnages
     var characterList = mutableListOf(
         Personnage("Renard", "Clara", "http://172.26.69.145:8080/resources/but1/RENARD-clara.jpg"),
         Personnage("Delgado", "Oriane", "http://172.26.69.145:8080/resources/but1/DELGADO-oriane.jpg"),
@@ -90,23 +30,16 @@ fun bashEdition(server : QuiEstCeClient){
     while (keepPlaying) {
 
         for (i in 0..space) println()
-        println("""
+        println(
+            """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║#  °     °     °     ° #     =========     #  °     °     °     ° #║
 ║...~~~'''~~~...~~~'''~~~     C KI LA ?     ~~~'''~~~...~~~'''~~~...║
 ║'''~~~...~~~'''~~~...~~~   Bash Edition    ~~~...~~~'''~~~...~~~'''║
 ║# _     _     _     _  #     =========     # _     _     _     _  #║
 ╚═══════════════════════════════════════════════════════════════════╝
-""")
-        // Demande de connection / creation joueur
-        println("Veuillez vous connecter :")
-        print("Nom :")
-        var lastName = readln()
-        print("Prenom :")
-        var name = readln()
-
-        if (client.playerIsInList(server, lastName, name))
-
+"""
+        )
 
 
         // Demande de creation de partie
@@ -184,7 +117,7 @@ fun bashEdition(server : QuiEstCeClient){
             for (i in 0..space) println()
             println("*** TOUR N° ${match.getRound()} - QUESTION or GUESS ***")
             println(
-                "_ JOUEUR $playerQ // Personnage choisis : ${match.getCharacterPicked()[playerQ-1].prenom} ${match.getCharacterPicked()[playerQ-1].nom}\n_ PLATEAU : ${
+                "_ JOUEUR $playerQ // Personnage choisis : ${match.getCharacterPicked()[playerQ - 1].prenom} ${match.getCharacterPicked()[playerQ - 1].nom}\n_ PLATEAU : ${
                     match.getBoardByName(
                         playerQ - 1
                     )
@@ -225,7 +158,7 @@ fun bashEdition(server : QuiEstCeClient){
             if (match.getQuestion() == "GUESS") {
                 if (match.checkGuess(playerR - 1)) {
                     println("Le joueur adverse a gagné en trouvant ${match.getGuess().prenom}")
-                    match.endOfMatch(playerR-1)
+                    match.endOfMatch(playerR - 1)
                     println("Voulez vous recommencer ? y/n")
 
                     if (readln() == "y") {
@@ -248,7 +181,7 @@ fun bashEdition(server : QuiEstCeClient){
                 for (i in 0..space) println()
                 println("*** TOUR N° ${match.getRound()} - ELIMINATION DE PERSONNAGES ***")
                 println(
-                    "_ JOUEUR $playerQ // Personnage choisis : ${match.getCharacterPicked()[playerQ-1].prenom} ${match.getCharacterPicked()[playerQ-1].nom}\n_ PLATEAU : ${
+                    "_ JOUEUR $playerQ // Personnage choisis : ${match.getCharacterPicked()[playerQ - 1].prenom} ${match.getCharacterPicked()[playerQ - 1].nom}\n_ PLATEAU : ${
                         match.getBoardByName(
                             playerQ - 1
                         )
@@ -285,4 +218,3 @@ fun bashEdition(server : QuiEstCeClient){
     }
     println("--- FERMETURE DU JEU ---")
 }
-*/

@@ -33,6 +33,10 @@ class Match(matchId: Int, playerId: IdentificationJoueur, characterList: Mutable
         this.saved = false
     }
 
+    //
+    //
+    //
+    //
     // Fonctions principales
 
     fun joinMatch(player: IdentificationJoueur) {
@@ -84,8 +88,11 @@ class Match(matchId: Int, playerId: IdentificationJoueur, characterList: Mutable
         this.saved = true
     }
 
-
-    /// Fonctions de recuperations de variables
+    //
+    //
+    //
+    //
+    // Fonctions de recuperations de variables
     fun getId() = this.matchId
     fun getPlayerList() = this.playersList
     fun getCharacterPicked()= this.characterPicked
