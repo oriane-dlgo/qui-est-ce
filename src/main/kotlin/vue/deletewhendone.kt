@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 
 
-class game: BorderPane() {
+class deletewhendone: BorderPane() {
 
     //var accueil
     val title : Label //root.top

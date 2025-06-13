@@ -6,14 +6,14 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 
-class creaprofil : VBox() {
+class Name : VBox() {
 
     val dialog1 : VBox //center
     val dia1question : Label //vbox
     val dialog11 : HBox //vbox
     val nom : TextField //hbox
     val prenom : TextField //hbox
-
+    val btndia1 : Button //hbox
 
     init{
 
@@ -21,14 +21,13 @@ class creaprofil : VBox() {
 
         nom = TextField("nom")
         prenom = TextField("prénom")
-
-        dialog11 = HBox(10.0, nom, prenom)
+        btndia1 = Button("Valider")
+        dialog11 = HBox(10.0, nom, prenom, btndia1)
         dialog1 = VBox(10.0, dia1question, dialog11)
 
         // Ajout à la vue principale (this = VBox)
         this.children.add(dialog1)
 
     }
-
 
 }

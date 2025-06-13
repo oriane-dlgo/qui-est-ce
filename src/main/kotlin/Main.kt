@@ -19,8 +19,8 @@ class Main : Application() {
         val modele = Client(server = QuiEstCeClient("localhost", 8080))
 
         vue.creaprofil(vue.btn1, ControleurName(modele, vue)) //on change le center du mainview en creaprofil
-        vue.creaprofil(vue.btndia1, Controleurcreapartie(modele, vue))//on change le center du mainview en partie
-        vue.creaprofil(partie().btnjoin, Controleurlistpartie(modele, vue))//on change le center du mainview en listpartie
+       //on change le center du mainview en partie et en listpartie en appuyant sur btnjoin
+        vue.creaprofil(partie().btnjoin, Controleurlistpartie(modele, vue))
         val scene = Scene(vue, 600.0, 400.0)
         stage.scene = scene
         stage.title = "C KI LUI ?"
