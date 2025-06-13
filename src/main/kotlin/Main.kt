@@ -1,26 +1,20 @@
 import Controleurs.ControleurName
-import Controleurs.Controleurcreapartie
-import Controleurs.Controleurlistpartie
+import Controleurs.ControleurGame
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.IdentificationJoueur
-import info.but1.sae2025.data.Joueur
-import info.but1.sae2025.data.Personnage
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
 import modele.Client
 import vue.MainView
-import vue.creaprofil
-import vue.partie
 
 class Main : Application() {
     override fun start(stage: Stage) {
         val vue = MainView()
         val modele = Client(server = QuiEstCeClient("localhost", 8080))
 
-        vue.creaprofil(vue.btn1, ControleurName(modele, vue)) //on change le center du mainview en creaprofil
+        vue.changeCenterView(vue.btn1, ControleurName(modele, vue)) //on change le center du mainview en creaprofil
        //on change le center du mainview en partie et en listpartie en appuyant sur btnjoin
-        vue.creaprofil(partie().btnjoin, Controleurlistpartie(modele, vue))
+
         val scene = Scene(vue, 600.0, 400.0)
         stage.scene = scene
         stage.title = "C KI LUI ?"

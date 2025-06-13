@@ -10,6 +10,10 @@ version = "1.0"
 repositories {
     mavenCentral()
 }
+javafx {
+    version = "17"
+    modules("javafx.controls", "javafx.fxml")
+}
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
@@ -25,10 +29,7 @@ dependencies {
 
     implementation("org.openjfx:javafx-controls:21")
     implementation("org.openjfx:javafx-fxml:21")
-
-
 }
-
 
 tasks.test {
     useJUnitPlatform()
@@ -44,7 +45,6 @@ tasks.test {
     reports.html.required = true
 
 }
-
 
 javafx {
     version = "21"

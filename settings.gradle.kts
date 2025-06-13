@@ -5,6 +5,8 @@ pluginManagement {
         flatDir {
             dirs("libs")
         }
+
+
     }
 
 }
