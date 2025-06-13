@@ -1,43 +1,70 @@
+import Controleurs.ControleurName
+import Controleurs.Controleurcreapartie
+import Controleurs.Controleurlistpartie
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.Personnage
+import javafx.application.Application
+import javafx.scene.Scene
+import javafx.stage.Stage
 import modele.Client
+import vue.MainView
+import vue.creaprofil
+import vue.partie
 
-fun main() {
-    println("C ki la ?")
-    var server: QuiEstCeClient
-    server = QuiEstCeClient("localhost", 8080) //"172.26.69.145", 8080
-    // configuration à modifier bien entendu
-    server.requeteEssai()
-    val client = Client(server)
+class Main : Application() {
+    override fun start(stage: Stage) {
+        val vue = MainView()
+        val modele = Client(server = QuiEstCeClient("localhost", 8080))
 
-    println("** Tests **\n\n")
+        vue.creaprofil(vue.btn1, ControleurName(modele, vue)) //on change le center du mainview en creaprofil
+        vue.creaprofil(vue.btndia1, Controleurcreapartie(modele, vue))//on change le center du mainview en partie
+        vue.creaprofil(partie().btnjoin, Controleurlistpartie(modele, vue))//on change le center du mainview en listpartie
+        val scene = Scene(vue, 600.0, 400.0)
+        stage.scene = scene
+        stage.title = "C KI LUI ?"
+        stage.show()
+    }
 
-    var listPlayer = mutableListOf(
-        Joueur("Ferreira", "Gaetan"),
-        Joueur("Renard", "Clara"),
-        Joueur("Delgado", "Oriane"),
-        Joueur("kaw", " "),
-        Joueur("Filmont", "Felix"),
-        Joueur("Chelli", "Enzo"),
-        Joueur("Cochard", "Bastian")
-    )
+//fun main() {
+////    println("C ki la ?")
+////    var server: QuiEstCeClient
+////    server = QuiEstCeClient("localhost", 8080) //"172.26.69.145", 8080
+////    // configuration à modifier bien entendu
+////    server.requeteEssai()
+////    val client = Client(server)
+////
+////    println("** Tests **\n\n")
+////
+////    var listPlayer = mutableListOf(
+////        Joueur("Ferreira", "Gaetan"),
+////        Joueur("Renard", "Clara"),
+////        Joueur("Delgado", "Oriane"),
+////        Joueur("kaw", " "),
+////        Joueur("Filmont", "Felix"),
+////        Joueur("Chelli", "Enzo"),
+////        Joueur("Cochard", "Bastian")
+////    )
+////
+////    //client.playerCreate(server, listPlayer[3])
+////
+////    println()
+////    println("Player list :")
+////    println(client.getPlayerList())
+////    println()
+////
+////
+////    startBashEdition(server)
+//
+//    Application.launch(Main::class.java)
+//
+//}
+}
 
-    //client.playerCreate(server, listPlayer[3])
-
-    println()
-    println("Player list :")
-    println(client.getPlayerList())
-    println()
-
-
-    startBashEdition(server)
-
-
-
-
-
+    fun main() {
+        Application.launch(Main::class.java)
+    }
 
 
 
@@ -54,7 +81,7 @@ fun main() {
     // ** Lancement du "Qui Est-ce ? - Bash Edition" **
     //println("Launch Bash Edition ? y/n")
     //if(readln()=="y") startBashEdition(server)
-}
+//}
 
 /*
 fun bashEdition(server : QuiEstCeClient){
