@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.serialization") version "2.1.21"
+    id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 group = "iut.info.sa201.2025"
@@ -22,6 +23,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation(files("libs/sae-qui-est-ce-client-1.0.jar"))
 
+    implementation("org.openjfx:javafx-controls:21")
+    implementation("org.openjfx:javafx-fxml:21")
+
 
 }
 
@@ -39,4 +43,10 @@ tasks.test {
     //maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
     reports.html.required = true
 
+}
+
+
+javafx {
+    version = "21"
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
