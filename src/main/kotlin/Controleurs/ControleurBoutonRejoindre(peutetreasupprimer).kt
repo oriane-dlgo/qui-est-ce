@@ -11,5 +11,7 @@ class `ControleurBoutonRejoindre(peutetreasupprimer)`(val modele : Client, val v
     override fun handle(event: ActionEvent) {
         val newvue = Listpartie()
         view.setCenterView(newvue)
+
+        println("CONTROLEUR Rejoindre")
     }
 }

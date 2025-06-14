@@ -10,6 +10,9 @@ class `Controleurlistpartie(peutetreàsupprimer)`(val modele : Client, val view:
     override fun handle(event : ActionEvent){
         val newVue = Listpartie()
         view.setCenterView(newVue)
+
+
+        println("CONTROLEUR ListPartie")
     }
 }
 

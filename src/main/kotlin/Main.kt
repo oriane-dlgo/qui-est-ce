@@ -1,5 +1,4 @@
-import Controleurs.ControleurName
-import Controleurs.ControleurGame
+import Controleurs.ControleurBoutonJouer
 import info.but1.sae2025.QuiEstCeClient
 import javafx.application.Application
 import javafx.scene.Scene
@@ -12,7 +11,7 @@ class Main : Application() {
         val vue = MainView()
         val modele = Client(server = QuiEstCeClient("localhost", 8080))
 
-        vue.changeCenterView(vue.btn1, ControleurName(modele, vue)) //on change le center du mainview en creaprofil
+        vue.changeCenterView(vue.btn1, ControleurBoutonJouer(modele, vue)) //on change le center du mainview en creaprofil
        //on change le center du mainview en partie et en listpartie en appuyant sur btnjoin
 
         val scene = Scene(vue, 600.0, 400.0)

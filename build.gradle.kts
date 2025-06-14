@@ -10,10 +10,6 @@ version = "1.0"
 repositories {
     mavenCentral()
 }
-javafx {
-    version = "17"
-    modules("javafx.controls", "javafx.fxml")
-}
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")

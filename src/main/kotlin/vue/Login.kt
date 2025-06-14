@@ -6,7 +6,7 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 
-class Name : VBox() {
+class Login : VBox() {
 
     val dialog1 : VBox //center
     val dia1question : Label //vbox

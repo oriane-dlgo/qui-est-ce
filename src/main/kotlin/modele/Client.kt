@@ -4,30 +4,41 @@ import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Personnage
+import kotlinx.serialization.json.Json
+import java.io.File
 
 class Client(server: QuiEstCeClient) {
 
     private var server: QuiEstCeClient
-
-    private var playerList: MutableList<Joueur>
+    private var playerList: MutableList<Pair<IdentificationJoueur, Joueur>>
     private var matchList: MutableList<Int>
-    private var currentPlayer : Int = 0
+    private var currentPlayer: Int = 0
 
     init {
         this.server = server
-        this.playerList = getServerPlayerList(server)
+        this.playerList = mutableListOf()
         this.matchList = mutableListOf()
     }
+//
+//
+//
+//
+// Fonctions principales
 
-    //
-    //
-    //
-    //
-    // Fonctions principales
-    fun playerCreate(server: QuiEstCeClient, player: Joueur) {
-        var nom = player.nom.lowercase()
-        var prenom = player.prenom.lowercase()
-        server.requeteCreationJoueur(nom, prenom)
+    fun playerCreate(lastName: String, name: String) {
+
+        var lastName = lastName.uppercase()
+        var name = name.lowercase()
+        var idKey = server.requeteCreationJoueur(lastName, name)
+        var player = Joueur(lastName, name)
+        this.playerList.add(Pair(idKey, player))
+
+        /*
+        // Sérialisation → JSON
+        val jsonData = Json.encodeToString(playerList)
+        File("data/playerList.json").writeText(jsonData)
+        */
+
     }
 
     fun matchCreate(playerId: IdentificationJoueur, characterList: MutableList<Personnage>): Match {
@@ -40,13 +51,13 @@ class Client(server: QuiEstCeClient) {
         return match
 
     }
-    //
-    //
-    //
-    //
-    /// Fonctions SERVER
+//
+//
+//
+//
+/// Fonctions SERVER
 
-    fun getIdWithName(id : Int){
+    fun getIdWithName(id: Int) {
 
         for (id in server.requeteJoueurs())
             return
@@ -66,18 +77,26 @@ class Client(server: QuiEstCeClient) {
         return list
     }
 
-    fun playerIsInList(server : QuiEstCeClient, lastName : String, name : String) : Boolean{
+    fun getJsonPlayerList(): MutableList<Pair<IdentificationJoueur, Joueur>> {
+
+        // Désérialisation ← JSON
+        val content = File("data/playerList.json").readText()
+        val list = Json.decodeFromString<MutableList<Pair<IdentificationJoueur, Joueur>>>(content)
+
+        return list
+    }
+
+    fun playerIsInList(server: QuiEstCeClient, lastName: String, name: String): Boolean {
         var tmpPlayer = Joueur(lastName, name)
         return (tmpPlayer in getServerPlayerList(server))
     }
 
-    fun playerLogIn(){
+    fun playerLogIn() {
         this.currentPlayer
     }
 
 
-
-    ///// FONCTION QUI CREE UNE LISTE POUR AFFICHAGE DANS LE CLIENT, A VOIR SI UTILE  //////
+///// FONCTION QUI CREE UNE LISTE POUR AFFICHAGE DANS LE CLIENT, A VOIR SI UTILE  //////
     /* fun createPlayerList(server : QuiEstCeClient): MutableList<Pair<String, Int>>{
         val playerList = getServerPlayerList(server)
         val idList = server.requeteJoueurs()
@@ -100,12 +119,20 @@ class Client(server: QuiEstCeClient) {
 
 
     //
-    //
-    //
-    //
-    /// Fonctions de recuperations de données
+//
+//
+//
+/// Fonctions de recuperations de données
     fun getPlayerList() = this.playerList
     fun getMatchList() = this.matchList
 
 
 }
+
+
+
+/*         this.playerListJson =File("data/playerList.json")
+if (!this.playerListJson.exists()) {
+    playerListJson.parentFile.mkdirs() // crée le dossier si nécessaire
+    playerListJson.writeText("[]") // initialise avec une liste vide
+*/
