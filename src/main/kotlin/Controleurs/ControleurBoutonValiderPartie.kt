@@ -17,7 +17,7 @@ class ControleurBoutonValiderPartie(val client : Client, val view : MainView, va
         val pickView = PickCharacter()
         view.setCenterView(gameView)
         gameView.setRightView(pickView)
-        pickView.btnValid.setOnAction(ControleurBoutonValiderPerso(client.getCurrentMatch(), view, gameView))
+        pickView.btnValid.setOnAction(ControleurBoutonValiderPerso(client.getCurrentMatch(), gameView))
 
 
     }

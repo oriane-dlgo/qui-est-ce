@@ -3,6 +3,9 @@ package modele
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Personnage
+import javafx.scene.Node
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 
 class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo : Int) {
 
@@ -67,10 +70,28 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     // Fonctions principales
 
     fun pickCharacter(row : Int, col : Int){
+
+        println(this.matchId)
+        println(this.playerIdKey)
+        println("${this.matchId}, ${this.playerIdKey.id}, ${this.playerIdKey.cle}, $row, $col")
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
+
     }
 
+    fun getPictureOf(row : Int, col : Int) : Node {
+        val baseUrl = "http://localhost:8080/resources/but1/"
+        val filename = this.getGrid()[row][col].url
+        val fullUrl = "$baseUrl$filename"
+        val image = Image(fullUrl)
+
+        val imageView = ImageView(image).apply {
+            fitWidth = 80.0
+            fitHeight = 80.0
+            isPreserveRatio = true
+        }
+        return imageView
+    }
     /*
     fun putQuestion(question: String) {
         this.question = question

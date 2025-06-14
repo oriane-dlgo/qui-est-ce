@@ -1,5 +1,6 @@
 package vue
 
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
@@ -16,7 +17,7 @@ import modele.Match
 class GameBoard(match: Match) : BorderPane() {
     val gridCharactere: GridPane
     val info: GridPane
-    val photo: Rectangle
+    var photo: Node
 
     var index: Int
     val zoneIdPerso : TextField
@@ -32,19 +33,9 @@ class GameBoard(match: Match) : BorderPane() {
         for (row in 0 until 4) {
             for (col in 0 until 6) {
 
-                val baseUrl = "http://localhost:8080/resources/but1/"
-                val filename = match.getGrid()[row][col].url
-                val fullUrl = "$baseUrl$filename"
-                val image = Image(fullUrl)
-
-                val imageView = ImageView(image).apply {
-                    fitWidth = 80.0
-                    fitHeight = 80.0
-                    isPreserveRatio = true
-                }
-
+                var picture = match.getPictureOf(row ,col)
                 val stack = StackPane().apply {
-                    children.add(imageView)
+                    children.add(picture)
                     style = "-fx-border-color: black; -fx-border-width: 1;"
                 }
 
@@ -52,13 +43,6 @@ class GameBoard(match: Match) : BorderPane() {
 
             }
         }
-
-        /*
-                        val cell = Rectangle(80.0, 80.0).apply {
-                            fill = Color.LIGHTGRAY
-                            stroke = Color.BLACK
-                        }
-         */
 
         zoneIdPerso = TextField()
         photo = Rectangle(50.0, 50.0).apply {
@@ -71,8 +55,19 @@ class GameBoard(match: Match) : BorderPane() {
 
     }
 
+
+
+
     fun setRightView(newVue: javafx.scene.Node) {
         info.add(newVue, 0, 3)
     }
 
 }
+
+
+/*
+                val cell = Rectangle(80.0, 80.0).apply {
+                    fill = Color.LIGHTGRAY
+                    stroke = Color.BLACK
+                }
+ */

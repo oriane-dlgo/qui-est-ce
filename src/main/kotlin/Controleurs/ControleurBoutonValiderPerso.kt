@@ -2,17 +2,35 @@ package Controleurs
 
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
+import javafx.scene.layout.StackPane
 import modele.Client
 import modele.Match
 import vue.GameBoard
 import vue.Guess
 import vue.MainView
 
-class ControleurBoutonValiderPerso (val match: Match, val view : MainView, val view2 : GameBoard): EventHandler<ActionEvent> {
+class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : EventHandler<ActionEvent> {
 
-    override fun handle(event: ActionEvent){
+    override fun handle(event: ActionEvent) {
         val guess = Guess()
-        view2.setRightView(guess)
-    }
+        view.setRightView(guess)
 
+        var index = view.zoneIdPerso.text.toInt()
+        var i: Int = 0
+
+        println("index = ${view.zoneIdPerso.text.toInt()}")
+        for (row in 0 until 4) {
+            for (col in 0 until 6) {
+                i++
+                if (i == index) {
+
+                    match.pickCharacter(row, col)
+                    println(match.getCharacterPicked())
+                    view.zoneIdPerso.text = ""
+
+
+                }
+            }
+        }
+    }
 }
