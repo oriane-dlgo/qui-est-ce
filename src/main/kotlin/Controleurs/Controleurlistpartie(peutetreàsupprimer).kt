@@ -4,11 +4,11 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import modele.Client
 import vue.MainView
-import vue.Listpartie
+import vue.ListPartie
 
 class `Controleurlistpartie(peutetreàsupprimer)`(val modele : Client, val view: MainView) : EventHandler<ActionEvent> {
     override fun handle(event : ActionEvent){
-        val newVue = Listpartie()
+        val newVue = ListPartie()
         view.setCenterView(newVue)
 
 

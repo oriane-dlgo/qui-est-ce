@@ -1,12 +1,10 @@
 package Controleurs
 
-import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.exceptions.QuiEstCeException
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import modele.Client
 import vue.MainView
-import vue.Listpartie
 
 import vue.Game
 import vue.Login

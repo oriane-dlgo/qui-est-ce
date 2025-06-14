@@ -5,7 +5,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
-class Listpartie : VBox() {
+class ListPartie : VBox() {
 
 
     val listlabel : Label //vbox

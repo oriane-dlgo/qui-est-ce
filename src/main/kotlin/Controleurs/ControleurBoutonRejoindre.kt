@@ -4,26 +4,17 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import modele.Client
 import vue.EnterCode
-import vue.Game
-import vue.Listpartie
 import vue.MainView
 
 class ControleurBoutonRejoindre(val modele : Client, val view : MainView) : EventHandler<ActionEvent> {
 
+    // Cliquer sur ce bouton ne fait qu'afficher la vue ListPartie
     override fun handle(event: ActionEvent) {
 
-        val codeview = EnterCode()
+        val codeView = EnterCode()
+        view.setCenterView(codeView)
+        codeView.btnvalid.setOnAction(ControleurBoutonValiderCode(modele, view))
 
-        view.setCenterView(codeview)
-
-
-        println("CONTROLEUR Rejoindre")
-
-        codeview.btnvalid.setOnAction(ControleurBoutonValiderCode(modele, view))
-
-        //pour passer à la vue Listpartie via le bouton btnjoin
-
-
-
+        println("CONTROLEUR REJOINDRE")
     }
 }
