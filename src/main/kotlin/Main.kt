@@ -11,8 +11,8 @@ class Main : Application() {
         val vue = MainView()
         val modele = Client(server = QuiEstCeClient("localhost", 8080))
 
-        vue.changeCenterView(vue.btn1, ControleurBoutonJouer(modele, vue)) //on change le center du mainview en creaprofil
-       //on change le center du mainview en partie et en listpartie en appuyant sur btnjoin
+        vue.changeCenterView(vue.btn1, ControleurBoutonJouer(modele, vue)) //on change le center du mainview en Login()
+
 
         val scene = Scene(vue, 600.0, 400.0)
         stage.scene = scene

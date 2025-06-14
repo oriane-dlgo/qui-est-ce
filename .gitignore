@@ -16,3 +16,9 @@ data/playerList.json
 
 # fichiers de sauvegarde temporaires
 *.swp
+
+# Logs
+*.log
+
+# Others
+.DS_Store
