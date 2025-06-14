@@ -12,12 +12,12 @@ class ControleurBoutonRejoindrePartie(val modele : Client, val view : MainView) 
     // Cliquer sur ce bouton ne fait qu'afficher la vue ListPartie
     override fun handle(event: ActionEvent) {
 
-        val matchView = MatchList()
-        view.setCenterView(matchView)
+        val matchListView = MatchList()
+        view.setCenterView(matchListView)
 
          // Une liste de chaînes par exemple
 
-        matchView.validateBtn.setOnAction(ControleurBoutonValiderPartie(modele, view))
+        matchListView.validateBtn.setOnAction(ControleurBoutonValiderPartie(modele, view, matchListView))
 
         println("CONTROLEUR REJOINDRE")
         //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
@@ -25,7 +25,7 @@ class ControleurBoutonRejoindrePartie(val modele : Client, val view : MainView) 
         val matchList = modele.getMatchServerList()
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
-            matchView.containList.add(label, 0, i)
+            matchListView.containList.add(label, 0, i)
         }
     }
 }
