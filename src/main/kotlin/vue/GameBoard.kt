@@ -1,6 +1,7 @@
 package vue
 
 import javafx.scene.control.Button
+import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
@@ -18,6 +19,7 @@ class GameBoard(match: Match) : BorderPane() {
     val photo: Rectangle
     val btnValid: Button
     var index: Int
+    val zoneIdPerso : TextField
 
     init {
         gridCharactere = GridPane()
@@ -59,7 +61,7 @@ class GameBoard(match: Match) : BorderPane() {
                         }
          */
 
-
+        zoneIdPerso = TextField()
         photo = Rectangle(50.0, 50.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
@@ -67,7 +69,7 @@ class GameBoard(match: Match) : BorderPane() {
 
         btnValid = Button("Valider")
 
-        info.children.addAll(photo, btnValid)
+        info.children.addAll(photo, zoneIdPerso, btnValid)
 
     }
 

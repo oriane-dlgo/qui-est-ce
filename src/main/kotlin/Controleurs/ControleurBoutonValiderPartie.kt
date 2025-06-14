@@ -3,7 +3,6 @@ package Controleurs
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import modele.Client
-import vue.EnterCode
 import vue.GameBoard
 import vue.MainView
 import vue.MatchList
