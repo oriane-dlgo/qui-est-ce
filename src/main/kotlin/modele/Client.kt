@@ -4,6 +4,7 @@ import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Personnage
+import info.but1.sae2025.exceptions.QuiEstCeException
 import kotlinx.serialization.json.Json
 import java.io.File
 
@@ -11,15 +12,16 @@ class Client(server: QuiEstCeClient) {
 
     private var server: QuiEstCeClient
     private var playerList: MutableList<Pair<IdentificationJoueur, Joueur>>
-    private var playerListServer : MutableList<Pair<IdentificationJoueur?, Joueur>>
+    private var playerListServer: MutableList<Pair<IdentificationJoueur?, Joueur>>
     private var matchList: MutableList<Int>
-    private var currentPlayer: Int = 0
+    private lateinit var currentPlayer: Pair<IdentificationJoueur, Joueur>
 
     init {
         this.server = server
-        this.playerList = mutableListOf()
-        this.matchList = mutableListOf()
+        this.playerList = getPlayerListJson()
         this.playerListServer = getPlayerListServer()
+        this.matchList = mutableListOf()
+
     }
 //
 //
@@ -31,15 +33,27 @@ class Client(server: QuiEstCeClient) {
 
         var lastName = lastName.uppercase()
         var name = name.lowercase()
-        var idKey = server.requeteCreationJoueur(lastName, name)
         var player = Joueur(lastName, name)
-        this.playerList.add(Pair(idKey, player))
 
-        /*
-        // Sérialisation → JSON
-        val jsonData = Json.encodeToString(playerList)
-        File("data/playerList.json").writeText(jsonData)
-        */
+        var matchingPlayerServer = playerListServer.find { it.second == player }
+        var matchingPlayerJson = playerList.find { it.second == player }
+
+        if (matchingPlayerServer == null) {
+            var idKey = server.requeteCreationJoueur(lastName, name)
+            this.playerList.add(Pair(idKey, player))
+            this.currentPlayer = Pair(idKey, player)
+
+            // Sérialisation → JSON
+            val jsonData = Json.encodeToString(playerList)
+            File("data/playerList.json").writeText(jsonData)
+        } else {
+            if (matchingPlayerJson == null) {
+                throw QuiEstCeException("Impossible de creer un personnage déjà crée sur une autre machine")
+            } else {
+                this.currentPlayer = matchingPlayerJson
+            }
+        }
+
 
     }
 
@@ -71,7 +85,7 @@ class Client(server: QuiEstCeClient) {
 
 
     fun getPlayerListServer(): MutableList<Pair<IdentificationJoueur?, Joueur>> {
-        var pairList : MutableList<Pair<IdentificationJoueur?, Joueur>> = mutableListOf()
+        var pairList: MutableList<Pair<IdentificationJoueur?, Joueur>> = mutableListOf()
 
         for (i in 0 until this.server.requeteJoueurs().size) {
             val id = this.server.requeteJoueurs()[i]
@@ -79,10 +93,9 @@ class Client(server: QuiEstCeClient) {
 
             var matchingPlayer = playerList.find { it.second == player }
 
-            if (matchingPlayer != null){
+            if (matchingPlayer != null) {
                 pairList.add(matchingPlayer)
-            }
-            else{
+            } else {
                 pairList.add(Pair(null, player))
             }
         }
@@ -91,7 +104,7 @@ class Client(server: QuiEstCeClient) {
     }
 
 
-    fun getJsonPlayerList(): MutableList<Pair<IdentificationJoueur, Joueur>> {
+    fun getPlayerListJson(): MutableList<Pair<IdentificationJoueur, Joueur>> {
 
         // Désérialisation ← JSON
         val content = File("data/playerList.json").readText()
@@ -142,10 +155,10 @@ class Client(server: QuiEstCeClient) {
 /// Fonctions de recuperations de données
     fun getPlayerList() = this.playerList
     fun getMatchList() = this.matchList
+    fun getCurrentPlayer() = this.currentPlayer
 
 
 }
-
 
 
 /*         this.playerListJson =File("data/playerList.json")
