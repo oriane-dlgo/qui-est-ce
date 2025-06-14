@@ -31,7 +31,7 @@ class ControleurBoutonLogin(val client: Client, val view: MainView, val loginVie
             println(e)
         }
 
-
+        gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
 
     }
 }

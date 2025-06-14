@@ -13,7 +13,6 @@ class Main : Application() {
 
         vue.changeCenterView(vue.btn1, ControleurBoutonJouer(modele, vue)) //on change le center du mainview en Login()
 
-
         val scene = Scene(vue, 600.0, 400.0)
         stage.scene = scene
         stage.title = "C KI LUI ?"
