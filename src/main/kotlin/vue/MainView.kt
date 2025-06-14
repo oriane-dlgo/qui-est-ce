@@ -22,7 +22,6 @@ class MainView : BorderPane(){
 
     fun setCenterView(newVue: javafx.scene.Node) {
         this.center = newVue
-
     }
 
 

@@ -5,14 +5,14 @@ import javafx.scene.layout.VBox
 
 class MatchMaking : VBox() {
 
-    val btnbox : VBox //center
-    val btnnew : Button //vbox
-    val btnjoin : Button //vbox
+    val btnBox : VBox //center
+    val btnNew : Button //vbox
+    val btnJoin : Button //vbox
 
     init{
-        btnnew = Button("Nouvelle Partie")
-        btnjoin = Button("Rejoindre une Partie")
-        btnbox = VBox(10.0, btnnew, btnjoin)
-        this.children.add(btnbox)
+        btnNew = Button("Nouvelle Partie")
+        btnJoin = Button("Rejoindre une Partie")
+        btnBox = VBox(10.0, btnNew, btnJoin)
+        this.children.add(btnBox)
     }
 }
