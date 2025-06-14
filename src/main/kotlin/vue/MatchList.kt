@@ -1,11 +1,10 @@
 package vue
 
-import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
-class ListPartie : VBox() {
+class MatchList : VBox() {
 
 
     val listlabel : Label //vbox
