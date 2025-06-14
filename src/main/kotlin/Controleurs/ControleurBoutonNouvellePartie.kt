@@ -19,6 +19,7 @@ class ControleurBoutonNouvellePartie(val client: Client, val view : MainView): E
 
 
         println("Liste des partie sur le serveur : ${client.getMatchServerList()+currentMatch.getId()}")
+        println("Etat de la partie : ${client.getMatchState()}")
 
     }
 }

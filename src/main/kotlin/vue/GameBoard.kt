@@ -29,7 +29,6 @@ class GameBoard(match: Match) : BorderPane() {
         this.right = info
         this.index = 0
 
-
         for (row in 0 until 4) {
             for (col in 0 until 6) {
 
