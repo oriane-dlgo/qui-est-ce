@@ -32,7 +32,7 @@ class GameBoard(match: Match) : BorderPane() {
             for (col in 0 until 6) {
 
                 val baseUrl = "http://localhost:8080/resources/but1/"
-                val filename = match.getGrid()[match.getCurrentPlayer()][row][col].url
+                val filename = match.getGrid()[row][col].url
                 val fullUrl = "$baseUrl$filename"
                 val image = Image(fullUrl)
 

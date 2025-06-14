@@ -4,14 +4,16 @@ import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Personnage
 
-class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClient) {
+class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo : Int) {
 
     private val server : QuiEstCeClient
     private val matchId: Int
-    private var playerList: MutableList<IdentificationJoueur>
-    private val gridPlayer : MutableList<List<List<Personnage>>>
-    private val fakeCharacter: Personnage
-    private var characterPicked: MutableList<Personnage>
+    private var playerIdKey : IdentificationJoueur
+    private var playerNo : Int
+    private var gridPlayer : List<List<Personnage>>
+    private var characterPicked: Personnage
+
+    // A CHECK
     private lateinit var characterGuess : Personnage
     //private var boardList: List<MutableList<Personnage>>
     private var roundCounter: Int
@@ -20,22 +22,24 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
     private lateinit var winner: IdentificationJoueur
     private var haveWinner: Boolean
     private var saved: Boolean
-    private var currentPlayer : Int
+
 
     init {
         this.server = server
         this.matchId = matchId
-        this.playerList = mutableListOf(playerId)
-        this.gridPlayer = mutableListOf(server.requeteGrilleJoueur(this.matchId, this.playerList[0].id))
-        this.fakeCharacter = Personnage("", "", "")
-        this.characterPicked = mutableListOf(fakeCharacter, fakeCharacter)
+        this.playerIdKey = playerIdKey
+        this.playerNo = 0
+        this.gridPlayer = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
+        this.characterPicked = Personnage("", "", "")
+
+        // A CHECK
         //this.boardList = listOf(characterList.shuffled().toMutableList(), characterList.shuffled().toMutableList())
         this.roundCounter = 0
         this.question = ""
         this.answer = ""
         this.haveWinner = false
         this.saved = false
-        this.currentPlayer = 0
+
     }
 
     //
@@ -44,11 +48,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
     //
     // Fonctions principales
 
-    fun joinMatch(player: IdentificationJoueur) {
-        this.playerList.add(player)
-        this.currentPlayer = 1
-        this.gridPlayer.add(server.requeteGrilleJoueur(this.matchId, this.playerList[0].id))
-    }
+
 
     /*
 
@@ -104,7 +104,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
     //
     // Fonctions de recuperations de variables
     fun getId() = this.matchId
-    fun getPlayerList() = this.playerList
+    //fun getPlayerList() = this.playerList
     fun getCharacterPicked()= this.characterPicked
     //fun getBoardList() = this.boardList
     fun getQuestion() = this.question
@@ -114,7 +114,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
     fun getRound() = this.roundCounter
     fun getGuess() = this.characterGuess
     fun getGrid() = this.gridPlayer
-    fun getCurrentPlayer() = this.currentPlayer
+    fun getCurrentPlayer() = this.playerNo
 
 
     /*

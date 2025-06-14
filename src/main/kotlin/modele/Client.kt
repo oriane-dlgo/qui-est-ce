@@ -68,13 +68,20 @@ class Client(server: QuiEstCeClient) {
         val playerIdKey = this.currentPlayer.second
         val matchId = server.requeteCreationPartie(playerIdKey.id, playerIdKey.cle)
 
-        val match = Match(matchId,playerIdKey, this.server)
+        val match = Match(server, matchId,playerIdKey, 0)
         this.currentMatch = match
 
 
         println("\nLa partie n°$matchId vient d'être crée\n")
         return match
 
+    }
+    fun matchJoin(matchId : Int) {
+        val playerIdKey = this.currentPlayer.second
+        server.requeteRejoindrePartie(matchId, playerIdKey.id, playerIdKey.cle)
+
+        val match = Match(server, matchId, playerIdKey, 1)
+        this.currentMatch = match
     }
 //
 //
