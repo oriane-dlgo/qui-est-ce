@@ -19,11 +19,12 @@ class ControleurBoutonLogin(val client: Client, val view: MainView) : EventHandl
         println("Vous avez cliquer sur \"Connexion\" ")
 
         client.playerCreate(loginView.nom.toString(), loginView.prenom.toString())
-
-        //pour passer à la vue Listpartie via le bouton btnjoin
-        gameView.btnjoin.setOnAction {
-            val listVue = Listpartie()
-            view.setCenterView(listVue)
-        }
+//
+        gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
+//        //pour passer à la vue Listpartie via le bouton btnjoin
+//        gameView.btnjoin.setOnAction {
+//            val listVue = Listpartie()
+//            view.setCenterView(listVue)
+//        }
     }
 }
