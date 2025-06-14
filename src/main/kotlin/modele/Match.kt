@@ -12,7 +12,7 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     private var playerNo : Int
     private var playerGrid : List<List<Personnage>>
     private var opponentId : Int
-    private var opponentGrid : List<List<Personnage>>
+    private lateinit var opponentGrid : List<List<Personnage>>
 
     private var characterPicked: Personnage
     private var question: String
@@ -42,7 +42,11 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
         else{
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
         }
-        this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+
+        if (this.opponentId != -1){
+            this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+        }
+
 
 
         this.roundCounter = 0
