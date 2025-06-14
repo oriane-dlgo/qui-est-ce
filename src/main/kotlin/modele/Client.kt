@@ -184,6 +184,7 @@ class Client(server: QuiEstCeClient) {
     fun getMatchServerList() = this.matchListServer
     fun getCurrentPlayer() = this.currentPlayer
     fun getCurrentMatch() = this.currentMatch
+    fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
 
 
 }

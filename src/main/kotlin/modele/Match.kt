@@ -10,56 +10,68 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     private val matchId: Int
     private var playerIdKey : IdentificationJoueur
     private var playerNo : Int
-    private var gridPlayer : List<List<Personnage>>
+    private var playerGrid : List<List<Personnage>>
+    private var opponentId : Int
+    private lateinit var opponentGrid : List<List<Personnage>>
+
     private var characterPicked: Personnage
+    private var question: String
+    private var answer: String
 
     // A CHECK
     private lateinit var characterGuess : Personnage
     //private var boardList: List<MutableList<Personnage>>
     private var roundCounter: Int
-    private var question: String
-    private var answer: String
+
     private lateinit var winner: IdentificationJoueur
-    private var haveWinner: Boolean
-    private var saved: Boolean
+    //private var haveWinner: Boolean
+    //private var saved: Boolean
 
 
     init {
         this.server = server
         this.matchId = matchId
         this.playerIdKey = playerIdKey
-        this.playerNo = 0
-        this.gridPlayer = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
+        this.playerNo = playerNo
+        this.playerGrid = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
+
+
+        if (playerNo == 0){
+            this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
+        }
+        else{
+            this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
+        }
+
+        if (this.opponentId != -1){
+            this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+        }
+
+
+
+        this.roundCounter = 0
         this.characterPicked = Personnage("", "", "")
+        this.question = ""
+        this.answer = ""
+
 
         // A CHECK
         //this.boardList = listOf(characterList.shuffled().toMutableList(), characterList.shuffled().toMutableList())
-        this.roundCounter = 0
-        this.question = ""
-        this.answer = ""
-        this.haveWinner = false
-        this.saved = false
-
+        //this.haveWinner = false
+        //this.saved = false
     }
-
     //
     //
     //
     //
     // Fonctions principales
 
-
-
-    /*
-
-
-    fun pickCharacter(player: Int, character: Int): Personnage {
-
-        this.characterPicked[player] = this.boardList[player][character]
-
-        return this.characterPicked[player]
+    fun pickCharacter(row : Int, col : Int){
+        server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
+        this.characterPicked = this.playerGrid[row][col]
     }
 
+    /*
     fun putQuestion(question: String) {
         this.question = question
     }
@@ -109,11 +121,11 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     //fun getBoardList() = this.boardList
     fun getQuestion() = this.question
     fun getAnswer() = this.answer
-    fun getState() = this.saved
-    fun getWinner() = this.haveWinner
+    //fun getState() = this.saved
+    //fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
     fun getGuess() = this.characterGuess
-    fun getGrid() = this.gridPlayer
+    fun getGrid() = this.playerGrid
     fun getCurrentPlayer() = this.playerNo
 
 

@@ -1,6 +1,7 @@
 package vue
 
 import javafx.scene.control.Button
+import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
@@ -14,19 +15,19 @@ import modele.Match
 
 class GameBoard(match: Match) : BorderPane() {
     val gridCharactere: GridPane
-    val info: VBox
+    val info: GridPane
     val photo: Rectangle
-    val btnValid: Button
+
     var index: Int
+    val zoneIdPerso : TextField
 
     init {
         gridCharactere = GridPane()
         this.center = gridCharactere
         gridCharactere.isGridLinesVisible = true
-        info = VBox()
+        info = GridPane()
         this.right = info
         this.index = 0
-
 
         for (row in 0 until 4) {
             for (col in 0 until 6) {
@@ -59,20 +60,19 @@ class GameBoard(match: Match) : BorderPane() {
                         }
          */
 
-
+        zoneIdPerso = TextField()
         photo = Rectangle(50.0, 50.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }
 
-        btnValid = Button("Valider")
-
-        info.children.addAll(photo, btnValid)
+        info.add(photo, 0, 0)
+        info.add(zoneIdPerso, 0, 1)
 
     }
 
     fun setRightView(newVue: javafx.scene.Node) {
-        this.right = newVue
+        info.add(newVue, 0, 3)
     }
 
 }

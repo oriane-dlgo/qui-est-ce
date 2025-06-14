@@ -15,8 +15,6 @@ class ControleurBoutonRejoindrePartie(val modele : Client, val view : MainView) 
         val matchListView = MatchList()
         view.setCenterView(matchListView)
 
-         // Une liste de chaînes par exemple
-
         matchListView.validateBtn.setOnAction(ControleurBoutonValiderPartie(modele, view, matchListView))
 
         println("CONTROLEUR REJOINDRE")
