@@ -9,10 +9,9 @@ import vue.Listpartie
 import vue.Game
 import vue.Login
 
-class ControleurBoutonLogin(val client: Client, val view: MainView) : EventHandler<ActionEvent> {
+class ControleurBoutonLogin(val client: Client, val view: MainView, val loginView : Login) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
         val gameView = Game()
-        val loginView = Login()
 
         // Changement de la vue
         view.setCenterView(gameView)

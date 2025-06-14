@@ -17,7 +17,7 @@ class ControleurBoutonJouer(val modele: Client, val view: MainView): EventHandle
         println("Vous avez cliqué sur \"Jouer\" ")
 //
 //        // pour aller sur la vue Game avec le bouton btndia1 (valider)
-        loginView.btndia1.setOnAction(ControleurBoutonLogin(modele, view))
+        loginView.btndia1.setOnAction(ControleurBoutonLogin(modele, view, loginView))
     }
 
 }
