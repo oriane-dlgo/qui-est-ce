@@ -13,7 +13,5 @@ class ControleurBoutonValiderCode(val modele : Client, val view : MainView) : Ev
 
         view.setCenterView(codeview)
 
-
-
     }
 }

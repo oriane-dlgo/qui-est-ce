@@ -10,15 +10,15 @@ class Listpartie : VBox() {
 
     val listlabel : Label //vbox
     val containlist : GridPane //vbox
-    val btncode : Button //right
+
 
     init{
 
         listlabel = Label("Liste des parties disponibles")
         containlist = GridPane()
-        btncode = Button("Entrer Code")
 
-        this.children.addAll(listlabel, containlist, btncode)
+
+        this.children.addAll(listlabel, containlist)
     }
 
 }
