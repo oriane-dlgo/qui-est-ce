@@ -70,6 +70,10 @@ class GameBoard(match: Match) : BorderPane() {
 
         info.children.addAll(photo, btnValid)
 
-
     }
+
+    fun setRightView(newVue: javafx.scene.Node) {
+        this.right = newVue
+    }
+
 }

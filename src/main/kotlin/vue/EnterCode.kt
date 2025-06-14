@@ -7,15 +7,15 @@ import javafx.scene.layout.VBox
 
 class EnterCode : VBox() {
 
-    val textentrercode : Label
+    val textEntrerCode : Label
     val code : TextField
-    val btnvalid : Button
+    val btnValid : Button
 
     init{
-        textentrercode = Label("Entrez le code de la partie :")
+        textEntrerCode = Label("Entrez le code de la partie :")
         code = TextField()
-        btnvalid = Button("Valider le code")
-        this.children.addAll(textentrercode, code, btnvalid)
+        btnValid = Button("Valider le code")
+        this.children.addAll(textEntrerCode, code, btnValid)
     }
 
 
