@@ -1,0 +1,14 @@
+
+Chat de la SAE :
+https://mattermost.univ-nantes.fr/iutinfo1sae201/channels/97e972df0b502cd462d6a2690154a52869396ef6
+
+
+Git de la SAE :
+https://gitlab.univ-nantes.fr/iut.info1.dev.objets/2024-2025/sae201.2025
+
+https://gitlab.univ-nantes.fr/iut.info1.dev.objets/2024-2025/sae201.2025/projets-etudiants/2025.sae201.15.git
+
+
+Commande reset server & remove playerlist.json :
+rm ../2025.sae201.15/data/playerList.json && java -jar  server-all.jar "localhost" 8080 resources/
+
