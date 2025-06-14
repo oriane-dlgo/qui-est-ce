@@ -19,8 +19,8 @@ class ControleurBoutonLogin(val client: Client, val view: MainView, val loginVie
 
             // Changement de la vue
             view.setCenterView(matchMakingView)
-            matchMakingView.btnjoin.setOnAction(ControleurBoutonRejoindrePartie(client, view))
-            matchMakingView.btnnew.setOnAction(ControleurBoutonNouvellePartie(client, view))
+            matchMakingView.btnJoin.setOnAction(ControleurBoutonRejoindrePartie(client, view))
+            matchMakingView.btnNew.setOnAction(ControleurBoutonNouvellePartie(client, view))
 
             // Logs
             println("Vous êtes : ${client.getCurrentPlayer()}\n")

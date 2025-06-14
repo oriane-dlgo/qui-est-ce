@@ -59,7 +59,6 @@ class GameBoard(match: Match) : BorderPane() {
                         }
          */
 
-        println(match.getGrid()[0][0][0].url)
 
         photo = Rectangle(50.0, 50.0).apply {
             fill = Color.WHITE
