@@ -11,6 +11,7 @@ class Client(server: QuiEstCeClient) {
 
     private var server: QuiEstCeClient
     private var playerList: MutableList<Pair<IdentificationJoueur, Joueur>>
+    private var playerListServer : MutableList<Pair<IdentificationJoueur?, Joueur>>
     private var matchList: MutableList<Int>
     private var currentPlayer: Int = 0
 
@@ -18,6 +19,7 @@ class Client(server: QuiEstCeClient) {
         this.server = server
         this.playerList = mutableListOf()
         this.matchList = mutableListOf()
+        this.playerListServer = getPlayerListServer()
     }
 //
 //
@@ -68,14 +70,26 @@ class Client(server: QuiEstCeClient) {
     }
 
 
-    fun getServerPlayerList(server: QuiEstCeClient): MutableList<Joueur> {
-        var list = mutableListOf<Joueur>()
-        for (i in 0 until server.requeteJoueurs().size) {
-            val id = server.requeteJoueurs()[i]
-            list.add(server.requeteJoueur(id))
+    fun getPlayerListServer(): MutableList<Pair<IdentificationJoueur?, Joueur>> {
+        var pairList : MutableList<Pair<IdentificationJoueur?, Joueur>> = mutableListOf()
+
+        for (i in 0 until this.server.requeteJoueurs().size) {
+            val id = this.server.requeteJoueurs()[i]
+            var player = this.server.requeteJoueur(id)
+
+            var matchingPlayer = playerList.find { it.second == player }
+
+            if (matchingPlayer != null){
+                pairList.add(matchingPlayer)
+            }
+            else{
+                pairList.add(Pair(null, player))
+            }
         }
-        return list
+
+        return pairList
     }
+
 
     fun getJsonPlayerList(): MutableList<Pair<IdentificationJoueur, Joueur>> {
 
@@ -86,11 +100,14 @@ class Client(server: QuiEstCeClient) {
         return list
     }
 
+    /*
     fun playerIsInList(server: QuiEstCeClient, lastName: String, name: String): Boolean {
         var tmpPlayer = Joueur(lastName, name)
-        return (tmpPlayer in getServerPlayerList(server))
+        return (tmpPlayer in getPlayerListServer())
     }
 
+
+     */
     fun playerLogIn() {
         this.currentPlayer
     }

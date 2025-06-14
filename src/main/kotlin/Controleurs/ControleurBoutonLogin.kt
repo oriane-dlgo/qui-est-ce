@@ -9,21 +9,28 @@ import vue.Listpartie
 import vue.Game
 import vue.Login
 
-class ControleurBoutonLogin(val client: Client, val view: MainView) : EventHandler<ActionEvent> {
+class ControleurBoutonLogin(val client: Client, val view: Login) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
-        val gameView = Game()
-        val loginView = Login()
 
+        // Changement de la vue
         view.setCenterView(gameView)
+        //loginView.nom.text =
 
+        // Creation du personnage
+        client.playerCreate(loginView.nom.text, loginView.prenom.text)
+
+
+        // logs
         println("Vous avez cliquer sur \"Connexion\" ")
+        println(client.getPlayerList())
+        println(client.getPlayerListServer())
 
-        client.playerCreate(loginView.nom.toString(), loginView.prenom.toString())
-
-        //pour passer à la vue Listpartie via le bouton btnjoin
-        gameView.btnjoin.setOnAction {
-            val listVue = Listpartie()
-            view.setCenterView(listVue)
-        }
     }
 }
+/*
+//pour passer à la vue Listpartie via le bouton btnjoin
+gameView.btnjoin.setOnAction {
+    val listVue = Listpartie()
+    view.setCenterView(listVue)
+}
+*/
