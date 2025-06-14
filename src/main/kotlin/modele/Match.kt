@@ -24,8 +24,8 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     private var roundCounter: Int
 
     private lateinit var winner: IdentificationJoueur
-    private var haveWinner: Boolean
-    private var saved: Boolean
+    //private var haveWinner: Boolean
+    //private var saved: Boolean
 
 
     init {
@@ -62,7 +62,7 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     //
     // Fonctions principales
 
-    fun pickCharacter(row, col){
+    fun pickCharacter(row : Int, col : Int){
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
     }
@@ -117,8 +117,8 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     //fun getBoardList() = this.boardList
     fun getQuestion() = this.question
     fun getAnswer() = this.answer
-    fun getState() = this.saved
-    fun getWinner() = this.haveWinner
+    //fun getState() = this.saved
+    //fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
     fun getGuess() = this.characterGuess
     fun getGrid() = this.playerGrid
