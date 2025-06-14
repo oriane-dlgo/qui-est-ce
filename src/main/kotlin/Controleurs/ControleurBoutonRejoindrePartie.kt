@@ -6,7 +6,7 @@ import modele.Client
 import vue.EnterCode
 import vue.MainView
 
-class ControleurBoutonRejoindre(val modele : Client, val view : MainView) : EventHandler<ActionEvent> {
+class ControleurBoutonRejoindrePartie(val modele : Client, val view : MainView) : EventHandler<ActionEvent> {
 
     // Cliquer sur ce bouton ne fait qu'afficher la vue ListPartie
     override fun handle(event: ActionEvent) {

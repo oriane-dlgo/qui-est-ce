@@ -3,7 +3,7 @@ package vue
 import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 
-class Game : VBox() {
+class MatchMaking : VBox() {
 
     val btnbox : VBox //center
     val btnnew : Button //vbox

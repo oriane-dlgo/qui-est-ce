@@ -6,20 +6,21 @@ import javafx.event.EventHandler
 import modele.Client
 import vue.MainView
 
-import vue.Game
+import vue.MatchMaking
 import vue.Login
 
 class ControleurBoutonLogin(val client: Client, val view: MainView, val loginView: Login) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
-        val gameView = Game()
+        val matchmakingView = MatchMaking()
 
         try {
-            // Conexion joueur
+            // Connexion joueur
             client.playerLogin(loginView.nom.text, loginView.prenom.text)
 
             // Changement de la vue
-            view.setCenterView(gameView)
-            gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
+
+            view.setCenterView(matchmakingView)
+            matchmakingView.btnjoin.setOnAction(ControleurBoutonRejoindrePartie(client, view))
 
             // Logs
             println("Vous êtes : ${client.getCurrentPlayer()}\n")
@@ -30,11 +31,29 @@ class ControleurBoutonLogin(val client: Client, val view: MainView, val loginVie
 
 
         } catch (e: QuiEstCeException) {
-            // Erreur si le joueur crée existe deja sur le serveur mais sur une autre machine
             println(e)
         }
 
-
+        matchmakingView.btnjoin.setOnAction(ControleurBoutonRejoindrePartie(client, view))
 
     }
 }
+
+/*
+//pour passer à la vue Listpartie via le bouton btnjoin
+gameView.btnjoin.setOnAction {
+    val listVue = Listpartie()
+    view.setCenterView(listVue)
+        client.playerCreate(loginView.nom.toString(), loginView.prenom.toString())
+//
+        gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
+
+//        //pour passer à la vue Listpartie via le bouton btnjoin
+//        gameView.btnjoin.setOnAction {
+//            val listVue = Listpartie()
+//            view.setCenterView(listVue)
+//        }
+    }
+}
+
+ */
