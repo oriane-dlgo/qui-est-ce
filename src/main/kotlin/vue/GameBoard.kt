@@ -1,10 +1,8 @@
 package vue
 
-import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
-import javafx.scene.layout.VBox
 
-class ChooseCharactere : HBox() {
+class GameBoard : HBox() {
 //    val gridcharactere : GridPane
 //    val choose : VBox
 //    val photo :
