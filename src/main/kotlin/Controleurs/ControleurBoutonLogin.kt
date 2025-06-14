@@ -16,18 +16,15 @@ class ControleurBoutonLogin(val client: Client, val view: MainView, val loginVie
         val gameView = Game()
 
         try {
-            client.playerCreate(loginView.nom.text, loginView.prenom.text)
-            println("create")
-            view.setCenterView(gameView)
-            // Changement de la vue
-            println("switch view")
+            client.playerLogin(loginView.nom.text, loginView.prenom.text)
 
+            // Changement de la vue
+            view.setCenterView(gameView)
 
             // logs
-            println("Vous avez cliquer sur \"Connexion\" ")
-            println(client.getPlayerList())
-            println(client.getPlayerListServer())
-            println(client.getCurrentPlayer())
+            println("Liste des joueurs sur le serveur : ${client.getPlayerListServer()}")
+            println("Liste des joueurs sur le client : ${client.getPlayerList()}")
+            println("Joueur connecté au client : ${client.getCurrentPlayer()}")
 
 
         } catch (e: QuiEstCeException) {

@@ -29,7 +29,7 @@ class Client(server: QuiEstCeClient) {
 //
 // Fonctions principales
 
-    fun playerCreate(lastName: String, name: String) {
+    fun playerLogin(lastName: String, name: String) {
 
         var lastName = lastName.uppercase()
         var name = name.lowercase()
@@ -40,16 +40,19 @@ class Client(server: QuiEstCeClient) {
 
         if (matchingPlayerServer == null) {
             var idKey = server.requeteCreationJoueur(lastName, name)
+            println("***  Un joueur a été crée  ***")
             this.playerList.add(Pair(idKey, player))
             this.currentPlayer = Pair(idKey, player)
 
             // Sérialisation → JSON
+            checkJsonPresent()
             val jsonData = Json.encodeToString(playerList)
             File("data/playerList.json").writeText(jsonData)
         } else {
             if (matchingPlayerJson == null) {
                 throw QuiEstCeException("Impossible de creer un personnage déjà crée sur une autre machine")
             } else {
+                println("***  Vous venez de vous connecter  ***")
                 this.currentPlayer = matchingPlayerJson
             }
         }
@@ -106,11 +109,26 @@ class Client(server: QuiEstCeClient) {
 
     fun getPlayerListJson(): MutableList<Pair<IdentificationJoueur, Joueur>> {
 
+        checkJsonPresent()
         // Désérialisation ← JSON
         val content = File("data/playerList.json").readText()
         val list = Json.decodeFromString<MutableList<Pair<IdentificationJoueur, Joueur>>>(content)
 
         return list
+    }
+
+    fun checkJsonPresent(){
+
+        val dataDir = File("data")
+        if (!dataDir.exists()) {
+            dataDir.mkdirs()
+        }
+
+        val jsonFile = File(dataDir, "playerList.json")
+        if (!jsonFile.exists()) {
+            jsonFile.writeText("[]")
+        }
+
     }
 
     /*
@@ -121,10 +139,6 @@ class Client(server: QuiEstCeClient) {
 
 
      */
-    fun playerLogIn() {
-        this.currentPlayer
-    }
-
 
 ///// FONCTION QUI CREE UNE LISTE POUR AFFICHAGE DANS LE CLIENT, A VOIR SI UTILE  //////
     /* fun createPlayerList(server : QuiEstCeClient): MutableList<Pair<String, Int>>{
