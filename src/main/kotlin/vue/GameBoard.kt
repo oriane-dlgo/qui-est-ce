@@ -15,9 +15,9 @@ import modele.Match
 
 class GameBoard(match: Match) : BorderPane() {
     val gridCharactere: GridPane
-    val info: VBox
+    val info: GridPane
     val photo: Rectangle
-    val btnValid: Button
+
     var index: Int
     val zoneIdPerso : TextField
 
@@ -25,7 +25,7 @@ class GameBoard(match: Match) : BorderPane() {
         gridCharactere = GridPane()
         this.center = gridCharactere
         gridCharactere.isGridLinesVisible = true
-        info = VBox()
+        info = GridPane()
         this.right = info
         this.index = 0
 
@@ -67,14 +67,13 @@ class GameBoard(match: Match) : BorderPane() {
             stroke = Color.BLACK
         }
 
-        btnValid = Button("Valider")
-
-        info.children.addAll(photo, zoneIdPerso, btnValid)
+        info.add(photo, 0, 0)
+        info.add(zoneIdPerso, 0, 1)
 
     }
 
     fun setRightView(newVue: javafx.scene.Node) {
-        this.right = newVue
+        info.add(newVue, 0, 3)
     }
 
 }
