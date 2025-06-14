@@ -1,0 +1,18 @@
+# IntelliJ
+.idea/
+*.iml
+*.iws
+out/
+
+# Gradle
+.gradle/
+build/
+
+# Fichiers personnels / données de l’app
+data/playerList.json
+
+# OS Linux
+*~
+
+# fichiers de sauvegarde temporaires
+*.swp
