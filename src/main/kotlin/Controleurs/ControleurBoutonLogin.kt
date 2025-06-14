@@ -16,41 +16,27 @@ class ControleurBoutonLogin(val client: Client, val view: MainView, val loginVie
         val gameView = Game()
 
         try {
+            // Conexion joueur
             client.playerLogin(loginView.nom.text, loginView.prenom.text)
 
             // Changement de la vue
             view.setCenterView(gameView)
+            gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
 
-            // logs
+            // Logs
+            println("Vous êtes : ${client.getCurrentPlayer()}\n")
+
             println("Liste des joueurs sur le serveur : ${client.getPlayerListServer()}")
             println("Liste des joueurs sur le client : ${client.getPlayerList()}")
-            println("Joueur connecté au client : ${client.getCurrentPlayer()}")
+
 
 
         } catch (e: QuiEstCeException) {
+            // Erreur si le joueur crée existe deja sur le serveur mais sur une autre machine
             println(e)
         }
 
-        gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
+
 
     }
 }
-
-/*
-//pour passer à la vue Listpartie via le bouton btnjoin
-gameView.btnjoin.setOnAction {
-    val listVue = Listpartie()
-    view.setCenterView(listVue)
-        client.playerCreate(loginView.nom.toString(), loginView.prenom.toString())
-//
-        gameView.btnjoin.setOnAction(ControleurBoutonRejoindre(client, view))
-
-//        //pour passer à la vue Listpartie via le bouton btnjoin
-//        gameView.btnjoin.setOnAction {
-//            val listVue = Listpartie()
-//            view.setCenterView(listVue)
-//        }
-    }
-}
-
- */

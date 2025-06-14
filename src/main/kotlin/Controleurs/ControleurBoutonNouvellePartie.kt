@@ -9,5 +9,6 @@ class ControleurBoutonNouvellePartie(val modele : Client, val view : MainView): 
 
     override fun handle(event : ActionEvent){
 
+
     }
 }
