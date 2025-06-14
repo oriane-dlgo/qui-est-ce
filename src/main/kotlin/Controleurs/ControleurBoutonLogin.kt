@@ -44,3 +44,5 @@ gameView.btnjoin.setOnAction {
 //        }
     }
 }
+
+ */
