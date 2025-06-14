@@ -11,10 +11,10 @@ import java.io.File
 class Client(server: QuiEstCeClient) {
 
     private var server: QuiEstCeClient
-    private var playerList: MutableList<Pair<IdentificationJoueur, Joueur>>
-    private var playerListServer: MutableList<Pair<IdentificationJoueur?, Joueur>>
+    private var playerList: MutableList<Pair<Joueur,IdentificationJoueur>>
+    private var playerListServer: MutableList<Pair<Joueur, IdentificationJoueur?>>
     private var matchList: MutableList<Int>
-    private lateinit var currentPlayer: Pair<IdentificationJoueur, Joueur>
+    private lateinit var currentPlayer: Pair<Joueur, IdentificationJoueur>
 
     init {
         this.server = server
@@ -35,14 +35,14 @@ class Client(server: QuiEstCeClient) {
         var name = name.lowercase()
         var player = Joueur(lastName, name)
 
-        var matchingPlayerServer = playerListServer.find { it.second == player }
-        var matchingPlayerJson = playerList.find { it.second == player }
+        var matchingPlayerServer = playerListServer.find { it.first== player }
+        var matchingPlayerJson = playerList.find { it.first == player }
 
         if (matchingPlayerServer == null) {
             var idKey = server.requeteCreationJoueur(lastName, name)
             println("***  Un joueur a été crée  ***")
-            this.playerList.add(Pair(idKey, player))
-            this.currentPlayer = Pair(idKey, player)
+            this.playerList.add(Pair(player, idKey))
+            this.currentPlayer = Pair(player, idKey)
 
             // Sérialisation → JSON
             checkJsonPresent()
@@ -87,19 +87,19 @@ class Client(server: QuiEstCeClient) {
     }
 
 
-    fun getPlayerListServer(): MutableList<Pair<IdentificationJoueur?, Joueur>> {
-        var pairList: MutableList<Pair<IdentificationJoueur?, Joueur>> = mutableListOf()
+    fun getPlayerListServer(): MutableList<Pair<Joueur, IdentificationJoueur?>> {
+        var pairList: MutableList<Pair<Joueur, IdentificationJoueur?>> = mutableListOf()
 
         for (i in 0 until this.server.requeteJoueurs().size) {
             val id = this.server.requeteJoueurs()[i]
             var player = this.server.requeteJoueur(id)
 
-            var matchingPlayer = playerList.find { it.second == player }
+            var matchingPlayer = playerList.find { it.first == player }
 
             if (matchingPlayer != null) {
                 pairList.add(matchingPlayer)
             } else {
-                pairList.add(Pair(null, player))
+                pairList.add(Pair(player, null))
             }
         }
 
@@ -107,12 +107,12 @@ class Client(server: QuiEstCeClient) {
     }
 
 
-    fun getPlayerListJson(): MutableList<Pair<IdentificationJoueur, Joueur>> {
+    fun getPlayerListJson(): MutableList<Pair<Joueur, IdentificationJoueur>> {
 
         checkJsonPresent()
         // Désérialisation ← JSON
         val content = File("data/playerList.json").readText()
-        val list = Json.decodeFromString<MutableList<Pair<IdentificationJoueur, Joueur>>>(content)
+        val list = Json.decodeFromString<MutableList<Pair<Joueur, IdentificationJoueur>>>(content)
 
         return list
     }
