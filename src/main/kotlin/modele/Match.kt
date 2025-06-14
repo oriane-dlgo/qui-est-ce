@@ -20,6 +20,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
     private lateinit var winner: IdentificationJoueur
     private var haveWinner: Boolean
     private var saved: Boolean
+    private var currentPlayer : Int
 
     init {
         this.server = server
@@ -34,6 +35,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
         this.answer = ""
         this.haveWinner = false
         this.saved = false
+        this.currentPlayer = 0
     }
 
     //
@@ -44,6 +46,7 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
 
     fun joinMatch(player: IdentificationJoueur) {
         this.playerList.add(player)
+        this.currentPlayer = 1
         this.gridPlayer.add(server.requeteGrilleJoueur(this.matchId, this.playerList[0].id))
     }
 
@@ -110,6 +113,9 @@ class Match(matchId: Int, playerId: IdentificationJoueur, server : QuiEstCeClien
     fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
     fun getGuess() = this.characterGuess
+    fun getGrid() = this.gridPlayer
+    fun getCurrentPlayer() = this.currentPlayer
+
 
     /*
     fun getBoardByName(player: Int): List<String> {

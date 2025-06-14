@@ -1,41 +1,67 @@
 package vue
 
 import javafx.scene.control.Button
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
+import modele.Match
 
-class GameBoard : BorderPane() {
+class GameBoard(match: Match) : BorderPane() {
     val gridCharactere: GridPane
     val info: VBox
     val photo: Rectangle
-    val btnValid : Button
+    val btnValid: Button
+    var index: Int
 
-    init{
+    init {
         gridCharactere = GridPane()
         this.center = gridCharactere
         gridCharactere.isGridLinesVisible = true
         info = VBox()
         this.right = info
+        this.index = 0
 
-        val total = 24
-        val columns = 6
-        for (i in 0 until total) {
-            val row = i / columns
-            val col = i % columns
 
-            val cell = Rectangle(80.0, 80.0).apply {
-                fill = Color.LIGHTGRAY
-                stroke = Color.BLACK
+        for (row in 0 until 4) {
+            for (col in 0 until 6) {
+
+                val baseUrl = "http://localhost:8080/resources/but1/"
+                val filename = match.getGrid()[match.getCurrentPlayer()][row][col].url
+                val fullUrl = "$baseUrl$filename"
+                val image = Image(fullUrl)
+
+                val imageView = ImageView(image).apply {
+                    fitWidth = 80.0
+                    fitHeight = 80.0
+                    isPreserveRatio = true
+                }
+
+                val stack = StackPane().apply {
+                    children.add(imageView)
+                    style = "-fx-border-color: black; -fx-border-width: 1;"
+                }
+
+                gridCharactere.add(stack, col, row)
+
             }
-
-            gridCharactere.add(cell, col, row)
         }
 
-        photo = Rectangle(50.0, 50.0).apply{
+        /*
+                        val cell = Rectangle(80.0, 80.0).apply {
+                            fill = Color.LIGHTGRAY
+                            stroke = Color.BLACK
+                        }
+         */
+
+        println(match.getGrid()[0][0][0].url)
+
+        photo = Rectangle(50.0, 50.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }

@@ -76,12 +76,6 @@ class Client(server: QuiEstCeClient) {
         return match
 
     }
-
-    fun serverMatchlist(){
-
-
-    }
-
 //
 //
 //
@@ -182,6 +176,7 @@ class Client(server: QuiEstCeClient) {
     //fun getMatchList() = this.matchList
     fun getMatchServerList() = this.matchListServer
     fun getCurrentPlayer() = this.currentPlayer
+    fun getCurrentMatch() = this.currentMatch
 
 
 }

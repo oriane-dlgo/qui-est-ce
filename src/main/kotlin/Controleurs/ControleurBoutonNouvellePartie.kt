@@ -11,13 +11,15 @@ class ControleurBoutonNouvellePartie(val client: Client, val view : MainView): E
 
     override fun handle(event : ActionEvent){
 
-        val gameBoardView = GameBoard()
+        var currentMatch = client.matchCreate()
+
+        val gameBoardView = GameBoard(currentMatch)
         view.setCenterView(gameBoardView)
         // gameBoardView.btnvalid.setOnAction(ControleurBoutonValiderCode(client, view))
 
-        client.matchCreate()
 
-        println("Liste des partie sur le serveur : ${client.getMatchServerList()}")
+
+        println("Liste des partie sur le serveur : ${client.getMatchServerList()+currentMatch.getId()}")
 
     }
 }

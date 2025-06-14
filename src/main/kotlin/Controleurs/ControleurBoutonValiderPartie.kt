@@ -7,10 +7,10 @@ import vue.EnterCode
 import vue.GameBoard
 import vue.MainView
 
-class ControleurBoutonValiderPartie(val modele : Client, val view : MainView) : EventHandler<ActionEvent> {
+class ControleurBoutonValiderPartie(val client : Client, val view : MainView) : EventHandler<ActionEvent> {
 
     override fun handle(event : ActionEvent){
-        val gameView = GameBoard()
+        val gameView = GameBoard(client.getCurrentMatch())
 
         view.setCenterView(gameView)
 
