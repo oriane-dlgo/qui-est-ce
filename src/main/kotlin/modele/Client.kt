@@ -13,14 +13,18 @@ class Client(server: QuiEstCeClient) {
     private var server: QuiEstCeClient
     private var playerList: MutableList<Pair<Joueur,IdentificationJoueur>>
     private var playerListServer: MutableList<Pair<Joueur, IdentificationJoueur?>>
-    private var matchList: MutableList<Int>
+    private lateinit var currentMatch: Match
+    private var matchListServer : List<Int>
     private lateinit var currentPlayer: Pair<Joueur, IdentificationJoueur>
+    var title : String
 
     init {
         this.server = server
         this.playerList = getPlayerListJson()
         this.playerListServer = getPlayerListServer()
-        this.matchList = mutableListOf()
+        //this.matchList = mutableListOf()
+        this.matchListServer = server.requeteListeParties()
+        this.title = "Match n°$this.id"
 
     }
 //
@@ -28,7 +32,6 @@ class Client(server: QuiEstCeClient) {
 //
 //
 // Fonctions principales
-
     fun playerLogin(lastName: String, name: String) {
 
         var lastName = lastName.uppercase()
@@ -60,16 +63,25 @@ class Client(server: QuiEstCeClient) {
 
     }
 
-    fun matchCreate(playerId: IdentificationJoueur, characterList: MutableList<Personnage>): Match {
+    fun matchCreate(): Match {
 
-        val matchId = this.matchList.size + 1
+        val playerIdKey = this.currentPlayer.second
+        val matchId = server.requeteCreationPartie(playerIdKey.id, playerIdKey.cle)
 
-        val match = Match(matchId, playerId, characterList)
-        this.matchList.add(match.getId())
+        val match = Match(matchId,playerIdKey, this.server)
+        this.currentMatch = match
 
+
+        println("\nLa partie n°$matchId vient d'être crée\n")
         return match
 
     }
+
+    fun serverMatchlist(){
+
+
+    }
+
 //
 //
 //
@@ -85,7 +97,6 @@ class Client(server: QuiEstCeClient) {
 
         return
     }
-
 
     fun getPlayerListServer(): MutableList<Pair<Joueur, IdentificationJoueur?>> {
         var pairList: MutableList<Pair<Joueur, IdentificationJoueur?>> = mutableListOf()
@@ -168,7 +179,8 @@ class Client(server: QuiEstCeClient) {
 //
 /// Fonctions de recuperations de données
     fun getPlayerList() = this.playerList
-    fun getMatchList() = this.matchList
+    //fun getMatchList() = this.matchList
+    fun getMatchServerList() = this.matchListServer
     fun getCurrentPlayer() = this.currentPlayer
 
 
