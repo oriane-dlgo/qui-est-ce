@@ -70,13 +70,10 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     // Fonctions principales
 
     fun pickCharacter(row : Int, col : Int){
-
-        println(this.matchId)
-        println(this.playerIdKey)
-        println("${this.matchId}, ${this.playerIdKey.id}, ${this.playerIdKey.cle}, $row, $col")
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
 
+        println("Vous venez de choisir ${this.characterPicked}")
     }
 
     fun getPictureOf(row : Int, col : Int) : Node {
@@ -92,6 +89,7 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
         }
         return imageView
     }
+
     /*
     fun putQuestion(question: String) {
         this.question = question

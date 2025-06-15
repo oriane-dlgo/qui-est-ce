@@ -25,8 +25,12 @@ class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : Even
                 if (i == index) {
 
                     match.pickCharacter(row, col)
-                    println(match.getCharacterPicked())
+                    view.photoContainer.children.clear()
+                    view.photoContainer.children.add(match.getPictureOf(row, col))
                     view.zoneIdPerso.text = ""
+
+                    
+                    view.gridCharactere
 
 
                 }

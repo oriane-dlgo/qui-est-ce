@@ -17,7 +17,7 @@ import modele.Match
 class GameBoard(match: Match) : BorderPane() {
     val gridCharactere: GridPane
     val info: GridPane
-    var photo: Node
+    var photoContainer: StackPane
 
     var index: Int
     val zoneIdPerso : TextField
@@ -44,13 +44,16 @@ class GameBoard(match: Match) : BorderPane() {
             }
         }
 
-        zoneIdPerso = TextField()
-        photo = Rectangle(50.0, 50.0).apply {
+
+        var photo = Rectangle(50.0, 50.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }
+        photoContainer = StackPane(photo)
 
-        info.add(photo, 0, 0)
+        zoneIdPerso = TextField()
+
+        info.add(photoContainer, 0, 0)
         info.add(zoneIdPerso, 0, 1)
 
     }
