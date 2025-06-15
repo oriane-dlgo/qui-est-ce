@@ -139,8 +139,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         val image = Image(fullUrl)
 
         val imageView = ImageView(image).apply {
-            fitWidth = 80.0
-            fitHeight = 80.0
+            fitWidth = 100.0
+            fitHeight = 100.0
             isPreserveRatio = true
         }
         return imageView

@@ -6,17 +6,13 @@ import javafx.animation.Animation
 import javafx.animation.KeyFrame
 import javafx.animation.Timeline
 import javafx.event.EventHandler
+import javafx.geometry.Insets
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.BorderPane
-import javafx.scene.layout.GridPane
-import javafx.scene.layout.HBox
-import javafx.scene.layout.Pane
-import javafx.scene.layout.StackPane
-import javafx.scene.layout.VBox
+import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.util.Duration
@@ -34,9 +30,38 @@ class GameBoard(match: Match) : BorderPane() {
 
     init {
         this.match = match
-        gridCharacter = GridPane()
+        gridCharacter = GridPane().apply {
+            background = Background(
+                BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+        }
+        gridCharacter.maxWidth = Double.MAX_VALUE
+        gridCharacter.maxHeight = Double.MAX_VALUE
         gridCharacter.isGridLinesVisible = true
-        gridCharacter = match.updateGrid(gridCharacter, false)
+        gridCharacter = match.updateGrid(gridCharacter, false).apply {
+            prefWidth = 100.0
+            prefHeight = 100.0
+            background = Background(
+                BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+        }
+        //Contraintes des 6 colonnes, sur les 6 colonnes du grid, on va occuper tout l'espace dispo et comme ça c'est responsive
+        repeat(6) {
+            val col = ColumnConstraints().apply {
+                percentWidth = 100.0 / 6 // divise l'espace en 6
+                hgrow = Priority.ALWAYS
+            }
+            gridCharacter.columnConstraints.add(col)
+        }
+
+        //Contraintes des 4 lignes, idem que contrainte colonne mais avec les lignes
+        repeat(4) {
+            val row = RowConstraints().apply {
+                percentHeight = 100.0 / 4 // divise l'espace en 4
+                vgrow = Priority.ALWAYS
+            }
+            gridCharacter.rowConstraints.add(row)
+        }
         this.center = gridCharacter
 
         info = GridPane()
@@ -45,12 +70,13 @@ class GameBoard(match: Match) : BorderPane() {
 
 
 
-        var photo = Rectangle(50.0, 50.0).apply {
+        var photo = Rectangle(80.0, 80.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }
         photoContainer = StackPane(photo)
-
+        photoContainer.maxWidth = Double.MAX_VALUE
+        photoContainer.maxHeight = Double.MAX_VALUE
         zoneIdPerso = TextField()
 
         this.viewContainer = Pane(WaitingPlayer())
