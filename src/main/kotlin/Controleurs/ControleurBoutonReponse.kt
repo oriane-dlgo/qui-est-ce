@@ -11,12 +11,5 @@ class ControleurBoutonReponse(val match : Match, val gameBoard : GameBoard) : Ev
     override fun handle(event: ActionEvent) {
 
         match.putAnswer(gameBoard.zoneIdPerso.text)
-
-        // Next view
-        //val hideChara = HideCharacter()
-        //gameBoard.setRightView(hideChara)
-
-
-
     }
 }

@@ -13,16 +13,11 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
 
     override fun handle(event: ActionEvent) {
 
-        println("accueil******")
         if(match.getMatchState() == ETAPE.CREEE){
             println("L'adversaire n'est pas encore arrivé")
             // Bouton valider a desactiver
         }
         else {
-            println("else******")
-            val guess = Guess()
-            view.setRightView(guess)
-
             var index = view.zoneIdPerso.text.toInt()
             var i: Int = 0
 
@@ -39,9 +34,6 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
             view.center = match.updateGrid(view.gridCharacter, true)
             view.zoneIdPerso.text = ""
             match.charPicked = 1
-
-            guess.question.setOnAction(ControleurBoutonQuestion(match, view))
-
         }
     }
 }

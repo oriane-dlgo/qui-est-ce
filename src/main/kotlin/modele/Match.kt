@@ -61,7 +61,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
 
 
-        this.roundCounter = 0
+        this.roundCounter = 1
         this.characterPicked = Personnage("", "", "")
         this.question = ""
         this.answer = ""
@@ -78,13 +78,27 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
+    fun nextRound(){
+        this.roundCounter+=1
+    }
     fun printState() {
+
+        println("Serveur : ${server.requeteEtatPartie(this.matchId)}")
         println("Match : ${this.matchState}")
-        println("serveur : ${server.requeteEtatPartie(this.matchId)}")
     }
 
     fun getMatchState(): ETAPE {
         return this.matchState
+    }
+
+    fun initOponentInfo(){
+
+            if (playerNo == 0) {
+                this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
+            } else {
+                this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
+            }
+            this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
     }
 
     fun updateMatchState(): EtatPartie {
@@ -92,16 +106,18 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         val state = server.requeteEtatPartie(this.matchId)
 
         if (state.etape == ETAPE.INITIALISATION && matchState == ETAPE.CREEE) {
-            if (playerNo == 0) {
-                this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
-            } else {
-                this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
-            }
-            this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
             this.matchState = ETAPE.INITIALISATION
         }
+        if (state.etape == ETAPE.ATTENTE_QUESTION && matchState == ETAPE.INITIALISATION) {
+            this.matchState = ETAPE.ATTENTE_QUESTION
+        }
+        if (state.etape == ETAPE.ATTENTE_REPONSE && matchState == ETAPE.ATTENTE_QUESTION) {
+            this.matchState = ETAPE.ATTENTE_QUESTION
+        }
+
         return state
     }
+
 
     fun pickCharacter(row: Int, col: Int) {
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
