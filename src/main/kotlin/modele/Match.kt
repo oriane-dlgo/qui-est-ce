@@ -21,9 +21,12 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private var opponentId: Int
     private lateinit var opponentGrid: List<List<Personnage>>
 
+    private var matchState : ETAPE
+
     private var characterPicked: Personnage
     private var question: String
     private var answer: String
+    var charPicked : Int = -1
 
     // A CHECK
     private lateinit var characterGuess: Personnage
@@ -42,6 +45,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.playerIdKey = playerIdKey
         this.playerNo = playerNo
         this.playerGrid = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
+
+        this.matchState = ETAPE.CREEE
 
 
         if (playerNo == 0) {
@@ -73,20 +78,26 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
-    fun getMatchState() : EtatPartie{
+    fun printState(){
+        println("Match : ${this.matchState}")
+        println("serveur : ${server.requeteEtatPartie(this.matchId)}")
+    }
+    fun getMatchState() : ETAPE{
+        return this.matchState
+    }
+    fun updateMatchState() : EtatPartie{
 
         val state = server.requeteEtatPartie(this.matchId)
 
-        if(state.etape == ETAPE.INITIALISATION){
+        if(state.etape == ETAPE.INITIALISATION && matchState == ETAPE.CREEE){
             if (playerNo == 0) {
                 this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
             } else {
                 this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
             }
             this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+            this.matchState = ETAPE.INITIALISATION
         }
-
-        println(state)
         return state
     }
 

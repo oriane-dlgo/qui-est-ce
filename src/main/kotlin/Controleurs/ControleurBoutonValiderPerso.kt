@@ -14,7 +14,7 @@ class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : Even
 
     override fun handle(event: ActionEvent) {
 
-        if(match.getMatchState().etape == ETAPE.CREEE){
+        if(match.getMatchState() == ETAPE.CREEE){
             println("L'adversaire n'est pas encore arrivé")
             // Bouton valider a desactiver
         }
@@ -29,8 +29,6 @@ class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : Even
                 for (col in 0 until 6) {
                     i++
                     if (i == index) {
-
-                        match.getMatchState()
                         match.pickCharacter(row, col)
                         view.photoContainer.children.clear()
                         view.photoContainer.children.add(match.getPictureOf(row, col, false))
@@ -39,7 +37,7 @@ class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : Even
             }
             view.center = match.updateGrid(view.gridCharacter, true)
             view.zoneIdPerso.text = ""
-            match.getMatchState()
+            match.charPicked = 1
 
         }
     }
