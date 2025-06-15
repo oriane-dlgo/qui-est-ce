@@ -83,6 +83,10 @@ class GameBoard(match: Match) : BorderPane() {
 
 
     fun setRightView(newVue: javafx.scene.Node) {
+        val nodesToRemove = info.children.filter {
+            GridPane.getColumnIndex(it) == 0 && GridPane.getRowIndex(it) == 3
+        }
+        info.children.removeAll(nodesToRemove)
         info.add(newVue, 0, 3)
     }
 

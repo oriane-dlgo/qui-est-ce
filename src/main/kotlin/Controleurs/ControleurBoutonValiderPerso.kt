@@ -3,14 +3,13 @@ package Controleurs
 import info.but1.sae2025.data.ETAPE
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.scene.layout.StackPane
 import modele.Client
 import modele.Match
 import vue.GameBoard
 import vue.Guess
 import vue.MainView
 
-class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : EventHandler<ActionEvent> {
+class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): EventHandler<ActionEvent> {
 
     override fun handle(event: ActionEvent) {
 
@@ -38,6 +37,8 @@ class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : Even
             view.center = match.updateGrid(view.gridCharacter, true)
             view.zoneIdPerso.text = ""
             match.charPicked = 1
+
+            guess.question.setOnAction(ControleurBoutonQuestion(match, view))
 
         }
     }

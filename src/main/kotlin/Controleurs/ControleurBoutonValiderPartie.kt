@@ -26,6 +26,5 @@ class ControleurBoutonValiderPartie(val client : Client, val mainView : MainView
 
         println(client.getMatchState())
 
-
     }
 }

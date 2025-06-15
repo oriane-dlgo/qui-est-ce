@@ -22,7 +22,6 @@ class ControleurBoutonNouvellePartie(val client: Client, val view : MainView): E
 
         // gameBoardView.btnvalid.setOnAction(ControleurBoutonValiderCode(client, view))
 
-
         println("Liste des partie sur le serveur : ${client.getMatchServerList()+currentMatch.getId()}")
         println("Etat de la partie : ${client.getMatchState()}")
 
