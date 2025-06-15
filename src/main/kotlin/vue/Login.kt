@@ -24,6 +24,7 @@ class Login : VBox() {
 
         dia1Question = Label("Entrer votre nom et prénom :")
 
+        // Met en place la couleur, la police d'écriture et la taille
         dia1Question.style = "-fx-text-fill: white"
         dia1Question.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
 
@@ -37,14 +38,14 @@ class Login : VBox() {
         //}
 
         btndia1 = Button("Valider")
-        btndia1.style = "-fx-background-color: #61888c; -fx-text-fill: white"
+        btndia1.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
         btndia1.setOnMouseEntered {
-            btndia1.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;"
+            btndia1.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
         }
         btndia1.setOnMouseExited {
-            btndia1.style = "-fx-background-color: #61888c; -fx-text-fill: white;"
+            btndia1.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
         }
-        btndia1.font = Font.font("Courier New", FontWeight.BOLD, 20.0)
+        btndia1.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
 
 
         dialog11 = HBox(10.0, nom, prenom)
