@@ -1,28 +1,33 @@
 package modele
 
 import info.but1.sae2025.QuiEstCeClient
+import info.but1.sae2025.data.ETAPE
+import info.but1.sae2025.data.EtatPartie
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Personnage
 import javafx.scene.Node
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.StackPane
 
-class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo : Int) {
+class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo: Int) {
 
-    private val server : QuiEstCeClient
+    private val server: QuiEstCeClient
     private val matchId: Int
-    private var playerIdKey : IdentificationJoueur
-    private var playerNo : Int
-    private var playerGrid : List<List<Personnage>>
-    private var opponentId : Int
-    private lateinit var opponentGrid : List<List<Personnage>>
+    private var playerIdKey: IdentificationJoueur
+    private var playerNo: Int
+    private var playerGrid: List<List<Personnage>>
+    private var opponentId: Int
+    private lateinit var opponentGrid: List<List<Personnage>>
 
     private var characterPicked: Personnage
     private var question: String
     private var answer: String
 
     // A CHECK
-    private lateinit var characterGuess : Personnage
+    private lateinit var characterGuess: Personnage
+
     //private var boardList: List<MutableList<Personnage>>
     private var roundCounter: Int
 
@@ -39,14 +44,13 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
         this.playerGrid = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
 
 
-        if (playerNo == 0){
+        if (playerNo == 0) {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
-        }
-        else{
+        } else {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
         }
 
-        if (this.opponentId != -1){
+        if (this.opponentId != -1) {
             this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
         }
 
@@ -69,16 +73,39 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     //
     // Fonctions principales
 
-    fun pickCharacter(row : Int, col : Int){
+    fun getMatchState() : EtatPartie{
+
+        val state = server.requeteEtatPartie(this.matchId)
+
+        if(state.etape == ETAPE.INITIALISATION){
+            if (playerNo == 0) {
+                this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
+            } else {
+                this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
+            }
+            this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+        }
+
+        println(state)
+        return state
+    }
+
+    fun pickCharacter(row: Int, col: Int) {
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
 
         println("Vous venez de choisir ${this.characterPicked}")
     }
 
-    fun getPictureOf(row : Int, col : Int) : Node {
+    fun getPictureOf(row: Int, col: Int, opponent: Boolean = true): Node {
         val baseUrl = "http://localhost:8080/resources/but1/"
-        val filename = this.getGrid()[row][col].url
+
+        val filename = if (opponent) {
+            this.getOpponentGrid()[row][col].url
+        } else {
+            this.getGrid()[row][col].url
+        }
+
         val fullUrl = "$baseUrl$filename"
         val image = Image(fullUrl)
 
@@ -88,6 +115,32 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
             isPreserveRatio = true
         }
         return imageView
+    }
+
+
+
+
+    fun updateGrid(gridCharacter: GridPane, opponent: Boolean = false): GridPane {
+
+        var gridCharacter = GridPane()
+        gridCharacter.isGridLinesVisible = true
+
+
+
+        for (row in 0 until 4) {
+            for (col in 0 until 6) {
+
+                var picture = this.getPictureOf(row, col, opponent)
+                val stack = StackPane().apply {
+                    children.add(picture)
+                    style = "-fx-border-color: black; -fx-border-width: 1;"
+                }
+
+                gridCharacter.add(stack, col, row)
+
+            }
+        }
+        return gridCharacter
     }
 
     /*
@@ -135,16 +188,20 @@ class Match(server : QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJo
     //
     // Fonctions de recuperations de variables
     fun getId() = this.matchId
+
     //fun getPlayerList() = this.playerList
-    fun getCharacterPicked()= this.characterPicked
+    fun getCharacterPicked() = this.characterPicked
+
     //fun getBoardList() = this.boardList
     fun getQuestion() = this.question
     fun getAnswer() = this.answer
+
     //fun getState() = this.saved
     //fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
     fun getGuess() = this.characterGuess
     fun getGrid() = this.playerGrid
+    fun getOpponentGrid() = this.opponentGrid
     fun getCurrentPlayer() = this.playerNo
 
 

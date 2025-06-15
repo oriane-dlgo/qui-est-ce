@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle
 import modele.Match
 
 class GameBoard(match: Match) : BorderPane() {
-    val gridCharactere: GridPane
+    var gridCharacter: GridPane
     val info: GridPane
     var photoContainer: StackPane
 
@@ -23,26 +23,15 @@ class GameBoard(match: Match) : BorderPane() {
     val zoneIdPerso : TextField
 
     init {
-        gridCharactere = GridPane()
-        this.center = gridCharactere
-        gridCharactere.isGridLinesVisible = true
+        gridCharacter = GridPane()
+        gridCharacter.isGridLinesVisible = true
+        gridCharacter = match.updateGrid(gridCharacter, false)
+        this.center = gridCharacter
+
         info = GridPane()
         this.right = info
         this.index = 0
 
-        for (row in 0 until 4) {
-            for (col in 0 until 6) {
-
-                var picture = match.getPictureOf(row ,col)
-                val stack = StackPane().apply {
-                    children.add(picture)
-                    style = "-fx-border-color: black; -fx-border-width: 1;"
-                }
-
-                gridCharactere.add(stack, col, row)
-
-            }
-        }
 
 
         var photo = Rectangle(50.0, 50.0).apply {

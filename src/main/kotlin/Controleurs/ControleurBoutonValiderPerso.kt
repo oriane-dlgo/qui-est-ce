@@ -1,5 +1,6 @@
 package Controleurs
 
+import info.but1.sae2025.data.ETAPE
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.layout.StackPane
@@ -12,29 +13,34 @@ import vue.MainView
 class ControleurBoutonValiderPerso(val match: Match, val view: GameBoard) : EventHandler<ActionEvent> {
 
     override fun handle(event: ActionEvent) {
-        val guess = Guess()
-        view.setRightView(guess)
 
-        var index = view.zoneIdPerso.text.toInt()
-        var i: Int = 0
+        if(match.getMatchState().etape == ETAPE.CREEE){
+            println("L'adversaire n'est pas encore arrivé")
+            // Bouton valider a desactiver
+        }
+        else {
+            val guess = Guess()
+            view.setRightView(guess)
 
-        println("index = ${view.zoneIdPerso.text.toInt()}")
-        for (row in 0 until 4) {
-            for (col in 0 until 6) {
-                i++
-                if (i == index) {
+            var index = view.zoneIdPerso.text.toInt()
+            var i: Int = 0
 
-                    match.pickCharacter(row, col)
-                    view.photoContainer.children.clear()
-                    view.photoContainer.children.add(match.getPictureOf(row, col))
-                    view.zoneIdPerso.text = ""
+            for (row in 0 until 4) {
+                for (col in 0 until 6) {
+                    i++
+                    if (i == index) {
 
-                    
-                    view.gridCharactere
-
-
+                        match.getMatchState()
+                        match.pickCharacter(row, col)
+                        view.photoContainer.children.clear()
+                        view.photoContainer.children.add(match.getPictureOf(row, col, false))
+                    }
                 }
             }
+            view.center = match.updateGrid(view.gridCharacter, true)
+            view.zoneIdPerso.text = ""
+            match.getMatchState()
+
         }
     }
 }

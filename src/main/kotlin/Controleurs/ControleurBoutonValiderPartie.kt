@@ -24,6 +24,8 @@ class ControleurBoutonValiderPartie(val client : Client, val mainView : MainView
         // Controleur de la prochaine vue
         pickView.btnValid.setOnAction(ControleurBoutonValiderPerso(client.getCurrentMatch(), gameView))
 
+        println(client.getMatchState())
+
 
     }
 }
