@@ -20,7 +20,7 @@ class ControleurBoutonHide(val match: Match, val gameBoard: GameBoard) : EventHa
 
         //match.hideCharacter(list)
 
-        gameBoard.center = match.updateGrid( true , list)
+        gameBoard.center = match.updateGrid( gameBoard.gridCharacter, true , list)
 
 
     }

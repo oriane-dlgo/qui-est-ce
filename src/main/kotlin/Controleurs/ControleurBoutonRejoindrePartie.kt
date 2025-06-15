@@ -16,13 +16,14 @@ class ControleurBoutonRejoindrePartie(val modele : Client, val view : MainView) 
         val matchListView = MatchList()
         view.setCenterView(matchListView)
 
-        matchListView.validateBtn.setOnAction(ControleurBoutonValiderPartie(modele, view, matchListView))
+        matchListView.joinBtn.setOnAction(ControleurBoutonValiderPartie(modele, view, matchListView))
 
         //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
         //le withIndex va permettre d'avoir l'index et le contenu à l'index indiqué
         val matchList = modele.getMatchServerList()
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
+            matchListView.styleGridPane(label)
             matchListView.containList.add(label, 0, i)
         }
     }

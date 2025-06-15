@@ -3,6 +3,7 @@ package Controleurs
 import info.but1.sae2025.data.ETAPE
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
+import javafx.scene.layout.GridPane
 import modele.Client
 import modele.Match
 import vue.GameBoard
@@ -18,6 +19,9 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
             // Bouton valider a desactiver
         }
         else {
+
+            println("**** \n controleur valider perso \n****")
+
             var index = view.zoneIdPerso.text.toInt()
             var i: Int = 0
 
@@ -31,9 +35,13 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
                     }
                 }
             }
-            view.center = match.updateGrid()
+            //val newGrid = GridPane()
+            //view.gridCharacter = match.updateGrid(newGrid, true)
+            //view.center = view.gridCharacter
+            view.center = match.updateGrid(view.gridCharacter, true)
             view.zoneIdPerso.text = ""
             match.charPicked = 1
+            println("////////*** \n\n ${match.getOpponentGrid()}")
         }
     }
 }

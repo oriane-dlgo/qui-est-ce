@@ -32,6 +32,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                 print("Joueur n° ${match.getPlayerNo()}")
 
                 if (match.getMatchState() == ETAPE.CREEE) {
+
                     // ***** INIT *****
                     // STATE : La partie vient de se lancer et le joueur 1 est seul
                     // DO : Affiche la vue d'attente d'adversaire
@@ -43,6 +44,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                     // STATE : Le deuxieme joueur vient de rejoindre
                     // DO : Affiche la vue pour la selection de perso
                     match.initOponentInfo()
+
                     keyPass.add(1)
                     val pickView = PickCharacter()
                     gameBoard.switchChildView(pickView)

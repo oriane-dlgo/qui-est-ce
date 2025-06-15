@@ -56,7 +56,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.listHideChar = mutableListOf()
 
 
-        if (playerNo == 0) {
+        if (playerNo == 1) {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
         } else {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
@@ -64,6 +64,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
         if (this.opponentId != -1) {
             this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+            println("LLLAAAA ON DEMANDE LA GRILLE DE LADVERSAIRE LA PREMIERE FOIS")
         }
 
 
@@ -101,7 +102,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
     fun initOponentInfo() {
 
-        if (playerNo == 0) {
+        if (playerNo == 1) {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
         } else {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
@@ -151,8 +152,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         val image = Image(fullUrl)
 
         val imageView = ImageView(image).apply {
-            fitWidth = 80.0
-            fitHeight = 80.0
+            fitWidth = 100.0
+            fitHeight = 100.0
             isPreserveRatio = true
         }
         return imageView
@@ -179,8 +180,10 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
     ////////////////////// ICI FUN UPDATE GRID
 
-    fun updateGrid(opponent: Boolean = true, listHideChar: List<Int> = listOf()): GridPane {
-        val gridCharacter = GridPane()
+    fun updateGrid(gridCharacter : GridPane , opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
+
+        gridCharacter.children.clear()
+        println("**** \n La liste est celle de l'adversaire = $opponent \n****")
         gridCharacter.isGridLinesVisible = true
 
         var index = 1  // Pour associer chaque case à un numéro (1 à 24)
@@ -189,8 +192,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
             for (col in 0 until 6) {
                 val stack = StackPane()
 
-                val picture =
-                    getPictureOf(row, col, opponent)
+                val picture = getPictureOf(row, col, opponent)
 
                 if (index in listHideChar){
                     picture.opacity = 0.2
