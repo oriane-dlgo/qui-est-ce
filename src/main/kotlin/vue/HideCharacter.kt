@@ -4,7 +4,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 
-class GetResponse : VBox() {
+class HideCharacter : VBox() {
 
     val labelResponse : Label
     val btnHide : Button

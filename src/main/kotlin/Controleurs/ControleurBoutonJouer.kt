@@ -6,7 +6,7 @@ import modele.Client
 import vue.MainView
 import vue.Login
 
-class ControleurBoutonJouer(val modele: Client, val view: MainView): EventHandler<ActionEvent> {
+class ControleurBoutonJouer(val modele: Client, val view: MainView) : EventHandler<ActionEvent> {
 
     override fun handle(event: ActionEvent) {
         val loginView = Login()

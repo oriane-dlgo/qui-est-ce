@@ -12,17 +12,13 @@ class Answer(question : String) : VBox (){
     val btnOui : Button
     val btnNon : Button
     val contain : HBox
-    val answer : Button // A VIRER ANSWER
 
     init{
         this.question = Label(question)
-        answer = Button("[DEV] Answer") // A VIRER ANSWER
         btnOui = Button("Oui")
         btnNon = Button("Non")
         contain = HBox()
-        contain.children.addAll(btnOui, btnNon, answer) // A VIRER ANSWER
+        contain.children.addAll(btnOui, btnNon)
         this.children.addAll(this.question, contain)
     }
-
-
 }

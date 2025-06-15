@@ -28,6 +28,7 @@ class GameBoard(match: Match) : BorderPane() {
     var photoContainer: StackPane
     var viewContainer : Pane
     val match : Match
+    val charSelOnGrid : MutableList<Int>
 
     var index: Int
     val zoneIdPerso : TextField
@@ -36,8 +37,10 @@ class GameBoard(match: Match) : BorderPane() {
         this.match = match
         gridCharacter = GridPane()
         gridCharacter.isGridLinesVisible = true
-        gridCharacter = match.updateGrid(gridCharacter, false)
+        gridCharacter = match.updateGrid(false)
+
         this.center = gridCharacter
+        this.charSelOnGrid = mutableListOf()
 
         info = GridPane()
         this.right = info

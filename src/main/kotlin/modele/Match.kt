@@ -10,6 +10,8 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
+import javafx.scene.paint.Color
+import javafx.scene.shape.Rectangle
 
 class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo: Int) {
 
@@ -20,6 +22,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private var playerGrid: List<List<Personnage>>
     private var opponentId: Int
     private lateinit var opponentGrid: List<List<Personnage>>
+    private var listSelChar: MutableList<Int>
+    private var listHideChar: MutableList<Int>
 
     private var matchState: ETAPE
 
@@ -47,6 +51,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.playerGrid = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
 
         this.matchState = ETAPE.CREEE
+
+        this.listSelChar = mutableListOf()
+        this.listHideChar = mutableListOf()
 
 
         if (playerNo == 0) {
@@ -78,9 +85,10 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
-    fun nextRound(){
-        this.roundCounter+=1
+    fun nextRound() {
+        this.roundCounter += 1
     }
+
     fun printState() {
 
         println("Serveur : ${server.requeteEtatPartie(this.matchId)}")
@@ -91,14 +99,14 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return this.matchState
     }
 
-    fun initOponentInfo(){
+    fun initOponentInfo() {
 
-            if (playerNo == 0) {
-                this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
-            } else {
-                this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
-            }
-            this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
+        if (playerNo == 0) {
+            this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
+        } else {
+            this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
+        }
+        this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
     }
 
     fun updateMatchState(): EtatPartie {
@@ -112,8 +120,12 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
             this.matchState = ETAPE.ATTENTE_QUESTION
         }
         if (state.etape == ETAPE.ATTENTE_REPONSE && matchState == ETAPE.ATTENTE_QUESTION) {
-            this.matchState = ETAPE.ATTENTE_QUESTION
+            this.matchState = ETAPE.ATTENTE_REPONSE
         }
+        if (state.etape == ETAPE.ATTENTE_REFLEXION && matchState == ETAPE.ATTENTE_REPONSE) {
+            this.matchState = ETAPE.ATTENTE_REFLEXION
+        }
+
 
         return state
     }
@@ -147,29 +159,202 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     }
 
 
-    fun updateGrid(gridCharacter: GridPane, opponent: Boolean = false): GridPane {
 
-        var gridCharacter = GridPane()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////// ICI FUN UPDATE GRID
+
+    fun updateGrid(opponent: Boolean = true, listHideChar: List<Int> = listOf()): GridPane {
+        val gridCharacter = GridPane()
         gridCharacter.isGridLinesVisible = true
 
-
+        var index = 1  // Pour associer chaque case à un numéro (1 à 24)
 
         for (row in 0 until 4) {
             for (col in 0 until 6) {
+                val stack = StackPane()
 
-                var picture = this.getPictureOf(row, col, opponent)
-                val stack = StackPane().apply {
-                    children.add(picture)
-                    style = "-fx-border-color: black; -fx-border-width: 1;"
+                val picture =
+                    getPictureOf(row, col, opponent)
+
+                if (index in listHideChar){
+                    picture.opacity = 0.2
                 }
 
+                stack.children.add(picture)
+                stack.style = "-fx-border-color: black; -fx-border-width: 1;"
                 gridCharacter.add(stack, col, row)
 
+                index++
             }
         }
+
         return gridCharacter
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    fun updateGrid(): GridPane {
+        val state = this.matchState
+        val listSelChar = this.listSelChar
+        val listHideChar = this.listHideChar
+        val gridCharacter = GridPane().apply { isGridLinesVisible = true }
+
+        println("*******\n liste selection : $listSelChar \n liste hidden : $listHideChar\n STATE : $state \n*********")
+
+
+        var index = 1
+
+        for (row in 0 until 4) {
+            for (col in 0 until 6) {
+                val stack = StackPane()
+                stack.userData = index
+
+                val picture = if (state == ETAPE.INITIALISATION || state == ETAPE.CREEE) {
+                    getPictureOf(row, col, false)
+                } else {
+                    getPictureOf(row, col)
+                }
+                // Appliquer opacité si caché
+                if (index in listHideChar) {
+                    picture.opacity = 0.3
+                }
+
+                stack.children.add(picture)
+
+                // Définir comportement selon l'état
+            if (state == ETAPE.INITIALISATION){
+                        /*
+                                                stack.setOnMouseClicked {
+
+                                                    listSelChar.clear()
+                                                    listSelChar.add(index)
+
+                                                    if (listSelChar.contains(index)) {
+                                                        listSelChar.remove(index)
+                                                        stack.style = "-fx-border-color: black; -fx-border-width: 1;"
+                                                    } else {
+                                                        listSelChar.add(index)
+                                                        stack.style = "-fx-border-color: red; -fx-border-width: 3;"
+                                                    }
+                                                }*/
+                        stack.setOnMouseClicked {
+                            // Si déjà sélectionné, on désélectionne tout
+                            if (listSelChar.contains(index)) {
+                                listSelChar.clear()
+                                stack.style = "-fx-border-color: black; -fx-border-width: 1;"
+                            } else {
+                                // Sinon, on sélectionne uniquement cette case
+                                listSelChar.clear()
+                                listSelChar.add(index)
+
+                                // On met à jour toutes les cases
+                                gridCharacter.children.filterIsInstance<StackPane>().forEach { s ->
+                                    val id = s.userData as Int
+                                    s.style = if (id == index)
+                                        "-fx-border-color: red; -fx-border-width: 3;"
+                                    else
+                                        "-fx-border-color: black; -fx-border-width: 1;"
+                                }
+                            }
+
+
+                            // Style initial selon sélection
+                            stack.style = if (listSelChar.contains(index)) {
+                                "-fx-border-color: red; -fx-border-width: 3;"
+                            } else {
+                                "-fx-border-color: black; -fx-border-width: 1;"
+                            }
+
+                            gridCharacter.add(stack, col, row)
+                            index++
+                        }
+
+                    }
+
+
+                    ETAPE.ATTENTE_REFLEXION -> {
+                        stack.setOnMouseClicked {
+                            if (listSelChar.contains(index)) {
+                                listSelChar.remove(index)
+                                stack.style = "-fx-border-color: black; -fx-border-width: 1;"
+                            } else {
+                                listSelChar.add(index)
+                                stack.style = "-fx-border-color: red; -fx-border-width: 3;"
+                            }
+                        }
+                    }
+
+                    else -> {
+                        // Pas d'action : clics désactivés
+                    }
+                }
+
+                // Style par défaut (selon si sélectionné ou non)
+                stack.style = if (index in listSelChar)
+                    "-fx-border-color: red; -fx-border-width: 3;"
+                else
+                    "-fx-border-color: black; -fx-border-width: 1;"
+
+                gridCharacter.add(stack, col, row)
+                index++
+            }
+        }
+
+        return gridCharacter
+    }
+*/
 
     fun putQuestion(question: String) {
         server.requetePoserQuestion(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, question)
@@ -180,42 +365,37 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         server.requeteDonnerReponse(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, answer)
     }
 
+
     /*
-    fun removeCharacter(player: Int, characterList: MutableList<Int>) {
-        for (i in characterList) {
-            this.boardList[player][i] = fakeCharacter
-        }
-    }
+          fun makeGuess(player: Int , characterIndex: Int) : Personnage{
+              var character = this.boardList[player][characterIndex]
+              this.characterGuess = character
+              this.question = "GUESS"
+              return character
+          }
 
-    fun makeGuess(player: Int , characterIndex: Int) : Personnage{
-        var character = this.boardList[player][characterIndex]
-        this.characterGuess = character
-        this.question = "GUESS"
-        return character
-    }
+          fun checkGuess(player: Int) : Boolean{
+              return this.characterGuess == this.characterPicked[player]
+          }
 
-    fun checkGuess(player: Int) : Boolean{
-        return this.characterGuess == this.characterPicked[player]
-    }
+          fun nextRound() {
+              this.question = ""
+              this.answer = ""
+              this.roundCounter += 1
+          }
 
-    fun nextRound() {
-        this.question = ""
-        this.answer = ""
-        this.roundCounter += 1
-    }
-
-    fun endOfMatch(player : Int) {
-        this.winner = this.playersList[player]
-        this.question = ""
-        this.answer = ""
-        this.saved = true
-    }
-     */
-    //
-    //
-    //
-    //
-    // Fonctions de recuperations de variables
+          fun endOfMatch(player : Int) {
+              this.winner = this.playersList[player]
+              this.question = ""
+              this.answer = ""
+              this.saved = true
+          }
+           */
+//
+//
+//
+//
+// Fonctions de recuperations de variables
     fun getId() = this.matchId
 
     //fun getPlayerList() = this.playerList
@@ -226,7 +406,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getAnswer() = this.answer
 
     //fun getState() = this.saved
-    //fun getWinner() = this.haveWinner
+//fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
     fun getGuess() = this.characterGuess
     fun getGrid() = this.playerGrid
@@ -249,9 +429,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return info
     }
      */
-    // ETC
-    // ETC
-    // ETC
+// ETC
+// ETC
+// ETC
 
 
 }

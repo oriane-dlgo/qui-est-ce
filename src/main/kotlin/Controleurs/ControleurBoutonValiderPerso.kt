@@ -31,7 +31,7 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
                     }
                 }
             }
-            view.center = match.updateGrid(view.gridCharacter, true)
+            view.center = match.updateGrid()
             view.zoneIdPerso.text = ""
             match.charPicked = 1
         }
