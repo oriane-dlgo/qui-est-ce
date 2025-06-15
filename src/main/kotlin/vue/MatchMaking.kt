@@ -40,7 +40,7 @@ class MatchMaking : VBox() {
 
         btnBox = VBox(30.0, btnNew, btnJoin)
         btnBox.alignment = Pos.CENTER
-        VBox.setMargin (btnBox, Insets(100.0))  // Pousse la VBox des boutons vers le bas (de 100 px) 
+        VBox.setMargin (btnBox, Insets(100.0))  // Pousse la VBox des boutons vers le bas (de 100 px)
         this.children.add(btnBox)
 
 
