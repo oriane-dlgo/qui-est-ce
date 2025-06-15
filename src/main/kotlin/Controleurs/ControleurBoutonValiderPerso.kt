@@ -13,11 +13,13 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
 
     override fun handle(event: ActionEvent) {
 
+        println("accueil******")
         if(match.getMatchState() == ETAPE.CREEE){
             println("L'adversaire n'est pas encore arrivé")
             // Bouton valider a desactiver
         }
         else {
+            println("else******")
             val guess = Guess()
             view.setRightView(guess)
 

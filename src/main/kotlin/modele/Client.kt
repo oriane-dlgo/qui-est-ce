@@ -76,12 +76,13 @@ class Client(server: QuiEstCeClient) {
         return match
 
     }
-    fun matchJoin(matchId : Int) {
+    fun matchJoin(matchId : Int) : Match{
         val playerIdKey = this.currentPlayer.second
         server.requeteRejoindrePartie(matchId, playerIdKey.id, playerIdKey.cle)
 
         val match = Match(server, matchId, playerIdKey, 1)
         this.currentMatch = match
+        return match
     }
 //
 //

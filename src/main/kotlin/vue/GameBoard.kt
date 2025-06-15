@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
@@ -24,6 +25,7 @@ class GameBoard(match: Match) : BorderPane() {
     var gridCharacter: GridPane
     val info: GridPane
     var photoContainer: StackPane
+    var viewContainer : Pane
     val match : Match
 
     var index: Int
@@ -50,31 +52,11 @@ class GameBoard(match: Match) : BorderPane() {
 
         zoneIdPerso = TextField()
 
+        this.viewContainer = Pane(WaitingPlayer())
+
         info.add(photoContainer, 0, 0)
         info.add(zoneIdPerso, 0, 1)
-
-        val timeline = Timeline(
-            KeyFrame(Duration.seconds(2.0), EventHandler {
-                match.updateMatchState()
-                match.printState()
-
-                if(match.getMatchState() == ETAPE.CREEE){
-                    println("Affiche rien")
-                    // Affiche rien
-                }
-                if(match.getMatchState() == ETAPE.INITIALISATION && match.charPicked ==-1){
-                    println("Affiche bouton valider")
-                    // Affiche bouton validé ___ Donc affiche la vue valider perso
-                }
-                if(match.getMatchState() == ETAPE.INITIALISATION && match.charPicked ==1){
-                    println("Affiche attente autre joueur")
-                    // Affiche attente autre joeur
-                }
-            })
-        )
-        timeline.cycleCount = Animation.INDEFINITE
-        timeline.play()
-
+        info.add(viewContainer, 0, 2)
 
     }
 
@@ -88,6 +70,10 @@ class GameBoard(match: Match) : BorderPane() {
         }
         info.children.removeAll(nodesToRemove)
         info.add(newVue, 0, 3)
+    }
+
+    fun switchChildView(view : Pane){
+        this.viewContainer.children.setAll(view)
     }
 
 }

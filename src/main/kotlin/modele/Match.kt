@@ -216,6 +216,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getGrid() = this.playerGrid
     fun getOpponentGrid() = this.opponentGrid
     fun getCurrentPlayer() = this.playerNo
+    fun getPlayerNo() = this.playerNo
 
 
     /*
