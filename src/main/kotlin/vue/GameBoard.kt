@@ -58,14 +58,9 @@ class GameBoard(match: Match) : BorderPane() {
         info.add(photoContainer, 0, 0)
         info.add(zoneIdPerso, 0, 1)
         info.add(viewContainer, 0, 2)
-
     }
 
-
-
-
-
-    fun setRightView(newVue: javafx.scene.Node) {
+    fun setRightView(newVue: Node) {
         val nodesToRemove = info.children.filter {
             GridPane.getColumnIndex(it) == 0 && GridPane.getRowIndex(it) == 3
         }

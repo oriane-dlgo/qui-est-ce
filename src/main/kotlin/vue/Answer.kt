@@ -1,14 +1,27 @@
 package vue
 
 import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import modele.Match
 
-class Answer : VBox() {
-    val answer : Button
+class Answer(match: Match) : VBox (){
+
+    val match : Match
+    val question : Label
+    val btnOui : Button
+    val btnNon : Button
+    val contain : HBox
 
     init{
-        answer = Button("Repondre")
-        this.children.addAll(answer)
+        this.match = match
+        question = Label(match.getQuestion())
+        btnOui = Button("Oui")
+        btnNon = Button("Non")
+        contain = HBox()
+        contain.children.addAll(btnOui, btnNon)
+        this.children.addAll(question, contain)
     }
 
 
