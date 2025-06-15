@@ -1,5 +1,6 @@
 package vue
 
+import Controleurs.ControleurBoutonValiderPerso
 import info.but1.sae2025.data.ETAPE
 import javafx.animation.Animation
 import javafx.animation.KeyFrame
