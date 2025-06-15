@@ -13,22 +13,16 @@ class ControleurBoutonValiderPartie(val client : Client, val mainView : MainView
 
     override fun handle(event : ActionEvent){
 
+
         // Rejoin un match
         var match = client.matchJoin(matchListView.champID.toInt())
 
-        //Switch vue
+        // Switch vue
         val gameBoardView = GameBoard(client.getCurrentMatch())
-        val pickView = PickCharacter()
         mainView.setCenterView(gameBoardView)
-        gameBoardView.setRightView(pickView)
 
         // Launch GameClock
         matchListView.joinBtn.setOnAction(GameClock(match, gameBoardView))
-
-        // Controleur de la prochaine vue
-        pickView.btnValid.setOnAction(ControleurBoutonValiderPerso(client.getCurrentMatch(), gameBoardView))
-
-        println(client.getMatchState())
 
     }
 }

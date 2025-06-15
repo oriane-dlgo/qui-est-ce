@@ -6,25 +6,23 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import modele.Match
 
-class Answer(match: Match) : VBox (){
+class Answer(question : String) : VBox (){
 
-    val match : Match
-    val question : Label
+    var question : Label
     val btnOui : Button
     val btnNon : Button
     val contain : HBox
+    val answer : Button // A VIRER ANSWER
 
     init{
-        this.match = match
-        question = Label(match.getQuestion())
+        this.question = Label(question)
+        answer = Button("[DEV] Answer") // A VIRER ANSWER
         btnOui = Button("Oui")
         btnNon = Button("Non")
         contain = HBox()
-        contain.children.addAll(btnOui, btnNon)
-        this.children.addAll(question, contain)
+        contain.children.addAll(btnOui, btnNon, answer) // A VIRER ANSWER
+        this.children.addAll(this.question, contain)
     }
-
-
 
 
 }

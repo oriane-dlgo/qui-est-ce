@@ -13,20 +13,14 @@ class ControleurBoutonNouvellePartie(val client: Client, val view : MainView, va
 
     override fun handle(event : ActionEvent){
 
+        // Create match
         var match = client.matchCreate()
 
+        // Switch view
         val gameBoardView = GameBoard(match)
         view.setCenterView(gameBoardView)
 
         // Launch GameClock
         matchMakingView.btnNew.setOnAction(GameClock(match, gameBoardView))
-
-        //pickView.btnValid.setOnAction(ControleurBoutonValiderPerso(currentMatch, gameBoardView))
-
-        // gameBoardView.btnvalid.setOnAction(ControleurBoutonValiderCode(client, view))
-
-        println("Liste des partie sur le serveur : ${client.getMatchServerList()+match.getId()}")
-        println("Etat de la partie : ${client.getMatchState()}")
-
     }
 }
