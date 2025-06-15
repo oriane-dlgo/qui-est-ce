@@ -6,13 +6,10 @@ import javafx.animation.KeyFrame
 import javafx.animation.Timeline
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.scene.layout.Pane
 import javafx.util.Duration
 import modele.Match
 import vue.GameBoard
 import vue.Guess
-import vue.HideCharacter
-import vue.MainView
 import vue.PickCharacter
 import vue.WaitingPlayer
 

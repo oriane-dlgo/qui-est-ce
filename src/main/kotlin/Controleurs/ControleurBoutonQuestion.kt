@@ -4,8 +4,7 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import modele.Match
 import vue.GameBoard
-import vue.HideCharacter
-import vue.MainView
+import vue.GetResponse
 
 class ControleurBoutonQuestion(val match : Match, val gameBoard : GameBoard) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
@@ -13,7 +12,7 @@ class ControleurBoutonQuestion(val match : Match, val gameBoard : GameBoard) : E
         match.putQuestion(gameBoard.zoneIdPerso.text)
 
         // Next view
-        val hideChara = HideCharacter()
+        val hideChara = GetResponse()
         gameBoard.setRightView(hideChara)
 
 
