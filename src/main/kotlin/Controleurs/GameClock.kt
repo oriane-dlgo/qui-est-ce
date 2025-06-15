@@ -83,7 +83,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         // DO : Affiche la vue Answer et WaitingPlayer
                         keyPass.add(3)
                         if (match.getPlayerNo() == 2) {
-                            val answer = Answer()
+                            val answer = Answer(match.getQuestion())
                             gameBoard.switchChildView(answer)
                             answer.answer.onAction = ControleurBoutonQuestion(match, gameBoard)
                         } else {
