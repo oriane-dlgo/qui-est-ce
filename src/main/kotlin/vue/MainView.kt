@@ -9,7 +9,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
-import javax.swing.border.Border
+
 
 
 class MainView : BorderPane(){
