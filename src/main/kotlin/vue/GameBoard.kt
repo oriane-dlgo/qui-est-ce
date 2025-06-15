@@ -30,11 +30,7 @@ class GameBoard(match: Match) : BorderPane() {
 
     init {
         this.match = match
-        gridCharacter = GridPane().apply {
-            background = Background(
-                BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-        }
+        gridCharacter = GridPane()
         gridCharacter.maxWidth = Double.MAX_VALUE
         gridCharacter.maxHeight = Double.MAX_VALUE
         gridCharacter.isGridLinesVisible = true
