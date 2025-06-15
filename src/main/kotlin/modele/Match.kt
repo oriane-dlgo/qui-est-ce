@@ -21,12 +21,12 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private var opponentId: Int
     private lateinit var opponentGrid: List<List<Personnage>>
 
-    private var matchState : ETAPE
+    private var matchState: ETAPE
 
     private var characterPicked: Personnage
     private var question: String
     private var answer: String
-    var charPicked : Int = -1
+    var charPicked: Int = -1
 
     // A CHECK
     private lateinit var characterGuess: Personnage
@@ -78,18 +78,20 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
-    fun printState(){
+    fun printState() {
         println("Match : ${this.matchState}")
         println("serveur : ${server.requeteEtatPartie(this.matchId)}")
     }
-    fun getMatchState() : ETAPE{
+
+    fun getMatchState(): ETAPE {
         return this.matchState
     }
-    fun updateMatchState() : EtatPartie{
+
+    fun updateMatchState(): EtatPartie {
 
         val state = server.requeteEtatPartie(this.matchId)
 
-        if(state.etape == ETAPE.INITIALISATION && matchState == ETAPE.CREEE){
+        if (state.etape == ETAPE.INITIALISATION && matchState == ETAPE.CREEE) {
             if (playerNo == 0) {
                 this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
             } else {
@@ -129,8 +131,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     }
 
 
-
-
     fun updateGrid(gridCharacter: GridPane, opponent: Boolean = false): GridPane {
 
         var gridCharacter = GridPane()
@@ -154,15 +154,17 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return gridCharacter
     }
 
-    /*
+
     fun putQuestion(question: String) {
-        this.question = question
+        server.requetePoserQuestion(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, question)
     }
+
 
     fun putAnswer(answer: String) {
-        this.answer = answer
+        server.requeteDonnerReponse(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, answer)
     }
 
+    /*
     fun removeCharacter(player: Int, characterList: MutableList<Int>) {
         for (i in characterList) {
             this.boardList[player][i] = fakeCharacter

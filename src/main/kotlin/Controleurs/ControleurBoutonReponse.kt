@@ -7,14 +7,14 @@ import vue.GameBoard
 import vue.HideCharacter
 import vue.MainView
 
-class ControleurBoutonQuestion(val match : Match, val gameBoard : GameBoard) : EventHandler<ActionEvent> {
+class ControleurBoutonReponse(val match : Match, val gameBoard : GameBoard) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
 
-        match.putQuestion(gameBoard.zoneIdPerso.text)
+        match.putAnswer(gameBoard.zoneIdPerso.text)
 
         // Next view
-        val hideChara = HideCharacter()
-        gameBoard.setRightView(hideChara)
+        //val hideChara = HideCharacter()
+        //gameBoard.setRightView(hideChara)
 
 
 
