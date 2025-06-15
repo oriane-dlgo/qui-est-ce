@@ -1,5 +1,6 @@
 package vue
 
+import Controleurs.ControleurBoutonValiderPerso
 import info.but1.sae2025.data.ETAPE
 import javafx.animation.Animation
 import javafx.animation.KeyFrame
@@ -41,7 +42,6 @@ class GameBoard(match: Match) : BorderPane() {
         this.index = 0
 
 
-
         var photo = Rectangle(50.0, 50.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
@@ -68,18 +68,14 @@ class GameBoard(match: Match) : BorderPane() {
                 }
                 if(match.getMatchState() == ETAPE.INITIALISATION && match.charPicked ==1){
                     println("Affiche attente autre joueur")
-                    // Affiche attente autre joeur
+                    // Affiche attente autre joueur
                 }
             })
         )
         timeline.cycleCount = Animation.INDEFINITE
         timeline.play()
 
-
     }
-
-
-
 
 
     fun setRightView(newVue: javafx.scene.Node) {

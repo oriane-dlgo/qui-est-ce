@@ -8,6 +8,6 @@ class PickCharacter : VBox() {
 
     init{
         btnValid = Button("Valider")
-        this.children.addAll(btnValid)
+        this.children.add(btnValid)
     }
 }
