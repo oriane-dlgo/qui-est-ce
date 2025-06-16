@@ -10,6 +10,8 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
+import vue.GameBoard
+import javax.swing.text.MutableAttributeSet
 
 class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo: Int) {
 
@@ -22,6 +24,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private lateinit var opponentGrid: List<List<Personnage>>
     private var listSelChar: MutableList<Int>
     private var listHideChar: MutableList<Int>
+    private var keyPass : MutableList<Int>
 
     private var matchState: ETAPE
 
@@ -46,6 +49,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.playerNo = playerNo
         this.playerGrid = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
 
+        this.keyPass = mutableListOf()
         this.matchState = ETAPE.CREEE
 
         this.listSelChar = mutableListOf()
@@ -75,10 +79,11 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
-    fun nextRound() {
+    fun nextRound(iCloseIt :Boolean = false) {
         this.roundCounter += 1
-        server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
-
+        if (iCloseIt){
+            server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
+        }
     }
 
     fun printState(): String {
@@ -108,8 +113,14 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return server.requeteEtatPartie(this.matchId)
     }
 
-    fun resetListSelChar() {
-        this.listSelChar = mutableListOf()
+    fun resetListSelChar(gameBoard: GameBoard) {
+        this.listSelChar.clear()
+
+        gameBoard.gridCharacter.children.forEach { node ->
+            if (node is StackPane) {
+                node.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
+            }
+        }
     }
 
     fun pickCharacter(row: Int, col: Int) {
@@ -205,6 +216,18 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     }
     fun putAnswer(answer: String) {
         server.requeteDonnerReponse(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, answer)
+    }
+
+    fun updateKeyPass(number : Int, erase : Boolean = false) : MutableList<Int>{
+        if (erase){
+            this.keyPass.subList(1, keyPass.size).clear()
+        }else{
+            this.keyPass.add(number)
+        }
+        return keyPass
+    }
+    fun getKeyPass() : MutableList<Int>{
+        return this.keyPass
     }
 
 

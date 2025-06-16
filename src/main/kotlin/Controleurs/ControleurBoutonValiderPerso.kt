@@ -6,7 +6,7 @@ import javafx.event.EventHandler
 import modele.Match
 import vue.GameBoard
 
-class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): EventHandler<ActionEvent> {
+class ControleurBoutonValiderPerso (val match: Match, val gameBoard : GameBoard): EventHandler<ActionEvent> {
 
     override fun handle(event: ActionEvent) {
 
@@ -19,15 +19,15 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
                         i++
                         if (i == index) {
                             match.pickCharacter(row, col)
-                            view.photoContainer.children.clear()
-                            view.photoContainer.children.add(match.getPictureOf(row, col, false))
+                            gameBoard.photoContainer.children.clear()
+                            gameBoard.photoContainer.children.add(match.getPictureOf(row, col, false))
                         }
                     }
                 }
                 match.updateMatchState()
-                match.resetListSelChar()
-                view.center = match.updateGrid(view.gridCharacter, true)
-                view.zoneIdPerso.text = ""
+                match.resetListSelChar(gameBoard)
+                gameBoard.center = match.updateGrid(gameBoard.gridCharacter, true)
+                gameBoard.zoneIdPerso.text = ""
                 match.charPickedNo = 1
             }
             }

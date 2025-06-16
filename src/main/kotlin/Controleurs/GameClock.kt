@@ -18,25 +18,23 @@ import vue.WaitingPlayer
 
 class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
 
-    var keyPass : MutableList<Int>
-    var roundCounter : Int
-    var matchRound : Int
+    var keyPass: MutableList<Int>
+
+    //var roundCounter: Int
+    //var matchRound: Int
+    var charPickBool: Boolean
 
     init {
         val waitingPlayer = WaitingPlayer()
 
-        roundCounter = 1
-        matchRound = match.getRound()
-        keyPass = mutableListOf<Int>()
+        //roundCounter = 1
+        //matchRound = match.getRound()
+        keyPass = match.getKeyPass()
+        charPickBool = false
 
 
         val timeline = Timeline(
             KeyFrame(Duration.seconds(4.0), EventHandler {
-
-                if (matchRound +1 == roundCounter){
-                    roundCounter = matchRound
-                    keyPass.clear()
-                }
 
                 match.updateMatchState()
                 gameBoard.bottom = Label(match.printState())
@@ -54,49 +52,48 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                     // STATE : Le deuxieme joueur vient de rejoindre
                     // DO : Affiche la vue pour la selection de perso
                     match.initOponentInfo()
-
-                    keyPass.add(1)
+                    match.updateKeyPass(1)
+                    //keyPass.add(1)
                     val pickView = PickCharacter()
                     gameBoard.switchChildView(pickView)
                     pickView.btnValid.onAction = ControleurBoutonValiderPerso(match, gameBoard)
 
 
                 }
-                if (match.getMatchState() == ETAPE.INITIALISATION && match.charPickedNo == 1 && keyPass.find { it == 2 } == null) {
+                if (match.getMatchState() == ETAPE.INITIALISATION && match.charPickedNo == 1) { //&& keyPass.find { it == 2 } == null)
                     // ***** PICK CHAR *****
                     // STATE : Un des joueurs a selectionné son perso et attend l'autre
                     // DO : Affiche la vue d'attente d'adversaire
-                    keyPass.add(2)
+                    //keyPass.add(2)
                     val waitingPlayer = WaitingPlayer()
                     gameBoard.switchChildView(waitingPlayer)
+                }
+
+                var currentPlayerNo: Int = match.getPlayerNo()
+
+                print("Keypass = $keyPass")
+
+                if (match.getMatchState() == ETAPE.ATTENTE_QUESTION && keyPass.find { it > 2 } != null) {
+                    if (keyPass.find { it == 7 } == null) {
+                        match.nextRound()
+                    }
+                    keyPass = match.updateKeyPass(0, true)
+
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////
                 //////     ------------------------   TOUR IMPAIR   -----------------------       //////
                 ////////////////////////////////////////////////////////////////////////////////////////
-                var matchPlayerNo : Int = match.getPlayerNo()
-                var currentPlayerNo : Int
 
-                if (match.getRound() % 2 == 0) {
-                    if (matchPlayerNo == 1){
-                        currentPlayerNo = 2
-                    }else{
-                        currentPlayerNo = 1
-                    }
-                }else{
-                    if (matchPlayerNo == 1){
-                        currentPlayerNo = 1
-                    }else{
-                        currentPlayerNo = 2
-                    }
 
-                }
 
+                if (match.getRound() % 2 != 0) {
+                    println(" // TOUR IMPAIR ")
                     // QUESTION
-                    if (match.getMatchState() == ETAPE.ATTENTE_QUESTION && keyPass.find { it == 3 } == null) {
+                    if (match.getMatchState() == ETAPE.ATTENTE_QUESTION && keyPass.find { it == 2 } == null && keyPass.find { it == 1 } != null) {
                         // STATE : TOUR IMPAIR -> joueur 1 questionne, joueur 2 wait
                         // DO : Affiche la vue Guess et WaitingPlayer
-
+                        println(" ~~~~~~~~~ QUESTION STATE ")
                         if (currentPlayerNo == 1) {
                             val guess = Guess()
                             gameBoard.switchChildView(guess)
@@ -105,12 +102,14 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)
                         }
-                        keyPass.add(3)
+                        match.updateKeyPass(2)
+                        //keyPass.add(2)
                     }
                     // REPONSE
-                    if (match.getMatchState() == ETAPE.ATTENTE_REPONSE && keyPass.find { it == 4 } == null) {
+                    if (match.getMatchState() == ETAPE.ATTENTE_REPONSE && keyPass.find { it == 3 } == null && keyPass.find { it == 2 } != null) {
                         // STATE : TOUR IMPAIR -> joueur 2 repond, joueur 1 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
+                        println("  ~~~~~~~~~ ANSWER STATE ")
 
                         if (currentPlayerNo == 2) {
                             val answer = Answer(match.getQuestion())
@@ -122,12 +121,15 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)
                         }
-                        keyPass.add(4)
+                        match.updateKeyPass(3)
+                        //keyPass.add(3)
                     }
                     // REFLEXION
-                    if (match.getMatchState() == ETAPE.ATTENTE_REFLEXION && keyPass.find { it == 5 } == null) {
+                    if (match.getMatchState() == ETAPE.ATTENTE_REFLEXION && keyPass.find { it == 4 } == null && keyPass.find { it == 3 } != null) {
                         // STATE : TOUR IMPAIR -> joueur 1 elimine, joueur 2 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
+
+                        println("  ~~~~~~~~~ HIDE STATE ")
 
                         if (currentPlayerNo == 1) {
                             val hideChar = HideCharacter(match.getAnswer())
@@ -140,44 +142,70 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)
                         }
-                        keyPass.add(8)
+                        match.updateKeyPass(4)
+                        //keyPass.add(4)
                     }
+                } else {
+                    ////////////////////////////////////////////////////////////////////////////////////////
+                    //////     ------------------------    TOUR PAIR    -----------------------       //////
+                    ////////////////////////////////////////////////////////////////////////////////////////
+                    // QUESTION
+                    println(" // TOUR PAIR ")
+                    if (match.getMatchState() == ETAPE.ATTENTE_QUESTION && keyPass.find { it == 2 } == null && keyPass.find { it == 1 } != null) {
+                        // STATE : TOUR PAIR -> joueur 2 questionne, joueur 1 wait
+                        // DO : Affiche la vue Guess et WaitingPlayer
+                        println(" _______________  QUESTION STATE ")
 
 
-                /*
-                                ////////////////////////////////////////////////////////////////////////////////////////
-                                //////     ------------------------    TOUR PAIR    -----------------------       //////
-                                ////////////////////////////////////////////////////////////////////////////////////////
-                                if (match.getRound() % 2 == 0) {
-                                    if (match.getMatchState() == ETAPE.ATTENTE_QUESTION) {
-                                        // STATE : TOUR IMPAIR -> joueur 2 play, joueur 1 wait
-                                        // DO : Affiche la vue Guess et WaitingPlayer
-                                        if (match.getPlayerNo() == 2) {
-                                            val guess = Guess()
-                                            gameBoard.switchChildView(guess)
-                                        } else {
-                                            val waitingPlayer = WaitingPlayer()
-                                            gameBoard.switchChildView(waitingPlayer)
-                                        }
-                                    }
-                                    if (match.getMatchState() == ETAPE.ATTENTE_REPONSE) {
-                                        // STATE : TOUR IMPAIR -> joueur 1 play, joueur 2 wait
-                                        // DO : Affiche la vue Answer et WaitingPlayer
-                                        if (match.getPlayerNo() == 1) {
-                                            //val answer = Answer()
-                                            //gameBoard.switchChildView(answer)
-                                        } else {
-                                            val waitingPlayer = WaitingPlayer()
-                                            gameBoard.switchChildView(waitingPlayer)
-                                        }
-                                    }
-                                }
-                */
-                ////////////////////////////////////////////////////////////////////////////////////////
-                //////      ------------------------   other    -----------------------       //////
-                ////////////////////////////////////////////////////////////////////////////////////////
+                        if (currentPlayerNo == 2) {
+                            val guess = Guess()
+                            gameBoard.switchChildView(guess)
+                            guess.question.onAction = ControleurBoutonQuestion(match, gameBoard)
+                        } else {
+                            val waitingPlayer = WaitingPlayer()
+                            gameBoard.switchChildView(waitingPlayer)
+                        }
+                        match.updateKeyPass(2)
+                        //keyPass.add(2)
+                    }
+                    // REPONSE
+                    if (match.getMatchState() == ETAPE.ATTENTE_REPONSE && keyPass.find { it == 3 } == null && keyPass.find { it == 2 } != null) {
+                        // STATE : TOUR IMPAIR -> joueur 1 repond, joueur 2 wait
+                        // DO : Affiche la vue Answer et WaitingPlayer
+                        println(" ___________  ANSWER STATE ")
+                        if (currentPlayerNo == 1) {
+                            val answer = Answer(match.getQuestion())
+                            gameBoard.switchChildView(answer)
+                            answer.btnOui.onAction = ControleurBoutonReponse(match, gameBoard, answer, 1)
+                            answer.btnNon.onAction = ControleurBoutonReponse(match, gameBoard, answer, 2)
+
+                        } else {
+                            val waitingPlayer = WaitingPlayer()
+                            gameBoard.switchChildView(waitingPlayer)
+                        }
+                        match.updateKeyPass(3)
+                        //keyPass.add(3)
+                    }
+                    // REFLEXION
+                    if (match.getMatchState() == ETAPE.ATTENTE_REFLEXION && keyPass.find { it == 4 } == null && keyPass.find { it == 3 } != null) {
+                        // STATE : TOUR IMPAIR -> joueur 2 elimine, joueur 1 wait
+                        // DO : Affiche la vue Answer et WaitingPlayer
+                        println("____________ HIDE STATE ")
+                        if (currentPlayerNo == 2) {
+                            val hideChar = HideCharacter(match.getAnswer())
+                            gameBoard.switchChildView(hideChar)
+                            hideChar.btnHide.onAction = ControleurBoutonHide(match, gameBoard)
+                            hideChar.btnOk.onAction = ControleurBoutonHideFinish(match, gameBoard)
 
 
+                        } else {
+                            val waitingPlayer = WaitingPlayer()
+                            gameBoard.switchChildView(waitingPlayer)
+                        }
+                        match.updateKeyPass(4)
+                        //keyPass.add(4)
+                    }
+                }
             })
         )
         timeline.cycleCount = Animation.INDEFINITE
@@ -187,7 +215,6 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
     override fun handle(p0: ActionEvent?) {
         TODO("Not yet implemented")
     }
-
 
 
 }
