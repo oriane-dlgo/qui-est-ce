@@ -30,7 +30,7 @@ class Main : Application() {
 
 
         // WELCOME
-        client.showPopUp(welcome,login, 0.5)
+        client.showPopUp(welcome,login, 0.5) // 0.5 de base __ 0.0 pour dev
 
         // LOGIN
         login.btnLogin.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
