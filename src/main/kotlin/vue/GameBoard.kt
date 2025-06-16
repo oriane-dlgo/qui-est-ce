@@ -32,8 +32,13 @@ class GameBoard(match: Match) : BorderPane() {
     init {
         this.match = match
         gridCharacter = GridPane()
-        gridCharacter.maxWidth = Double.MAX_VALUE
-        gridCharacter.maxHeight = Double.MAX_VALUE
+        //gridCharacter.maxWidth = Double.MAX_VALUE
+        //gridCharacter.maxHeight = Double.MAX_VALUE
+        gridCharacter.maxWidth = 600.0
+        gridCharacter.maxHeight = 400.0
+        gridCharacter.prefWidth = 600.0
+        gridCharacter.prefHeight = 400.0
+
         gridCharacter.isGridLinesVisible = true
         gridCharacter = gridCharacter.apply {
             prefWidth = 100.0

@@ -87,7 +87,10 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     // Fonctions principales
 
     fun nextRound() {
+        this.question = ""
+        this.answer = ""
         this.roundCounter += 1
+        server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
     }
 
     fun printState() {
@@ -110,6 +113,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
     }
 
+    /*
     fun updateMatchState(): EtatPartie {
 
         val state = server.requeteEtatPartie(this.matchId)
@@ -131,6 +135,14 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return state
     }
 
+     */
+    fun updateMatchState(): EtatPartie {
+        this.matchState = server.requeteEtatPartie(this.matchId).etape
+        return server.requeteEtatPartie(this.matchId)
+    }
+    fun resetListSelChar(){
+        this.listSelChar = mutableListOf()
+    }
 
     fun pickCharacter(row: Int, col: Int) {
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
@@ -159,28 +171,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return imageView
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ////////////////////// ICI FUN UPDATE GRID
-
-    fun updateGrid(gridCharacter : GridPane , opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
+    fun updateGrid(gridCharacter: GridPane, opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
 
         gridCharacter.children.clear()
         println("**** \n La liste est celle de l'adversaire = $opponent \n****")
@@ -194,169 +185,66 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
                 val picture = getPictureOf(row, col, opponent)
 
-                if (index in listHideChar){
+                if (index in listHideChar) {
                     picture.opacity = 0.2
                 }
 
                 stack.children.add(picture)
-                stack.style = "-fx-border-color: black; -fx-border-width: 1;"
-                gridCharacter.add(stack, col, row)
+                stack.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
 
-                index++
-            }
-        }
-
-        return gridCharacter
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    fun updateGrid(): GridPane {
-        val state = this.matchState
-        val listSelChar = this.listSelChar
-        val listHideChar = this.listHideChar
-        val gridCharacter = GridPane().apply { isGridLinesVisible = true }
-
-        println("*******\n liste selection : $listSelChar \n liste hidden : $listHideChar\n STATE : $state \n*********")
-
-
-        var index = 1
-
-        for (row in 0 until 4) {
-            for (col in 0 until 6) {
-                val stack = StackPane()
+                /////// TEST ENCADRER ROUGE
+                // ID pour l'identifiant de la case
                 stack.userData = index
 
-                val picture = if (state == ETAPE.INITIALISATION || state == ETAPE.CREEE) {
-                    getPictureOf(row, col, false)
-                } else {
-                    getPictureOf(row, col)
-                }
-                // Appliquer opacité si caché
-                if (index in listHideChar) {
-                    picture.opacity = 0.3
-                }
+                // Ajoute le clic
+                //if (this.matchState == ETAPE.INITIALISATION || this.matchState == ETAPE.ATTENTE_REFLEXION)
+                stack.setOnMouseClicked {
 
-                stack.children.add(picture)
+                        val id = stack.userData as Int
 
-                // Définir comportement selon l'état
-            if (state == ETAPE.INITIALISATION){
-                        /*
-                                                stack.setOnMouseClicked {
+                        if (this.matchState == ETAPE.INITIALISATION && this.charPicked == -1) {
+                            println("\n\n\nÉTAT ACTUEL DU MATCH = ${this.matchState}\n\n\n")
 
-                                                    listSelChar.clear()
-                                                    listSelChar.add(index)
+                            // Un seul personnage sélectionnable
+                            // Nettoie ancienne sélection
+                            this.listSelChar.clear()
 
-                                                    if (listSelChar.contains(index)) {
-                                                        listSelChar.remove(index)
-                                                        stack.style = "-fx-border-color: black; -fx-border-width: 1;"
-                                                    } else {
-                                                        listSelChar.add(index)
-                                                        stack.style = "-fx-border-color: red; -fx-border-width: 3;"
-                                                    }
-                                                }*/
-                        stack.setOnMouseClicked {
-                            // Si déjà sélectionné, on désélectionne tout
-                            if (listSelChar.contains(index)) {
-                                listSelChar.clear()
-                                stack.style = "-fx-border-color: black; -fx-border-width: 1;"
-                            } else {
-                                // Sinon, on sélectionne uniquement cette case
-                                listSelChar.clear()
-                                listSelChar.add(index)
-
-                                // On met à jour toutes les cases
-                                gridCharacter.children.filterIsInstance<StackPane>().forEach { s ->
-                                    val id = s.userData as Int
-                                    s.style = if (id == index)
-                                        "-fx-border-color: red; -fx-border-width: 3;"
-                                    else
-                                        "-fx-border-color: black; -fx-border-width: 1;"
+                            // Réinitialise styles des autres cases
+                            gridCharacter.children.forEach { node ->
+                                if (node is StackPane) {
+                                    node.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
                                 }
                             }
 
-
-                            // Style initial selon sélection
-                            stack.style = if (listSelChar.contains(index)) {
-                                "-fx-border-color: red; -fx-border-width: 3;"
-                            } else {
-                                "-fx-border-color: black; -fx-border-width: 1;"
-                            }
-
-                            gridCharacter.add(stack, col, row)
-                            index++
+                            // Ajoute la nouvelle sélection
+                            this.listSelChar.add(id)
+                            stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
                         }
-
-                    }
-
-
-                    ETAPE.ATTENTE_REFLEXION -> {
-                        stack.setOnMouseClicked {
-                            if (listSelChar.contains(index)) {
-                                listSelChar.remove(index)
-                                stack.style = "-fx-border-color: black; -fx-border-width: 1;"
+                    if ((this.playerNo == 1 && this.roundCounter %2 != 0) || (this.playerNo == 2 && this.roundCounter %2 == 0) ) {
+                        if (this.matchState == ETAPE.ATTENTE_REFLEXION) {
+                            // Sélection libre (phase de jeu ?)
+                            if (!this.listSelChar.contains(id)) {
+                                this.listSelChar.add(id)
+                                stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
                             } else {
-                                listSelChar.add(index)
-                                stack.style = "-fx-border-color: red; -fx-border-width: 3;"
+                                this.listSelChar.remove(id)
+                                stack.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
                             }
                         }
-                    }
 
-                    else -> {
-                        // Pas d'action : clics désactivés
+                        println("Cases sélectionnées : $listSelChar")
                     }
                 }
-
-                // Style par défaut (selon si sélectionné ou non)
-                stack.style = if (index in listSelChar)
-                    "-fx-border-color: red; -fx-border-width: 3;"
-                else
-                    "-fx-border-color: black; -fx-border-width: 1;"
-
+                ///////////////////
                 gridCharacter.add(stack, col, row)
+
                 index++
             }
         }
 
         return gridCharacter
     }
-*/
+
 
     fun putQuestion(question: String) {
         server.requetePoserQuestion(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, question)
@@ -380,11 +268,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
               return this.characterGuess == this.characterPicked[player]
           }
 
-          fun nextRound() {
-              this.question = ""
-              this.answer = ""
-              this.roundCounter += 1
-          }
+
 
           fun endOfMatch(player : Int) {
               this.winner = this.playersList[player]
@@ -393,7 +277,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
               this.saved = true
           }
            */
-//
+
+
+    //
 //
 //
 //
@@ -415,6 +301,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getOpponentGrid() = this.opponentGrid
     fun getCurrentPlayer() = this.playerNo
     fun getPlayerNo() = this.playerNo
+    fun getListSelChar() = this.listSelChar
 
 
     /*

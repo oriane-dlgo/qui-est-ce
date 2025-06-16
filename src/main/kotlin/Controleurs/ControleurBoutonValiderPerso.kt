@@ -22,7 +22,7 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
 
             println("**** \n controleur valider perso \n****")
 
-            var index = view.zoneIdPerso.text.toInt()
+            var index = match.getListSelChar()[0]
             var i: Int = 0
 
             for (row in 0 until 4) {
@@ -38,9 +38,12 @@ class ControleurBoutonValiderPerso (val match: Match, val view : GameBoard): Eve
             //val newGrid = GridPane()
             //view.gridCharacter = match.updateGrid(newGrid, true)
             //view.center = view.gridCharacter
+            match.updateMatchState()
+            match.resetListSelChar()
             view.center = match.updateGrid(view.gridCharacter, true)
             view.zoneIdPerso.text = ""
             match.charPicked = 1
+
             println("////////*** \n\n ${match.getOpponentGrid()}")
         }
     }

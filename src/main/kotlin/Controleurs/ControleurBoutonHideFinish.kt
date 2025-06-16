@@ -10,11 +10,11 @@ import vue.MainView
 import vue.Login
 
 
-class ControleurBoutonHide(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
+class ControleurBoutonHideFinish(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
     override fun handle(p0: ActionEvent?) {
 
-        val list = match.getListSelChar()
-        gameBoard.center = match.updateGrid( gameBoard.gridCharacter, true , list)
+        match.nextRound()
+
     }
 }
 

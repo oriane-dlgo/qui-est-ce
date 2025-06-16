@@ -26,6 +26,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
             KeyFrame(Duration.seconds(4.0), EventHandler {
 
                 match.updateMatchState()
+
                 match.printState()
 
                 print("Tour n° ${match.getRound()}")
@@ -105,7 +106,8 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         if (match.getPlayerNo() == 1) {
                             val hideChar = HideCharacter()
                             gameBoard.switchChildView(hideChar)
-                            hideChar.btnOk.onAction = ControleurBoutonHide(match, gameBoard)
+                            hideChar.btnHide.onAction = ControleurBoutonHide(match, gameBoard)
+
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
