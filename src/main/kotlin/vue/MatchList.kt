@@ -26,10 +26,12 @@ class MatchList : BorderPane() {
     var champID : String
     var selectedLabel : Label?
     val scrollbar : ScrollPane
+    val nom : Label
+
 
     init{
 
-
+        nom = Label("")
         listLabel = Label("Liste des parties disponibles :")
         listLabel.font = Font.font("Courier New", FontWeight.BOLD, 35.0)  // Change la police d'écriture et la taille
         listLabel.style = "-fx-text-fill: white"   // Met en blanc
@@ -38,7 +40,8 @@ class MatchList : BorderPane() {
         containList = GridPane()
         containList.maxWidth = Double.MAX_VALUE  // Fait en sorte que le GridPane prenne toujours tout la largeur
         containList.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
-        containList.style = "-fx-background-color: white; -fx-border-radius: 10px"  // Met le fon en blanc
+        containList.style = "-fx-background-color: white; -fx-border-radius: 10px"
+//      containList.font = Font.font("Courier New", FontWeight.BOLD, 35.0)// Met le fon en blanc
 
         joinBtn = Button("Rejoindre")
         joinBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
@@ -108,6 +111,9 @@ class MatchList : BorderPane() {
         retourBtn.onAction = handler
     }
 
+//    fun getNameCreatorMatch(nom : String, prenom : String){
+//        nom.text = "Créé par le joueur $nom $prenom"
+//    }
 }
 
 

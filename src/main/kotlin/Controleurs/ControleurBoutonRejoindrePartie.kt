@@ -4,6 +4,7 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Label
 import modele.Client
+import vue.Login
 import vue.MainView
 import vue.MatchList
 
@@ -25,10 +26,18 @@ class ControleurBoutonRejoindrePartie(val client : Client, val view : MainView) 
         //le withIndex va permettre d'avoir l'index et le contenu à l'index indiqué
         client.updateMatchList()
         val matchList = client.getMatchList()
+
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
+            val label2 = Label("Partie n°")
+//            val crea = Label("Créé par ${client.getCurrentPlayer()}")
             matchListView.styleGridPane(label)
-            matchListView.containList.add(label, 0, i)
+            matchListView.containList.add(label, 1, i)
+            matchListView.containList.add(label2, 0, i)
+//            matchListView.containList.add(crea, 3, i)
+
         }
+
+
     }
 }

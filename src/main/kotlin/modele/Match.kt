@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import vue.GameBoard
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import javax.swing.text.MutableAttributeSet
 
 class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo: Int) {
@@ -143,7 +145,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
             this.getGrid()[row][col].url
         }
 
-        val fullUrl = "$baseUrl$filename"
+        val fileNameEncoded = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
+
+        val fullUrl = "$baseUrl$fileNameEncoded"
         val image = Image(fullUrl)
 
         val imageView = ImageView(image).apply {
