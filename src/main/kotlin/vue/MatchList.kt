@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import ui.createTitleLabel
 
 class MatchList(matchList : List<Int>) : BorderPane() {
 
@@ -43,9 +44,7 @@ class MatchList(matchList : List<Int>) : BorderPane() {
 
         retour = Button("Retour")
         nom = Label("")
-        listLabel = Label("Liste des parties disponibles :")
-        listLabel.font = Font.font("Courier New", FontWeight.BOLD, 35.0)  // Change la police d'écriture et la taille
-        listLabel.style = "-fx-text-fill: white"   // Met en blanc
+        listLabel = createTitleLabel("Liste des parties disponibles :")
 
 
         containList = GridPane()

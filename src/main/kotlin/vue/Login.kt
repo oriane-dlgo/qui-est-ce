@@ -11,6 +11,7 @@ import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 import ui.createMainButton
 import ui.createSmallButton
+import ui.createTitleLabel
 
 class Login : VBox() {
 
@@ -22,11 +23,8 @@ class Login : VBox() {
 
     init{
 
-        dia1Question = Label("Entrer votre nom et prénom :")
+        dia1Question = createTitleLabel("Entrer votre nom et prénom :")
 
-        // Met en place la couleur, la police d'écriture et la taille
-        dia1Question.style = "-fx-text-fill: white"
-        dia1Question.font = Font.font("Courier New", FontWeight.BOLD, 35.0)
 
         nom = TextField("nom")
         nom.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
@@ -39,7 +37,7 @@ class Login : VBox() {
         //    promptText = "prénom"
         //}
 
-        btnLogin = createSmallButton("Valider")
+        btnLogin = createMainButton("Valider")
 
 
         dialog11 = HBox(10.0, nom, prenom)
