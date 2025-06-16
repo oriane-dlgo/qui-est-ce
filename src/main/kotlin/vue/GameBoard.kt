@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame
 import javafx.animation.Timeline
 import javafx.event.EventHandler
 import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -74,7 +75,12 @@ class GameBoard(match: Match) : BorderPane() {
         this.bottom = labelLog
         this.charSelOnGrid = mutableListOf()
 
-        info = GridPane()
+        info = GridPane().apply{
+            vgap = 20.0
+            padding = Insets(70.0)
+            hgap = 50.0
+
+        }
         this.right = info
         this.index = 0
 
@@ -87,6 +93,7 @@ class GameBoard(match: Match) : BorderPane() {
         photoContainer = StackPane(photo)
         photoContainer.maxWidth = Double.MAX_VALUE
         photoContainer.maxHeight = Double.MAX_VALUE
+
         zoneIdPerso = TextField()
 
         this.viewContainer = Pane(WaitingPlayer())
@@ -94,6 +101,7 @@ class GameBoard(match: Match) : BorderPane() {
         info.add(photoContainer, 0, 0)
         info.add(zoneIdPerso, 0, 1)
         info.add(viewContainer, 0, 2)
+        info.alignment = Pos.CENTER
     }
 
     fun setRightView(newVue: Node) {
