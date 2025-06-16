@@ -1,5 +1,7 @@
 package vue
 
+import javafx.event.ActionEvent
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -20,6 +22,7 @@ class MatchList : BorderPane() {
     val listLabel : Label //vbox
     val containList : GridPane //vbox
     val joinBtn : Button
+    val retourBtn : Button
     var champID : String
     var selectedLabel : Label?
     val scrollbar : ScrollPane
@@ -47,6 +50,18 @@ class MatchList : BorderPane() {
         }
         joinBtn.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
 
+        retourBtn = Button("Retour")
+        retourBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white"
+        retourBtn.setOnMouseEntered {
+            retourBtn.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;"
+        }
+        retourBtn.setOnMouseExited {
+            retourBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white;"
+        }
+        retourBtn.font = Font.font("Courier New", FontWeight.BOLD, 20.0)
+
+        val bottomButtons = HBox(10.0, joinBtn, retourBtn)
+        bottomButtons.padding = Insets(10.0,10.0,10.0,0.0)
 
         champID = ""  // Variable qui va servir à stocker l'ID de la partie sélectionnée
 
@@ -54,7 +69,7 @@ class MatchList : BorderPane() {
 
         this.top = listLabel
         this.center = containList
-        this.bottom = joinBtn
+        this.bottom = bottomButtons
         this.padding = Insets(20.0)
         BorderPane.setMargin(listLabel, Insets(10.0))
         BorderPane.setMargin(containList, Insets(10.0))
@@ -87,8 +102,11 @@ class MatchList : BorderPane() {
 
         }
 
-    }
 
+    }
+    fun setOnRetourAction(handler: EventHandler<ActionEvent>) {
+        retourBtn.onAction = handler
+    }
 
 }
 
