@@ -5,15 +5,15 @@ import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import ui.createTextLabel
 
 class WaitingPlayer : VBox() {
 
     val label : Label
 
     init{
-        this.label = Label("Waiting opponent")
-        label.style = "-fx-text-fill: white"
-        label.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
+        this.label = createTextLabel("Waiting opponent")
+
         this.children.add(label)
 
     }

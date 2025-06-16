@@ -12,6 +12,7 @@ import javafx.scene.text.FontWeight
 import kotlinx.serialization.descriptors.PrimitiveKind
 import modele.Client
 import ui.createMainButton
+import ui.createTitleLabel
 
 class MatchMaking : BorderPane() {
 
@@ -21,9 +22,8 @@ class MatchMaking : BorderPane() {
     val btnJoin : Button //vbox
 
     init{
-        bvnJoueur = Label("")
-        bvnJoueur.font = Font.font("Courier New", FontWeight.BOLD, 30.0)
-        bvnJoueur.style = "-fx-text-fill: white"
+        bvnJoueur = createTitleLabel("")
+
         bvnJoueur.padding = Insets(30.0)
 
 

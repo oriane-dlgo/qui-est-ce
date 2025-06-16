@@ -91,7 +91,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
 
 
-        var photo = Rectangle(80.0, 80.0).apply {
+        var photo = Rectangle(100.0, 100.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }

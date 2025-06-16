@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import ui.createMainButton
 import ui.createTitleLabel
 
 class MatchList(matchList : List<Int>) : BorderPane() {
@@ -36,11 +37,6 @@ class MatchList(matchList : List<Int>) : BorderPane() {
 
 
     init{
-
-
-
-
-
 
         retour = Button("Retour")
         nom = Label("")
@@ -66,25 +62,9 @@ class MatchList(matchList : List<Int>) : BorderPane() {
 
 
 
-        joinBtn = Button("Rejoindre")
-        joinBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
-        joinBtn.setOnMouseEntered {
-            joinBtn.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
-        }
-        joinBtn.setOnMouseExited {
-            joinBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
-        }
-        joinBtn.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
+        joinBtn = createMainButton("Rejoindre")
 
-        retourBtn = Button("Retour")
-        retourBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white"
-        retourBtn.setOnMouseEntered {
-            retourBtn.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;"
-        }
-        retourBtn.setOnMouseExited {
-            retourBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white;"
-        }
-        retourBtn.font = Font.font("Courier New", FontWeight.BOLD, 20.0)
+        retourBtn = createMainButton("Retour")
 
         val bottomButtons = HBox(10.0, joinBtn, retourBtn)
         bottomButtons.padding = Insets(10.0,10.0,10.0,0.0)
