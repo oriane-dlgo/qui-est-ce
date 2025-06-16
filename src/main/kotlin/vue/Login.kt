@@ -9,6 +9,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import ui.createMainButton
+import ui.createSmallButton
 
 class Login : VBox() {
 
@@ -37,15 +39,7 @@ class Login : VBox() {
         //    promptText = "prénom"
         //}
 
-        btnLogin = Button("Valider")
-        btnLogin.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
-        btnLogin.setOnMouseEntered {
-            btnLogin.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
-        }
-        btnLogin.setOnMouseExited {
-            btnLogin.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
-        }
-        btnLogin.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
+        btnLogin = createSmallButton("Valider")
 
 
         dialog11 = HBox(10.0, nom, prenom)
