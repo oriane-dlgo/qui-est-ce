@@ -13,7 +13,7 @@ import kotlin.apply
 
 class Login : VBox() {
 
-    val dialog1 : VBox //center
+
     val dia1Question : Label //vbox
     val dialog11 : HBox //vbox
     val nom : TextField //hbox
@@ -51,17 +51,17 @@ class Login : VBox() {
 
 
         dialog11 = HBox(10.0, nom, prenom)
-        dialog1 = VBox(10.0, dia1Question, dialog11, btndia1)
+
 
         // Ajout à la vue principale (this = VBox)
-        this.children.add(dialog1)
+        this.children.addAll(dia1Question, dialog11, btndia1)
 
         dialog11.alignment = Pos.CENTER
         dialog11.spacing = 20.0
         dialog11.padding = Insets(45.0)
 
-        dialog1.alignment = Pos.TOP_CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
-        dialog1.padding = Insets(60.0)
+        this.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
+        this.padding = Insets(60.0)
     }
 
 }
