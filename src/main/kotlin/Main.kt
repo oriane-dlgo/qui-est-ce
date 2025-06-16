@@ -56,6 +56,7 @@ class Main : Application() {
 
 
         val scene = Scene(mainView, 1000.0, 600.0)
+        scene.stylesheets.add(javaClass.getResource("/style.css")!!.toExternalForm())
         stage.scene = scene
         stage.title = "C KI LUI ?"
         stage.show()

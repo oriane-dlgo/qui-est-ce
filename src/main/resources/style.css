@@ -1,0 +1,22 @@
+
+.button {
+    -fx-background-color: #61888c;
+    -fx-text-fill: white;
+    -fx-font-family: "Courier New";
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+
+.button:hover {
+    -fx-background-color: #4e6b6e;
+    -fx-text-fill: black;
+}
+
+.label{
+    -fx-text-fill: white
+    -fx-font-family: "Courier New";
+}
