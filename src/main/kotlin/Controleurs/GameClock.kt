@@ -14,11 +14,13 @@ import vue.GameBoard
 import vue.Question
 import vue.HideCharacter
 import vue.Loose
+import vue.MainView
 import vue.PickCharacter
+import vue.TestPopUp
 import vue.WaitingPlayer
 import vue.Win
 
-class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
+class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainView) : EventHandler<ActionEvent> {
 
     var keyPass: MutableList<Int>
 
@@ -50,6 +52,9 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                     // DO : Affiche la vue d'attente d'adversaire
                     println("Attente du joueur adverse")
                     matchState = match.getMatchState()
+                    val test = TestPopUp()
+                    gameBoard.switchChildView(test)
+                    test.btn.onAction = ControleurBoutonTest(mainView, gameBoard)
 
                 }
                 if (matchState == ETAPE.INITIALISATION && match.charPickedNo == -1 && keyPass.find { it == 1 } == null) {
@@ -269,8 +274,8 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                             gameBoard.switchChildView(win)
                             //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         } else {
-                            val loose = Loose(match.getRound())
-                            gameBoard.switchChildView(loose)
+                            //val loose = Loose(match.getRound())
+                            //gameBoard.
                             //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         }
                         match.updateKeyPass(6)

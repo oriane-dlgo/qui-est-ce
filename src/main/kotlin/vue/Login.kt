@@ -9,16 +9,15 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
-import kotlin.apply
 
 class Login : VBox() {
 
-
+    val dialog1 : VBox //center
     val dia1Question : Label //vbox
     val dialog11 : HBox //vbox
     val nom : TextField //hbox
     val prenom : TextField //hbox
-    val btndia1 : Button //hbox
+    val btnLogin : Button //hbox
 
     init{
 
@@ -39,15 +38,15 @@ class Login : VBox() {
         //    promptText = "prénom"
         //}
 
-        btndia1 = Button("Valider")
-        btndia1.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
-        btndia1.setOnMouseEntered {
-            btndia1.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
+        btnLogin = Button("Valider")
+        btnLogin.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
+        btnLogin.setOnMouseEntered {
+            btnLogin.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
         }
-        btndia1.setOnMouseExited {
-            btndia1.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
+        btnLogin.setOnMouseExited {
+            btnLogin.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
         }
-        btndia1.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
+        btnLogin.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
 
 
         dialog11 = HBox(10.0, nom, prenom)

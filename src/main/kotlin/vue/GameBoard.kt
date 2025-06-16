@@ -1,6 +1,8 @@
 package vue
 
 import Controleurs.ControleurBoutonValiderPerso
+import Controleurs.GameClock
+import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
 import javafx.animation.Animation
 import javafx.animation.KeyFrame
@@ -18,9 +20,10 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.util.Duration
+import modele.Client
 import modele.Match
 
-class GameBoard(match: Match) : BorderPane() {
+class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane() {
     var gridCharacter: GridPane
     val info: GridPane
     var photoContainer: StackPane
@@ -28,12 +31,14 @@ class GameBoard(match: Match) : BorderPane() {
     val match : Match
     val charSelOnGrid : MutableList<Int>
     var labelLog : Label
+    val gameClock : GameClock
 
     var index: Int
     val zoneIdPerso : TextField
 
     init {
         this.match = match
+        this.gameClock = GameClock(match, this, mainView)
         gridCharacter = GridPane()
 
         gridCharacter.maxWidth = 600.0

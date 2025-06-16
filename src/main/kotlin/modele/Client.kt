@@ -1,20 +1,29 @@
 package modele
 
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.IdentificationJoueur
+import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.exceptions.QuiEstCeException
+import javafx.animation.FadeTransition
+import javafx.animation.KeyFrame
+import javafx.animation.Timeline
+import javafx.event.EventHandler
+import javafx.scene.layout.Pane
+import javafx.util.Duration
 import kotlinx.serialization.json.Json
+import vue.GameBoard
+import vue.MainView
+import vue.Win
 import java.io.File
 
-class Client(server: QuiEstCeClient) {
+class Client(server: QuiEstCeClient, val mainView: MainView) {
 
     private var server: QuiEstCeClient
     private var playerList: MutableList<Pair<Joueur,IdentificationJoueur>>
     private var playerListServer: MutableList<Pair<Joueur, IdentificationJoueur?>>
     private lateinit var currentMatch: Match
     private var matchList : List<Int>
-    private lateinit var currentPlayer: Pair<Joueur, IdentificationJoueur>
+    private var currentPlayer: Pair<Joueur, IdentificationJoueur>
     var title : String
 
     init {
@@ -24,6 +33,8 @@ class Client(server: QuiEstCeClient) {
         //this.matchList = mutableListOf()
         this.matchList = server.requeteListeParties()
         this.title = "Match n°$this.id"
+
+        this.currentPlayer= Pair(Joueur("", ""), IdentificationJoueur(0, ""))
 
     }
 //
@@ -147,6 +158,36 @@ class Client(server: QuiEstCeClient) {
         this.matchList = server.requeteListeParties()
     }
 
+    fun showPopUp(viewToPop: Pane,  viewToBack : Pane, time : Double, stat : Boolean = false) {
+        viewToPop.opacity = 0.0
+        this.mainView.center = viewToPop
+
+        // Transition d'apparition
+        val fadeIn = FadeTransition(Duration.seconds(time + 0.5), viewToPop).apply {
+            fromValue = 0.0
+            toValue = 1.0
+            delay = Duration.seconds(0.5)
+        }
+
+        // Transition de disparition après `time` secondes
+        val fadeOut = FadeTransition(Duration.seconds(time + 0.5), viewToPop).apply {
+            fromValue = 1.0
+            toValue = 0.0
+            delay = Duration.seconds(0.5)
+        }
+
+        // Une fois la disparition finie, on remet viewToBack
+        fadeOut.setOnFinished {
+            this.mainView.center = viewToBack
+        }
+
+        // Enchaîner les transitions
+        fadeIn.setOnFinished {
+            fadeOut.play()
+        }
+
+        fadeIn.play()
+    }
     /*
     fun playerIsInList(server: QuiEstCeClient, lastName: String, name: String): Boolean {
         var tmpPlayer = Joueur(lastName, name)

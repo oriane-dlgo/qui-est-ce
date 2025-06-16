@@ -7,18 +7,24 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.Pane
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 
 
 
 class MainView : BorderPane(){
-    val title : Label //root.top
-    val btn1 : Button //center
+    //val title : Label //root.top
+    //val btn1 : Button //center
 
 
 
     init{
+
+        this.style = "-fx-background-color: #78a9af;" // couleur de fond de tout le jeu
+
+
+        /*
         title = Label("C KI LUI")
         // Les deux lignes permettent de placer le titre où on veut
         BorderPane.setAlignment(title, Pos.BOTTOM_CENTER)
@@ -43,6 +49,8 @@ class MainView : BorderPane(){
         this.top = title
         this.center = btn1
         this.style = "-fx-background-color: #78a9af;" // couleur de fond de tout le jeu
+
+         */
     }
 
 
@@ -55,6 +63,9 @@ class MainView : BorderPane(){
         this.top = null
     }
 
+    fun setClockView(viewToSet : Pane, gameBoard: GameBoard){
+
+    }
 
     fun changeCenterView(bouton: Button, action: EventHandler<ActionEvent>){
         bouton.onAction = action

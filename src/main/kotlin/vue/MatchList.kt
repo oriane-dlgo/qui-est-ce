@@ -1,5 +1,7 @@
 package vue
 
+import info.but1.sae2025.data.IdentificationJoueur
+import info.but1.sae2025.data.Joueur
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Insets
@@ -16,7 +18,7 @@ import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 
-class MatchList : BorderPane() {
+class MatchList(matchList : List<Int>) : BorderPane() {
 
 
     val listLabel : Label //vbox
@@ -26,11 +28,20 @@ class MatchList : BorderPane() {
     var champID : String
     var selectedLabel : Label?
     val scrollbar : ScrollPane
+    val retour : Button
+    val matchList : List<Int>
+
     val nom : Label
 
 
     init{
 
+
+
+
+
+
+        retour = Button("Retour")
         nom = Label("")
         listLabel = Label("Liste des parties disponibles :")
         listLabel.font = Font.font("Courier New", FontWeight.BOLD, 35.0)  // Change la police d'écriture et la taille
@@ -42,6 +53,19 @@ class MatchList : BorderPane() {
         containList.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
         containList.style = "-fx-background-color: white; -fx-border-radius: 10px"
 //      containList.font = Font.font("Courier New", FontWeight.BOLD, 35.0)// Met le fon en blanc
+
+
+
+        //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
+        //le withIndex va permettre d'avoir l'index et le contenu à l'index indiqué
+        this.matchList = matchList
+        for ((i, match) in matchList.withIndex()) {
+            val label = Label(match.toString())
+            this.styleGridPane(label)
+            this.containList.add(label, 0, i)
+        }
+
+
 
         joinBtn = Button("Rejoindre")
         joinBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture

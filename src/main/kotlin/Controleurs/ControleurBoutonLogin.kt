@@ -9,27 +9,18 @@ import vue.MainView
 import vue.MatchMaking
 import vue.Login
 
-class ControleurBoutonLogin(val client: Client, val view: MainView, val loginView: Login) : EventHandler<ActionEvent> {
+class ControleurBoutonLogin(val client: Client, val mainView: MainView, val login: Login, val matchMaking: MatchMaking) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
         val matchMakingView = MatchMaking()
 
-
         try {
             // Connexion joueur
-            client.playerLogin(loginView.nom.text, loginView.prenom.text)
+            client.playerLogin(login.nom.text, login.prenom.text)
 
-            // Mise à jour du message de bienvenue dans MatchMaking
-            matchMakingView.setBienvenueMessage(loginView.nom.text, loginView.prenom.text)
-            // Changement de la vue
-            view.setCenterView(matchMakingView)
-            matchMakingView.btnJoin.setOnAction(ControleurBoutonRejoindrePartie(client, view))
-            matchMakingView.btnNew.setOnAction(ControleurBoutonNouvellePartie(client, view, matchMakingView))
+            // Changement de vue
+            mainView.center = matchMaking
 
-            // Logs
-            println("Vous êtes : ${client.getCurrentPlayer()}\n")
 
-            println("Liste des joueurs sur le serveur : ${client.getPlayerListServer()}")
-            println("Liste des joueurs sur le client : ${client.getPlayerList()}")
 
         } catch (e: QuiEstCeException) {
             println(e)
