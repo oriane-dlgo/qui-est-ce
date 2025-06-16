@@ -12,7 +12,6 @@ import javafx.scene.text.FontWeight
 
 class Login : VBox() {
 
-    val dialog1 : VBox //center
     val dia1Question : Label //vbox
     val dialog11 : HBox //vbox
     val nom : TextField //hbox
@@ -53,7 +52,7 @@ class Login : VBox() {
 
 
         // Ajout à la vue principale (this = VBox)
-        this.children.addAll(dia1Question, dialog11, btndia1)
+        this.children.addAll(dia1Question, dialog11, btnLogin)
 
         dialog11.alignment = Pos.CENTER
         dialog11.spacing = 20.0
