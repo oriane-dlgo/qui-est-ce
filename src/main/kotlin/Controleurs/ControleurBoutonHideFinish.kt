@@ -13,11 +13,12 @@ import vue.Login
 class ControleurBoutonHideFinish(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
     override fun handle(p0: ActionEvent?) {
 
-        match.nextRound(true)
-        match.updateKeyPass(7)
-        match.resetListSelChar(gameBoard)
-        //match.updateKeyPass(0, true)
+        //match.nextRound(true)
+        //match.updateKeyPass(7)
 
+        //match.updateKeyPass(0, true)
+        match.endOfRound()
+        match.resetListSelChar(gameBoard)
     }
 }
 

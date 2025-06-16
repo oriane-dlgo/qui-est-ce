@@ -79,12 +79,18 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
-    fun nextRound(iCloseIt :Boolean = false) {
+    fun endOfRound(){
+        server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
+    }
+    fun nextRound(){
+        roundCounter++
+    }
+    /*fun nextRound(iCloseIt :Boolean = false) {
         this.roundCounter += 1
         if (iCloseIt){
             server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
         }
-    }
+    }*/
 
     fun printState(): String {
         val state = server.requeteEtatPartie(this.matchId)
