@@ -15,7 +15,7 @@ class ControleurBoutonLogin(val client: Client, val mainView: MainView, val logi
 
         try {
             // Connexion joueur
-            client.playerLogin(login.nom.text, login.prenom.text)
+            client.playerLogin(login.textFieldLastName.text, login.textFieldName.text)
 
             // Changement de vue
             mainView.center = matchMaking

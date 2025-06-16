@@ -5,7 +5,9 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.layout.HBox
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
+import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
@@ -13,45 +15,59 @@ import ui.createMainButton
 import ui.createSmallButton
 import ui.createTitleLabel
 
-class Login : VBox() {
+class Login : StackPane() {
 
-    val dia1Question : Label //vbox
-    val dialog11 : HBox //vbox
-    val nom : TextField //hbox
-    val prenom : TextField //hbox
+    val backSquare : VBox
+    val image: ImageView
+    val boxTextEntries : VBox
+    val boxLastName : VBox
+    val labelLastName : Label
+    val textFieldLastName : TextField
+    val boxName : VBox
+    val labelName : Label
+    val textFieldName : TextField
     val btnLogin : Button //hbox
 
     init{
 
-        dia1Question = createTitleLabel("Entrer votre nom et prénom :")
+        backSquare = VBox()
+        backSquare.maxWidth = 300.0
+        backSquare.maxHeight = 400.0
+        backSquare.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
+        backSquare.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
+        backSquare.padding = Insets(60.0)
+        backSquare.spacing = 40.0
+
+        image = ImageView(Image("/assets/loginDarkBlue.png"))
+        image.fitWidth = 100.0 // adapte la taille si tu veux
+        image.isPreserveRatio = true
+
+        boxTextEntries = VBox()
+
+        boxLastName = VBox()
+
+        labelLastName = createTitleLabel("Nom :")
+
+        textFieldLastName = TextField("Chirrac")
+
+        boxName = VBox()
+
+        labelName = Label("Prenom :")
+
+        textFieldName = TextField("Jacques")
+
+        btnLogin = createMainButton("Jouer")
 
 
-        nom = TextField("nom")
-        nom.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
-        prenom = TextField("prénom")
-        prenom.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
-        // nom = TextField().apply {
-        //    promptText = "nom"
-        //}                                Code permettant d'avoir "nom" et "prénom" en fond
-        //prenom = TextField().apply {     des textfields
-        //    promptText = "prénom"
-        //}
+        boxLastName.children.addAll(labelLastName, textFieldLastName)
+        boxName.children.addAll(labelName, textFieldName)
 
-        btnLogin = createMainButton("Valider")
+        boxTextEntries.children.addAll(boxLastName, boxName)
 
+        backSquare.children.addAll(image, boxTextEntries, btnLogin)
 
-        dialog11 = HBox(10.0, nom, prenom)
+        children.add(backSquare)
 
-
-        // Ajout à la vue principale (this = VBox)
-        this.children.addAll(dia1Question, dialog11, btnLogin)
-
-        dialog11.alignment = Pos.CENTER
-        dialog11.spacing = 20.0
-        dialog11.padding = Insets(45.0)
-
-        this.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
-        this.padding = Insets(60.0)
     }
 
 }

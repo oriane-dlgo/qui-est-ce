@@ -23,7 +23,7 @@ class Welcom : VBox() {
         label = Label("C KI LUI ?")
         label.font = Font.font("Fascinate", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 150.0)
         label.style = """
-            -fx-text-fill: white;
+            -fx-text-fill: rgba(255,255,255,0.9);
             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);
         """.trimIndent()
 
