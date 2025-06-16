@@ -4,7 +4,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 
-class HideCharacter : VBox() {
+class HideCharacter(val answer : String) : VBox() {
 
     val labelResponse : Label
     val btnHide : Button
@@ -13,7 +13,7 @@ class HideCharacter : VBox() {
 
 
     init{
-        labelResponse = Label("La réponse à la question est : ")
+        labelResponse = Label("La réponse à la question est : $answer ")
         btnHide = Button("Cacher des personnages")
         btnOk = Button("Compris")
 

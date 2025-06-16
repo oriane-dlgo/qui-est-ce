@@ -9,6 +9,7 @@ import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
@@ -25,6 +26,7 @@ class GameBoard(match: Match) : BorderPane() {
     var viewContainer : Pane
     val match : Match
     val charSelOnGrid : MutableList<Int>
+    var labelLog : Label
 
     var index: Int
     val zoneIdPerso : TextField
@@ -32,8 +34,7 @@ class GameBoard(match: Match) : BorderPane() {
     init {
         this.match = match
         gridCharacter = GridPane()
-        //gridCharacter.maxWidth = Double.MAX_VALUE
-        //gridCharacter.maxHeight = Double.MAX_VALUE
+
         gridCharacter.maxWidth = 600.0
         gridCharacter.maxHeight = 400.0
         gridCharacter.prefWidth = 600.0
@@ -48,6 +49,7 @@ class GameBoard(match: Match) : BorderPane() {
             )
         }
         match.updateGrid(gridCharacter, false)
+
 
         //Contraintes des 6 colonnes, sur les 6 colonnes du grid, on va occuper tout l'espace dispo et comme ça c'est responsive
         repeat(6) {
@@ -67,7 +69,9 @@ class GameBoard(match: Match) : BorderPane() {
             gridCharacter.rowConstraints.add(row)
         }
 
+        labelLog = Label(match.printState())
         this.center = gridCharacter
+        this.bottom = labelLog
         this.charSelOnGrid = mutableListOf()
 
         info = GridPane()

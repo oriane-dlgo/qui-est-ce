@@ -12,7 +12,7 @@ class ControleurBoutonJouer(val modele: Client, val view: MainView) : EventHandl
         val loginView = Login()
         view.setCenterView(loginView)
         loginView.btndia1.setOnAction(ControleurBoutonLogin(modele, view, loginView))
-        println("Vous avez cliqué sur \"Jouer\" ")
+        println("Lancement du jeu ...")
     }
 
 }

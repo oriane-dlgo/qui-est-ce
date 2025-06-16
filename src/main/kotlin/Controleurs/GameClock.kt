@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame
 import javafx.animation.Timeline
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
+import javafx.scene.control.Label
 import javafx.util.Duration
 import modele.Match
 import vue.Answer
@@ -17,20 +18,28 @@ import vue.WaitingPlayer
 
 class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
 
+    var keyPass : MutableList<Int>
+    var roundCounter : Int
+    var matchRound : Int
+
     init {
         val waitingPlayer = WaitingPlayer()
 
-        var keyPass = mutableListOf<Int>()
+        roundCounter = 1
+        matchRound = match.getRound()
+        keyPass = mutableListOf<Int>()
+
 
         val timeline = Timeline(
             KeyFrame(Duration.seconds(4.0), EventHandler {
 
+                if (matchRound +1 == roundCounter){
+                    roundCounter = matchRound
+                    keyPass.clear()
+                }
+
                 match.updateMatchState()
-
-                match.printState()
-
-                print("Tour n° ${match.getRound()}")
-                print("Joueur n° ${match.getPlayerNo()}")
+                gameBoard.bottom = Label(match.printState())
 
                 if (match.getMatchState() == ETAPE.CREEE) {
 
@@ -40,7 +49,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                     println("Attente du joueur adverse")
 
                 }
-                if (match.getMatchState() == ETAPE.INITIALISATION && match.charPicked == -1 && keyPass.find { it == 1 } == null){
+                if (match.getMatchState() == ETAPE.INITIALISATION && match.charPickedNo == -1 && keyPass.find { it == 1 } == null) {
                     // ***** PICK CHAR *****
                     // STATE : Le deuxieme joueur vient de rejoindre
                     // DO : Affiche la vue pour la selection de perso
@@ -53,7 +62,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
 
 
                 }
-                if (match.getMatchState() == ETAPE.INITIALISATION && match.charPicked == 1 && keyPass.find { it == 2 } == null) {
+                if (match.getMatchState() == ETAPE.INITIALISATION && match.charPickedNo == 1 && keyPass.find { it == 2 } == null) {
                     // ***** PICK CHAR *****
                     // STATE : Un des joueurs a selectionné son perso et attend l'autre
                     // DO : Affiche la vue d'attente d'adversaire
@@ -65,13 +74,30 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                 ////////////////////////////////////////////////////////////////////////////////////////
                 //////     ------------------------   TOUR IMPAIR   -----------------------       //////
                 ////////////////////////////////////////////////////////////////////////////////////////
-                if (match.getRound() % 2 != 0) {
+                var matchPlayerNo : Int = match.getPlayerNo()
+                var currentPlayerNo : Int
+
+                if (match.getRound() % 2 == 0) {
+                    if (matchPlayerNo == 1){
+                        currentPlayerNo = 2
+                    }else{
+                        currentPlayerNo = 1
+                    }
+                }else{
+                    if (matchPlayerNo == 1){
+                        currentPlayerNo = 1
+                    }else{
+                        currentPlayerNo = 2
+                    }
+
+                }
+
                     // QUESTION
                     if (match.getMatchState() == ETAPE.ATTENTE_QUESTION && keyPass.find { it == 3 } == null) {
                         // STATE : TOUR IMPAIR -> joueur 1 questionne, joueur 2 wait
                         // DO : Affiche la vue Guess et WaitingPlayer
 
-                        if (match.getPlayerNo() == 1) {
+                        if (currentPlayerNo == 1) {
                             val guess = Guess()
                             gameBoard.switchChildView(guess)
                             guess.question.onAction = ControleurBoutonQuestion(match, gameBoard)
@@ -86,11 +112,11 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         // STATE : TOUR IMPAIR -> joueur 2 repond, joueur 1 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
 
-                        if (match.getPlayerNo() == 2) {
+                        if (currentPlayerNo == 2) {
                             val answer = Answer(match.getQuestion())
                             gameBoard.switchChildView(answer)
-                            answer.btnOui.onAction = ControleurBoutonReponse(match, gameBoard,answer,1)
-                            answer.btnNon.onAction = ControleurBoutonReponse(match, gameBoard,answer,2)
+                            answer.btnOui.onAction = ControleurBoutonReponse(match, gameBoard, answer, 1)
+                            answer.btnNon.onAction = ControleurBoutonReponse(match, gameBoard, answer, 2)
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
@@ -103,10 +129,11 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         // STATE : TOUR IMPAIR -> joueur 1 elimine, joueur 2 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
 
-                        if (match.getPlayerNo() == 1) {
-                            val hideChar = HideCharacter()
+                        if (currentPlayerNo == 1) {
+                            val hideChar = HideCharacter(match.getAnswer())
                             gameBoard.switchChildView(hideChar)
                             hideChar.btnHide.onAction = ControleurBoutonHide(match, gameBoard)
+                            hideChar.btnOk.onAction = ControleurBoutonHideFinish(match, gameBoard)
 
 
                         } else {
@@ -115,36 +142,37 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         }
                         keyPass.add(8)
                     }
-                }
-/*
-                ////////////////////////////////////////////////////////////////////////////////////////
-                //////     ------------------------    TOUR PAIR    -----------------------       //////
-                ////////////////////////////////////////////////////////////////////////////////////////
-                if (match.getRound() % 2 == 0) {
-                    if (match.getMatchState() == ETAPE.ATTENTE_QUESTION) {
-                        // STATE : TOUR IMPAIR -> joueur 2 play, joueur 1 wait
-                        // DO : Affiche la vue Guess et WaitingPlayer
-                        if (match.getPlayerNo() == 2) {
-                            val guess = Guess()
-                            gameBoard.switchChildView(guess)
-                        } else {
-                            val waitingPlayer = WaitingPlayer()
-                            gameBoard.switchChildView(waitingPlayer)
-                        }
-                    }
-                    if (match.getMatchState() == ETAPE.ATTENTE_REPONSE) {
-                        // STATE : TOUR IMPAIR -> joueur 1 play, joueur 2 wait
-                        // DO : Affiche la vue Answer et WaitingPlayer
-                        if (match.getPlayerNo() == 1) {
-                            //val answer = Answer()
-                            //gameBoard.switchChildView(answer)
-                        } else {
-                            val waitingPlayer = WaitingPlayer()
-                            gameBoard.switchChildView(waitingPlayer)
-                        }
-                    }
-                }
-*/
+
+
+                /*
+                                ////////////////////////////////////////////////////////////////////////////////////////
+                                //////     ------------------------    TOUR PAIR    -----------------------       //////
+                                ////////////////////////////////////////////////////////////////////////////////////////
+                                if (match.getRound() % 2 == 0) {
+                                    if (match.getMatchState() == ETAPE.ATTENTE_QUESTION) {
+                                        // STATE : TOUR IMPAIR -> joueur 2 play, joueur 1 wait
+                                        // DO : Affiche la vue Guess et WaitingPlayer
+                                        if (match.getPlayerNo() == 2) {
+                                            val guess = Guess()
+                                            gameBoard.switchChildView(guess)
+                                        } else {
+                                            val waitingPlayer = WaitingPlayer()
+                                            gameBoard.switchChildView(waitingPlayer)
+                                        }
+                                    }
+                                    if (match.getMatchState() == ETAPE.ATTENTE_REPONSE) {
+                                        // STATE : TOUR IMPAIR -> joueur 1 play, joueur 2 wait
+                                        // DO : Affiche la vue Answer et WaitingPlayer
+                                        if (match.getPlayerNo() == 1) {
+                                            //val answer = Answer()
+                                            //gameBoard.switchChildView(answer)
+                                        } else {
+                                            val waitingPlayer = WaitingPlayer()
+                                            gameBoard.switchChildView(waitingPlayer)
+                                        }
+                                    }
+                                }
+                */
                 ////////////////////////////////////////////////////////////////////////////////////////
                 //////      ------------------------   other    -----------------------       //////
                 ////////////////////////////////////////////////////////////////////////////////////////
@@ -159,6 +187,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
     override fun handle(p0: ActionEvent?) {
         TODO("Not yet implemented")
     }
+
 
 
 }

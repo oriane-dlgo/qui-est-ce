@@ -10,8 +10,6 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
-import javafx.scene.paint.Color
-import javafx.scene.shape.Rectangle
 
 class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo: Int) {
 
@@ -28,9 +26,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private var matchState: ETAPE
 
     private var characterPicked: Personnage
-    private var question: String
-    private var answer: String
-    var charPicked: Int = -1
+    var charPickedNo: Int = -1
 
     // A CHECK
     private lateinit var characterGuess: Personnage
@@ -64,21 +60,14 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
         if (this.opponentId != -1) {
             this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
-            println("LLLAAAA ON DEMANDE LA GRILLE DE LADVERSAIRE LA PREMIERE FOIS")
         }
 
 
 
         this.roundCounter = 1
         this.characterPicked = Personnage("", "", "")
-        this.question = ""
-        this.answer = ""
 
 
-        // A CHECK
-        //this.boardList = listOf(characterList.shuffled().toMutableList(), characterList.shuffled().toMutableList())
-        //this.haveWinner = false
-        //this.saved = false
     }
     //
     //
@@ -87,16 +76,17 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     // Fonctions principales
 
     fun nextRound() {
-        this.question = ""
-        this.answer = ""
         this.roundCounter += 1
         server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
+
     }
 
-    fun printState() {
+    fun printState(): String {
+        val state = server.requeteEtatPartie(this.matchId)
+        val log = "     Etape match : ${this.matchState}                    Tour n° $roundCounter                    Joueur n° $playerNo"
+        val match ="\n     Etape serveur : ${state.etape}     id joueur 1 :${state.idJoueur1}     id joueur 2 :${state.idJoueur2}     question : ${state.questionCourante}     reponse : ${state.reponseCourante}     id match : ${this.matchId}"
 
-        println("Serveur : ${server.requeteEtatPartie(this.matchId)}")
-        println("Match : ${this.matchState}")
+        return log + match
     }
 
     fun getMatchState(): ETAPE {
@@ -113,42 +103,18 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
     }
 
-    /*
-    fun updateMatchState(): EtatPartie {
-
-        val state = server.requeteEtatPartie(this.matchId)
-
-        if (state.etape == ETAPE.INITIALISATION && matchState == ETAPE.CREEE) {
-            this.matchState = ETAPE.INITIALISATION
-        }
-        if (state.etape == ETAPE.ATTENTE_QUESTION && matchState == ETAPE.INITIALISATION) {
-            this.matchState = ETAPE.ATTENTE_QUESTION
-        }
-        if (state.etape == ETAPE.ATTENTE_REPONSE && matchState == ETAPE.ATTENTE_QUESTION) {
-            this.matchState = ETAPE.ATTENTE_REPONSE
-        }
-        if (state.etape == ETAPE.ATTENTE_REFLEXION && matchState == ETAPE.ATTENTE_REPONSE) {
-            this.matchState = ETAPE.ATTENTE_REFLEXION
-        }
-
-
-        return state
-    }
-
-     */
     fun updateMatchState(): EtatPartie {
         this.matchState = server.requeteEtatPartie(this.matchId).etape
         return server.requeteEtatPartie(this.matchId)
     }
-    fun resetListSelChar(){
+
+    fun resetListSelChar() {
         this.listSelChar = mutableListOf()
     }
 
     fun pickCharacter(row: Int, col: Int) {
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
-
-        println("Vous venez de choisir ${this.characterPicked}")
     }
 
     fun getPictureOf(row: Int, col: Int, opponent: Boolean = true): Node {
@@ -174,7 +140,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun updateGrid(gridCharacter: GridPane, opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
 
         gridCharacter.children.clear()
-        println("**** \n La liste est celle de l'adversaire = $opponent \n****")
         gridCharacter.isGridLinesVisible = true
 
         var index = 1  // Pour associer chaque case à un numéro (1 à 24)
@@ -192,37 +157,31 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                 stack.children.add(picture)
                 stack.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
 
-                /////// TEST ENCADRER ROUGE
-                // ID pour l'identifiant de la case
+                // OPTION CLICK / SELECTION CHARACTER
                 stack.userData = index
-
-                // Ajoute le clic
-                //if (this.matchState == ETAPE.INITIALISATION || this.matchState == ETAPE.ATTENTE_REFLEXION)
                 stack.setOnMouseClicked {
+                    val id = stack.userData as Int
 
-                        val id = stack.userData as Int
+                    // SELECTION SECRET CHARACTER
+                    if (this.matchState == ETAPE.INITIALISATION && this.charPickedNo == -1) {
+                        // Un seul personnage sélectionnable
+                        // Nettoie ancienne sélection
+                        this.listSelChar.clear()
 
-                        if (this.matchState == ETAPE.INITIALISATION && this.charPicked == -1) {
-                            println("\n\n\nÉTAT ACTUEL DU MATCH = ${this.matchState}\n\n\n")
-
-                            // Un seul personnage sélectionnable
-                            // Nettoie ancienne sélection
-                            this.listSelChar.clear()
-
-                            // Réinitialise styles des autres cases
-                            gridCharacter.children.forEach { node ->
-                                if (node is StackPane) {
-                                    node.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
-                                }
+                        // Réinitialise styles des autres cases
+                        gridCharacter.children.forEach { node ->
+                            if (node is StackPane) {
+                                node.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
                             }
-
-                            // Ajoute la nouvelle sélection
-                            this.listSelChar.add(id)
-                            stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
                         }
-                    if ((this.playerNo == 1 && this.roundCounter %2 != 0) || (this.playerNo == 2 && this.roundCounter %2 == 0) ) {
+
+                        // Ajoute la nouvelle sélection
+                        this.listSelChar.add(id)
+                        stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
+                    }
+                    if ((this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)) {
+                        // SELECTION HIDE CHARACTER
                         if (this.matchState == ETAPE.ATTENTE_REFLEXION) {
-                            // Sélection libre (phase de jeu ?)
                             if (!this.listSelChar.contains(id)) {
                                 this.listSelChar.add(id)
                                 stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
@@ -231,17 +190,12 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                                 stack.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
                             }
                         }
-
-                        println("Cases sélectionnées : $listSelChar")
                     }
                 }
-                ///////////////////
                 gridCharacter.add(stack, col, row)
-
                 index++
             }
         }
-
         return gridCharacter
     }
 
@@ -249,8 +203,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun putQuestion(question: String) {
         server.requetePoserQuestion(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, question)
     }
-
-
     fun putAnswer(answer: String) {
         server.requeteDonnerReponse(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, answer)
     }
@@ -290,8 +242,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getCharacterPicked() = this.characterPicked
 
     //fun getBoardList() = this.boardList
-    fun getQuestion() = this.question
-    fun getAnswer() = this.answer
+    fun getQuestion() = server.requeteEtatPartie(this.matchId).questionCourante
+    fun getAnswer() = server.requeteEtatPartie(this.matchId).reponseCourante
 
     //fun getState() = this.saved
 //fun getWinner() = this.haveWinner

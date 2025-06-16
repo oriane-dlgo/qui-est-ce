@@ -13,7 +13,6 @@ class ControleurBoutonReponse(val match : Match, val gameBoard : GameBoard, val 
 
         if (btn == 1){
             match.putAnswer(answer.btnOui.text.toString().lowercase())
-            print(answer.btnOui.text)
         }else{
             match.putAnswer(answer.btnNon.text.toString().lowercase())
         }

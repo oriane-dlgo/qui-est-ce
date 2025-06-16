@@ -1,4 +1,0 @@
-package Controleurs
-
-class ControleurSelOnGrid {
-}
