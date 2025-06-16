@@ -6,24 +6,25 @@ import javafx.scene.control.Label
 import modele.Client
 import vue.MainView
 import vue.MatchList
-import vue.MatchMaking
 
-class ControleurBoutonRejoindrePartie(val modele : Client, val view : MainView) : EventHandler<ActionEvent> {
+class ControleurBoutonRejoindrePartie(val client : Client, val view : MainView) : EventHandler<ActionEvent> {
 
-    // Cliquer sur ce bouton ne fait qu'afficher la vue ListPartie
+    // Cliquer sur ce bouton affiche la vue ListPartie
     override fun handle(event: ActionEvent) {
 
         val matchListView = MatchList()
         view.setCenterView(matchListView)
 
-        matchListView.joinBtn.setOnAction(ControleurBoutonValiderPartie(modele, view, matchListView))
+        matchListView.joinBtn.setOnAction(ControleurBoutonValiderPartie(client, view, matchListView))
+        client.getMatchList()
         view.center = matchListView
-        matchListView.setOnRetourAction(ControleurBoutonRetour(view, modele))
+        matchListView.setOnRetourAction(ControleurBoutonRetour(view, client))
 
 
         //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
         //le withIndex va permettre d'avoir l'index et le contenu à l'index indiqué
-        val matchList = modele.getMatchServerList()
+        client.updateMatchList()
+        val matchList = client.getMatchList()
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
             matchListView.styleGridPane(label)

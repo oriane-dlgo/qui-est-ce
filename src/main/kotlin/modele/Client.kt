@@ -3,7 +3,6 @@ package modele
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.IdentificationJoueur
-import info.but1.sae2025.data.Personnage
 import info.but1.sae2025.exceptions.QuiEstCeException
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -14,7 +13,7 @@ class Client(server: QuiEstCeClient) {
     private var playerList: MutableList<Pair<Joueur,IdentificationJoueur>>
     private var playerListServer: MutableList<Pair<Joueur, IdentificationJoueur?>>
     private lateinit var currentMatch: Match
-    private var matchListServer : List<Int>
+    private var matchList : List<Int>
     private lateinit var currentPlayer: Pair<Joueur, IdentificationJoueur>
     var title : String
 
@@ -23,7 +22,7 @@ class Client(server: QuiEstCeClient) {
         this.playerList = getPlayerListJson()
         this.playerListServer = getPlayerListServer()
         //this.matchList = mutableListOf()
-        this.matchListServer = server.requeteListeParties()
+        this.matchList = server.requeteListeParties()
         this.title = "Match n°$this.id"
 
     }
@@ -100,6 +99,7 @@ class Client(server: QuiEstCeClient) {
         return
     }
 
+
     fun getPlayerListServer(): MutableList<Pair<Joueur, IdentificationJoueur?>> {
         var pairList: MutableList<Pair<Joueur, IdentificationJoueur?>> = mutableListOf()
 
@@ -143,6 +143,9 @@ class Client(server: QuiEstCeClient) {
         }
 
     }
+    fun updateMatchList(){
+        this.matchList = server.requeteListeParties()
+    }
 
     /*
     fun playerIsInList(server: QuiEstCeClient, lastName: String, name: String): Boolean {
@@ -182,7 +185,8 @@ class Client(server: QuiEstCeClient) {
 /// Fonctions de recuperations de données
     fun getPlayerList() = this.playerList
     //fun getMatchList() = this.matchList
-    fun getMatchServerList() = this.matchListServer
+    fun getMatchList() = this.matchList
+
     fun getCurrentPlayer() = this.currentPlayer
     fun getCurrentMatch() = this.currentMatch
     fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
