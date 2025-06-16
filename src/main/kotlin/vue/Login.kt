@@ -26,10 +26,12 @@ class Login : VBox() {
 
         // Met en place la couleur, la police d'écriture et la taille
         dia1Question.style = "-fx-text-fill: white"
-        dia1Question.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
+        dia1Question.font = Font.font("Courier New", FontWeight.BOLD, 35.0)
 
         nom = TextField("nom")
+        nom.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
         prenom = TextField("prénom")
+        prenom.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
         // nom = TextField().apply {
         //    promptText = "nom"
         //}                                Code permettant d'avoir "nom" et "prénom" en fond

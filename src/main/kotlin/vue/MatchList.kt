@@ -23,14 +23,14 @@ class MatchList : BorderPane() {
 
 
         listLabel = Label("Liste des parties disponibles :")
-        listLabel.font = Font.font("Courier New", FontWeight.BOLD, 20.0)  // Change la police d'écriture et la taille
+        listLabel.font = Font.font("Courier New", FontWeight.BOLD, 35.0)  // Change la police d'écriture et la taille
         listLabel.style = "-fx-text-fill: white"   // Met en blanc
 
 
         containList = GridPane()
         containList.maxWidth = Double.MAX_VALUE  // Fait en sorte que le GridPane prenne toujours tout la largeur
         containList.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
-        containList.style = "-fx-background-color: white"  // Met le fon en blanc
+        containList.style = "-fx-background-color: white; -fx-border-radius: 10px"  // Met le fon en blanc
 
         joinBtn = Button("Rejoindre")
         joinBtn.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
@@ -63,9 +63,10 @@ class MatchList : BorderPane() {
 
     fun styleGridPane(label: Label) {          //fonction qui permet d'afficher une bordure une fois l'ID cliqué
         label.style = "-fx-padding: 3px"
+        label.font = Font.font("Courier New", FontWeight.BOLD, 20.0)
         label.setOnMouseClicked {
             selectedLabel?.style = ""   //label précédent sans style
-            label.style = "-fx-border-color: #61888c; -fx-border-radius: 5px; -fx-padding: 5px " // Bordure
+            label.style = "-fx-border-color: #61888c; -fx-border-radius: 8px; -fx-padding: 5px " // Bordure
             selectedLabel = label //actualise le label actuel en label précédent
             champID = label.text // champID prend la valeur du label
 

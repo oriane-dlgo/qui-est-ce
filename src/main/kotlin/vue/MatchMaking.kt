@@ -22,7 +22,7 @@ class MatchMaking : VBox() {
         btnNew.setOnMouseExited {
             btnNew.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
         }
-        btnNew.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
+        btnNew.font = Font.font("Courier New", FontWeight.BOLD, 22.0) // Change la police et la taille
         btnNew.padding = Insets(15.0)  // Modifie la taille du fond du bouton
 
 
@@ -34,7 +34,7 @@ class MatchMaking : VBox() {
         btnJoin.setOnMouseExited {
             btnJoin.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
         }
-        btnJoin.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
+        btnJoin.font = Font.font("Courier New", FontWeight.BOLD, 22.0) // Change la police et la taille
         btnJoin.padding = Insets(15.0)  // Modifie la taille du fond du bouton
 
 
