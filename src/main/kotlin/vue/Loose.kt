@@ -6,15 +6,14 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 
-class Win(val round : Int): VBox() {
+class Loose(val round : Int): VBox() {
     val label : Label
     val btnAgain : Button
 
     init{
 
-
-        label = Label("Félicitation, vous avez réussi à deviner le personnage choisi" +
-                "par votre adversaire en $round tours.")
+        label = Label("DEFAITE ! Votre adversaire a été plus rapide que vous" +
+                "la partie a durée $round tours.")
         label.style = "-fx-text-fill: white"
         label.font = Font.font("Courier New", FontWeight.BOLD, 18.0)
 

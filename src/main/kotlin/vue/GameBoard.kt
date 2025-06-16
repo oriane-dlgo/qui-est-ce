@@ -70,7 +70,7 @@ class GameBoard(match: Match) : BorderPane() {
             gridCharacter.rowConstraints.add(row)
         }
 
-        labelLog = Label(match.printState())
+        labelLog = Label(match.printState(ETAPE.CREEE))
         this.center = gridCharacter
         this.bottom = labelLog
         this.charSelOnGrid = mutableListOf()

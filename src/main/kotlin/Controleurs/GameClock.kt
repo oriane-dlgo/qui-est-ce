@@ -11,10 +11,12 @@ import javafx.util.Duration
 import modele.Match
 import vue.Answer
 import vue.GameBoard
-import vue.Guess
+import vue.Question
 import vue.HideCharacter
+import vue.Loose
 import vue.PickCharacter
 import vue.WaitingPlayer
+import vue.Win
 
 class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<ActionEvent> {
 
@@ -39,7 +41,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
-                gameBoard.bottom = Label(match.printState())
+                gameBoard.bottom = Label(match.printState(matchState))
 
                 if (matchState == ETAPE.CREEE) {
 
@@ -93,9 +95,9 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         // DO : Affiche la vue Guess et WaitingPlayer
 
                         if (currentPlayerNo == 1) {
-                            val guess = Guess()
-                            gameBoard.switchChildView(guess)
-                            guess.question.onAction = ControleurBoutonQuestion(match, gameBoard)
+                            val question = Question()
+                            gameBoard.switchChildView(question)
+                            question.question.onAction = ControleurBoutonQuestion(match, gameBoard)
                         } else {
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)
@@ -136,14 +138,12 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         // STATE : TOUR IMPAIR -> joueur 1 elimine, joueur 2 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
 
-
-
                         if (currentPlayerNo == 1) {
                             val hideChar = HideCharacter(match.getAnswer())
                             gameBoard.switchChildView(hideChar)
                             hideChar.btnHide.onAction = ControleurBoutonHide(match, gameBoard)
-                            hideChar.btnOk.onAction = ControleurBoutonHideFinish(match, gameBoard)
-
+                            hideChar.btnOk.onAction = ControleurBoutonEndOfRound(match, gameBoard)
+                            hideChar.proposition.onAction = ControleurBoutonGuess(match, gameBoard)
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
@@ -153,10 +153,30 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         //keyPass.add(4)
                     }
                     if (matchState == ETAPE.ATTENTE_REFLEXION && matchState != match.getMatchState() && keyPass.any { it == 5}){
-                        matchState = ETAPE.ATTENTE_QUESTION
-                        match.nextRound()
-                        keyPass = match.updateKeyPass(0, true)
 
+                        if (match.getMatchState() == ETAPE.TERMINEE){
+                            matchState = ETAPE.TERMINEE
+                        }else{
+                            matchState = ETAPE.ATTENTE_QUESTION
+                            match.nextRound()
+                            keyPass = match.updateKeyPass(0, true)
+                        }
+
+                    }
+                    // END OF MATCH
+                    if (matchState == ETAPE.TERMINEE && keyPass.find { it == 6 } == null){
+                        // STATE : TOUR PAIR -> joueur 2 gagne, joueur 1 loose
+                        // DO : Affiche la vue WIN et LOOSE
+                        if (currentPlayerNo == 2) {
+                            val win = Win(match.getRound())
+                            gameBoard.switchChildView(win)
+                            //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
+                        } else {
+                            val loose = Loose(match.getRound())
+                            gameBoard.switchChildView(loose)
+                            //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
+                        }
+                        match.updateKeyPass(6)
                     }
                 } else {
                     ////////////////////////////////////////////////////////////////////////////////////////
@@ -171,9 +191,9 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
 
 
                         if (currentPlayerNo == 2) {
-                            val guess = Guess()
-                            gameBoard.switchChildView(guess)
-                            guess.question.onAction = ControleurBoutonQuestion(match, gameBoard)
+                            val question = Question()
+                            gameBoard.switchChildView(question)
+                            question.question.onAction = ControleurBoutonQuestion(match, gameBoard)
                         } else {
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)
@@ -188,7 +208,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
 
                     // REPONSE
                     if (matchState == ETAPE.ATTENTE_REPONSE && keyPass.find { it == 4 } == null) {
-                        // STATE : TOUR IMPAIR -> joueur 1 repond, joueur 2 wait
+                        // STATE : TOUR PAIR -> joueur 1 repond, joueur 2 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
 
                         if (currentPlayerNo == 1) {
@@ -211,14 +231,15 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
 
                     // REFLEXION
                     if (matchState == ETAPE.ATTENTE_REFLEXION && keyPass.find { it == 5 } == null) {
-                        // STATE : TOUR IMPAIR -> joueur 2 elimine, joueur 1 wait
+                        // STATE : TOUR PAIR -> joueur 2 elimine, joueur 1 wait
                         // DO : Affiche la vue Answer et WaitingPlayer
 
                         if (currentPlayerNo == 2) {
                             val hideChar = HideCharacter(match.getAnswer())
                             gameBoard.switchChildView(hideChar)
                             hideChar.btnHide.onAction = ControleurBoutonHide(match, gameBoard)
-                            hideChar.btnOk.onAction = ControleurBoutonHideFinish(match, gameBoard)
+                            hideChar.btnOk.onAction = ControleurBoutonEndOfRound(match, gameBoard)
+                            hideChar.proposition.onAction = ControleurBoutonGuess(match, gameBoard)
 
 
                         } else {
@@ -229,11 +250,33 @@ class GameClock(val match: Match, val gameBoard: GameBoard) : EventHandler<Actio
                         //keyPass.add(4)
                     }
                     if (matchState == ETAPE.ATTENTE_REFLEXION && matchState != match.getMatchState() && keyPass.any { it == 5}){
-                        matchState = ETAPE.ATTENTE_QUESTION
-                        match.nextRound()
-                        keyPass = match.updateKeyPass(0, true)
+
+                        if (match.getMatchState() == ETAPE.TERMINEE){
+                            matchState = ETAPE.TERMINEE
+                                                    }else{
+                            matchState = ETAPE.ATTENTE_QUESTION
+                            match.nextRound()
+                            keyPass = match.updateKeyPass(0, true)
+                        }
 
                     }
+                    // END OF MATCH
+                    if (matchState == ETAPE.TERMINEE && keyPass.find { it == 6 } == null){
+                        // STATE : TOUR PAIR -> joueur 2 gagne, joueur 1 loose
+                        // DO : Affiche la vue WIN et LOOSE
+                        if (currentPlayerNo == 2) {
+                            val win = Win(match.getRound())
+                            gameBoard.switchChildView(win)
+                            //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
+                        } else {
+                            val loose = Loose(match.getRound())
+                            gameBoard.switchChildView(loose)
+                            //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
+                        }
+                        match.updateKeyPass(6)
+                    }
+
+
                 }
             })
         )

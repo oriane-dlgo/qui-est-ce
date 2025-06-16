@@ -26,7 +26,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private lateinit var opponentGrid: List<List<Personnage>>
     private var listSelChar: MutableList<Int>
     private var listHideChar: MutableList<Int>
-    private var keyPass : MutableList<Int>
+    private var keyPass: MutableList<Int>
 
     private var matchState: ETAPE
 
@@ -81,10 +81,11 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     //
     // Fonctions principales
 
-    fun endOfRound(){
+    fun endOfRound() {
         server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
     }
-    fun nextRound(){
+
+    fun nextRound() {
         roundCounter++
     }
     /*fun nextRound(iCloseIt :Boolean = false) {
@@ -94,10 +95,12 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
     }*/
 
-    fun printState(): String {
+    fun printState(matchState : ETAPE): String {
         val state = server.requeteEtatPartie(this.matchId)
-        val log = "     Etape match : ${this.matchState}                    Tour n° $roundCounter                    Joueur n° $playerNo"
-        val match ="\n     Etape serveur : ${state.etape}     id joueur 1 :${state.idJoueur1}     id joueur 2 :${state.idJoueur2}     question : ${state.questionCourante}     reponse : ${state.reponseCourante}     id match : ${this.matchId}"
+        val log =
+            "     Etape match : ${matchState}                    Tour n° $roundCounter                    Joueur n° $playerNo"
+        val match =
+            "\n     Etape serveur : ${state.etape}     id joueur 1 :${state.idJoueur1}     id joueur 2 :${state.idJoueur2}     question : ${state.questionCourante}     reponse : ${state.reponseCourante}     id match : ${this.matchId}"
 
         return log + match
     }
@@ -134,6 +137,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun pickCharacter(row: Int, col: Int) {
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
+
     }
 
     fun getPictureOf(row: Int, col: Int, opponent: Boolean = true): Node {
@@ -160,6 +164,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
     fun updateGrid(gridCharacter: GridPane, opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
 
+        val roundByPlayer = (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
+
         gridCharacter.children.clear()
         gridCharacter.isGridLinesVisible = true
 
@@ -184,7 +190,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                     val id = stack.userData as Int
 
                     // SELECTION SECRET CHARACTER
-                    if (this.matchState == ETAPE.INITIALISATION && this.charPickedNo == -1) {
+                    if ((this.matchState == ETAPE.INITIALISATION && this.charPickedNo == -1) || (this.matchState == ETAPE.ATTENTE_QUESTION && roundByPlayer)) {
                         // Un seul personnage sélectionnable
                         // Nettoie ancienne sélection
                         this.listSelChar.clear()
@@ -200,7 +206,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                         this.listSelChar.add(id)
                         stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
                     }
-                    if ((this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)) {
+                    if (roundByPlayer) {
                         // SELECTION HIDE CHARACTER
                         if (this.matchState == ETAPE.ATTENTE_REFLEXION) {
                             if (!this.listSelChar.contains(id)) {
@@ -224,44 +230,59 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun putQuestion(question: String) {
         server.requetePoserQuestion(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, question)
     }
+
     fun putAnswer(answer: String) {
         server.requeteDonnerReponse(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, answer)
     }
 
-    fun updateKeyPass(number : Int, erase : Boolean = false) : MutableList<Int>{
-        if (erase){
+    fun updateKeyPass(number: Int, erase: Boolean = false): MutableList<Int> {
+        if (erase) {
             this.keyPass.subList(1, keyPass.size).clear()
-        }else{
+        } else {
             this.keyPass.add(number)
         }
         return keyPass
     }
-    fun getKeyPass() : MutableList<Int>{
+
+    fun getKeyPass(): MutableList<Int> {
         return this.keyPass
     }
 
 
+    fun makeGuess(caseId : Int){
+
+        val position = getRowCol(caseId)
+        if (position != null) {
+            val (row, col) = position
+            server.requeteTrouve(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
+        }
+    }
+    fun getRowCol(caseId : Int): Pair<Int, Int>?{
+        var i : Int = 0
+        for (row in 0 until 4) {
+            for (col in 0 until 6) {
+                i++
+                if (i == caseId) {
+                    return Pair(row, col)
+                }
+            }
+        }
+        return null
+    }
     /*
-          fun makeGuess(player: Int , characterIndex: Int) : Personnage{
-              var character = this.boardList[player][characterIndex]
-              this.characterGuess = character
-              this.question = "GUESS"
-              return character
-          }
-
-          fun checkGuess(player: Int) : Boolean{
-              return this.characterGuess == this.characterPicked[player]
-          }
+        fun checkGuess(player: Int): Boolean {
+            return this.characterGuess == this.characterPicked[player]
+        }
 
 
 
-          fun endOfMatch(player : Int) {
-              this.winner = this.playersList[player]
-              this.question = ""
-              this.answer = ""
-              this.saved = true
-          }
-           */
+                 fun endOfMatch(player : Int) {
+                     this.winner = this.playersList[player]
+                     this.question = ""
+                     this.answer = ""
+                     this.saved = true
+                 }
+                  */
 
 
     //

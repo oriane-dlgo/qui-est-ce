@@ -5,9 +5,9 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 
-class Guess : VBox() {
+class Question : VBox() {
     val question : Button
-    val proposition : Button
+
 
     init{
         question = Button("Poser une question")
@@ -20,17 +20,9 @@ class Guess : VBox() {
         }
         question.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
 
-        proposition = Button("Proposer une solution")
-        proposition.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
-        proposition.setOnMouseEntered {
-            proposition.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
-        }
-        proposition.setOnMouseExited {
-            proposition.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
-        }
-       proposition.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
 
-        this.children.addAll(question, proposition)
+
+        this.children.addAll(question)
 
 
     }
