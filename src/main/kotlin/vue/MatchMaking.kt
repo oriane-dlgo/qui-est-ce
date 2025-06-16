@@ -1,19 +1,31 @@
 package vue
 
+import Controleurs.ControleurBoutonLogin
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import kotlinx.serialization.descriptors.PrimitiveKind
+import modele.Client
 
-class MatchMaking : VBox() {
+class MatchMaking : BorderPane() {
 
+    val bvnJoueur : Label
     val btnBox : VBox //center
     val btnNew : Button //vbox
     val btnJoin : Button //vbox
 
     init{
+        bvnJoueur = Label("")
+        bvnJoueur.font = Font.font("Courier New", FontWeight.BOLD, 30.0)
+        bvnJoueur.style = "-fx-text-fill: white"
+        bvnJoueur.padding = Insets(30.0)
+
+
         btnNew = Button("Nouvelle Partie")
         btnNew.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
         btnNew.setOnMouseEntered {
@@ -24,7 +36,6 @@ class MatchMaking : VBox() {
         }
         btnNew.font = Font.font("Courier New", FontWeight.BOLD, 22.0) // Change la police et la taille
         btnNew.padding = Insets(15.0)  // Modifie la taille du fond du bouton
-
 
         btnJoin = Button("Rejoindre une Partie")
         btnJoin.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
@@ -38,11 +49,14 @@ class MatchMaking : VBox() {
         btnJoin.padding = Insets(15.0)  // Modifie la taille du fond du bouton
 
 
-        btnBox = VBox(30.0, btnNew, btnJoin)
+        btnBox = VBox(60.0, btnNew, btnJoin)  // Espacement entre les boutons dans la VBox
         btnBox.alignment = Pos.CENTER
-        VBox.setMargin (btnBox, Insets(100.0))  // Pousse la VBox des boutons vers le bas (de 100 px)
-        this.children.add(btnBox)
 
+        this.top = bvnJoueur
+        this.center = btnBox  // centre la VBox qui contient btnBox
 
+    }
+    fun setBienvenueMessage(nom: String, prenom: String) {
+        bvnJoueur.text = "Bienvenue $nom $prenom"
     }
 }

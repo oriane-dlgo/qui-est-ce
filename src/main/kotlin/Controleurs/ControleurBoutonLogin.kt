@@ -13,10 +13,13 @@ class ControleurBoutonLogin(val client: Client, val view: MainView, val loginVie
     override fun handle(event: ActionEvent) {
         val matchMakingView = MatchMaking()
 
+
         try {
             // Connexion joueur
             client.playerLogin(loginView.nom.text, loginView.prenom.text)
 
+            // Mise à jour du message de bienvenue dans MatchMaking
+            matchMakingView.setBienvenueMessage(loginView.nom.text, loginView.prenom.text)
             // Changement de la vue
             view.setCenterView(matchMakingView)
             matchMakingView.btnJoin.setOnAction(ControleurBoutonRejoindrePartie(client, view))
