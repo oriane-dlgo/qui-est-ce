@@ -3,11 +3,14 @@ package vue
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextField
+import javafx.scene.layout.Background
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 
@@ -19,6 +22,7 @@ class MatchList : BorderPane() {
     val joinBtn : Button
     var champID : String
     var selectedLabel : Label?
+    val scrollbar : ScrollPane
     init{
 
 
@@ -54,7 +58,12 @@ class MatchList : BorderPane() {
         BorderPane.setMargin(listLabel, Insets(10.0))
         BorderPane.setMargin(containList, Insets(10.0))
         BorderPane.setMargin(joinBtn, Insets(10.0))
+        scrollbar = ScrollPane()
 
+        scrollbar.content = containList
+        scrollbar.isFitToHeight = true
+        scrollbar.isFitToWidth = true
+        this.center = scrollbar
 
         if (champID.isEmpty()) {
             joinBtn.isDisable = true  // désactive le bouton (grisé, non cliquable)
