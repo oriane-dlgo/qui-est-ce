@@ -23,9 +23,10 @@ class MatchList : BorderPane() {
     var champID : String
     var selectedLabel : Label?
     val scrollbar : ScrollPane
+    val retour : Button
     init{
 
-
+        retour = Button("Retour")
         listLabel = Label("Liste des parties disponibles :")
         listLabel.font = Font.font("Courier New", FontWeight.BOLD, 35.0)  // Change la police d'écriture et la taille
         listLabel.style = "-fx-text-fill: white"   // Met en blanc
@@ -64,6 +65,8 @@ class MatchList : BorderPane() {
         scrollbar.isFitToHeight = true
         scrollbar.isFitToWidth = true
         this.center = scrollbar
+
+
 
         if (champID.isEmpty()) {
             joinBtn.isDisable = true  // désactive le bouton (grisé, non cliquable)
