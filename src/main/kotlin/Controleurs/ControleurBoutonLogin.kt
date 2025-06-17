@@ -17,6 +17,9 @@ class ControleurBoutonLogin(val client: Client, val mainView: MainView, val logi
             // Connexion joueur
             var player = client.playerLogin(login.textFieldLastName.text, login.textFieldName.text)
 
+            // Mise à jour du message de bienvenue
+            matchMaking.setBienvenueMessage(login.textFieldName.text)
+
             // Changement de vue
             matchMaking.player = player
             mainView.center = matchMaking

@@ -39,7 +39,7 @@ class MatchMaking : StackPane() {
         backSquare.padding = Insets(60.0)
         backSquare.spacing = 40.0
 
-        labelBvn = createHomeLabel("Bienvenue ! ${player.first} ${player.first}")
+        labelBvn = createHomeLabel("")
         labelBvn.style = """
             -fx-font-size: 30px;
            
@@ -60,7 +60,7 @@ class MatchMaking : StackPane() {
         this.children.add(backSquare)
 
     }
-    //fun setBienvenueMessage(nom: String, prenom: String) {
-    //    bvnJoueur.text = "Bienvenue $nom $prenom"
-    //}
+    fun setBienvenueMessage( prenom: String) {
+        labelBvn.text = "Bienvenue $prenom !"
+    }
 }
