@@ -18,8 +18,6 @@ import ui.*
 
 class MatchMaking : StackPane() {
 
-    val backSquare : VBox
-    val labelBvn : Label
     var player : Pair<String, String> //center
 
     val backSquare : StackPane
@@ -59,7 +57,6 @@ class MatchMaking : StackPane() {
 
         btnNew = createMainButton("Nouvelle Partie")
         btnList = createMainButton("Liste des Parties")
-        btnReturn = createMainButton("Retour")
 
         containerReturnBtn = StackPane()
         btnReturn = createBackButton()
