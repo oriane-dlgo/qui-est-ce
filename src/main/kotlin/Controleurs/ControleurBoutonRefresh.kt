@@ -1,17 +1,20 @@
 package Controleurs
 
+import info.but1.sae2025.QuiEstCeClient
+import info.but1.sae2025.exceptions.QuiEstCeException
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.scene.control.Label
+import javafx.scene.layout.Pane
 import modele.Client
-import vue.GameBoard
 import vue.MainView
-import vue.MatchList
+
 import vue.MatchMaking
+import vue.Login
+import vue.MatchList
 
-class ControleurBoutonRejoindrePartie(val client : Client, val view : MainView, val matchList: MatchList) : EventHandler<ActionEvent> {
+class ControleurBoutonRefresh(val client: Client, val matchList : MatchList ) : EventHandler<ActionEvent> {
 
-    // AFFICHE -> Vue MatchList
+    // REFRESH -> Grid MatchList
     override fun handle(event: ActionEvent) {
 
         // Recuperation d'une liste de parties à jour
@@ -19,9 +22,6 @@ class ControleurBoutonRejoindrePartie(val client : Client, val view : MainView, 
 
         // Actualisation de la grille
         matchList.updateMatchListGrid()
-
-        // Affichage
-        view.center = matchList
 
     }
 }

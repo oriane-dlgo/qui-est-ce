@@ -159,8 +159,10 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
 
     }
 
-    fun updateMatchList() {
-        this.matchList = server.requeteListeParties()
+    fun updateMatchList() : List<Int>{
+        val newList = server.requeteListeParties()
+        this.matchList = newList
+        return newList
     }
 /*
     fun showPopUp(viewToPop: Pane, viewToBack: Pane, time: Double, stat: Boolean = false) {

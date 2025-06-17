@@ -17,11 +17,12 @@ import javafx.scene.text.FontWeight
 import ui.createBackButton
 import ui.createHomeLabel
 import ui.createMainButton
+import ui.createRefreshButton
 import ui.createTitleLabel
 
 class MatchList(matchList: List<Int>) : StackPane() {
 
-    val matchList: List<Int>
+    var matchList: List<Int>
     var selectedLabel: Label?
     var selectedId: Int
 
@@ -35,7 +36,10 @@ class MatchList(matchList: List<Int>) : StackPane() {
     val gridlist: GridPane
     val scrollbar: ScrollPane
 
-    val containerReturnBtn : StackPane
+    //val containerRefreshBtn : StackPane
+    val btnRefresh : Button
+
+    //val containerReturnBtn : StackPane
     val btnReturn : Button
 
     init {
@@ -77,26 +81,27 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
         //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
         //le withIndex va permettre d'avoir l'index et le contenu à l'index indiqué
-        for ((i, match) in matchList.withIndex()) {
-            val label = Label(match.toString())
-            this.styleGridPane(label)
-            this.gridlist.add(label, 0, i)
-        }
+        updateMatchListGrid()
 
         scrollbar = ScrollPane()
         scrollbar.content = gridlist
         scrollbar.isFitToHeight = true
         scrollbar.isFitToWidth = true
 
-        containerReturnBtn = StackPane()
+        //containerReturnBtn = StackPane()
         btnReturn = createBackButton()
-        containerReturnBtn.children.add(btnReturn)
+        //containerReturnBtn.children.add(btnReturn)
+
+        //containerRefreshBtn = StackPane()
+        btnRefresh = createRefreshButton()
+        //containerRefreshBtn.children.add(btnRefresh)
 
         listContainer.children.add(scrollbar)
 
         content.children.addAll(label, listContainer, btnJoin)
-        backSquare.children.addAll(content, btnReturn)
+        backSquare.children.addAll(content, btnReturn, btnRefresh)
         StackPane.setAlignment(btnReturn, Pos.TOP_LEFT)
+        StackPane.setAlignment(btnRefresh, Pos.TOP_RIGHT)
 
         this.children.add(backSquare)
         this.padding = Insets(20.0)
@@ -122,6 +127,14 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
         }
 */
+
+    fun updateMatchListGrid(){
+        for ((i, match) in matchList.withIndex()) {
+            val label = Label(match.toString())
+            this.styleGridPane(label)
+            this.gridlist.add(label, 0, i)
+        }
+    }
 
     fun styleGridPane(label: Label) {
         label.style = "-fx-padding: 5px;"

@@ -61,3 +61,33 @@ fun createBackButton() : Button {
     }
     return btn
 }
+
+fun createRefreshButton() : Button {
+
+    val size = 50.0
+
+    val imageNormal = ImageView(Image(object {}.javaClass.getResource("/assets/refreshBlue.png")!!.toExternalForm())).apply {
+        this.fitWidth = size
+        this.fitHeight = size
+        this.isPreserveRatio = true
+    }
+
+    val imageHover = ImageView(Image(object {}.javaClass.getResource("/assets/refreshDark.png")!!.toExternalForm())).apply {
+        this.fitWidth = size
+        this.fitHeight = size
+        this.isPreserveRatio = true
+    }
+
+    val btn = Button()
+    btn.graphic = imageNormal
+    btn.styleClass.add("back-button")
+
+    btn.setOnMouseEntered {
+        btn.graphic = imageHover
+    }
+
+    btn.setOnMouseExited {
+        btn.graphic = imageNormal
+    }
+    return btn
+}
