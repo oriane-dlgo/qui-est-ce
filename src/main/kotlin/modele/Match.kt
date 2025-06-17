@@ -10,6 +10,8 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
+import javafx.scene.paint.Color
+import javafx.scene.shape.Rectangle
 import vue.GameBoard
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -159,7 +161,13 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
             fitHeight = 100.0
             isPreserveRatio = true
         }
-        return imageView
+        val border = Rectangle(102.0, 102.0).apply {
+            fill = Color.WHITE
+        }
+        border.style = "-fx-border-color: #78a9af;"
+
+        return StackPane(border, imageView)
+
     }
 
     fun updateGrid(gridCharacter: GridPane, opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {

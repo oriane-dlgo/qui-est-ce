@@ -126,7 +126,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         }
 
         pictureContainer = StackPane(picture)
-        pictureContainer.setStyle("-fx-border-color: white; -fx-border-width: 1;")
+
 
 
         //pictureContainer.maxWidth = Double.MAX_VALUE
