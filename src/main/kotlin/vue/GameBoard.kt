@@ -84,6 +84,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         }
 
          */
+
         //Contraintes des 6 colonnes, sur les 6 colonnes du grid, on va occuper tout l'espace dispo et comme ça c'est responsive
         repeat(6) {
             val col = ColumnConstraints().apply {
@@ -124,7 +125,11 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
             fill = Color.WHITE
             stroke = Color.BLACK
         }
+
         pictureContainer = StackPane(picture)
+        pictureContainer.setStyle("-fx-border-color: white; -fx-border-width: 1;")
+
+
         //pictureContainer.maxWidth = Double.MAX_VALUE
         //pictureContainer.maxHeight = Double.MAX_VALUE
 
@@ -152,8 +157,15 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         viewContainer.maxHeight = 350.0
         viewContainer.prefHeight = 350.0
 
+
         character.children.addAll(pictureContainer, labelChar)
         rightPanel.children.addAll(character, viewContainer)
+
+
+        character.padding = Insets(18.0)
+
+
+
 
         gridPanel.children.add(gridCharacter)
 

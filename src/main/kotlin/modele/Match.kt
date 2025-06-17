@@ -129,7 +129,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
         gameBoard.gridCharacter.children.forEach { node ->
             if (node is StackPane) {
-                node.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
+                node.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
             }
         }
     }
@@ -167,7 +167,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         val roundByPlayer = (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
 
         gridCharacter.children.clear()
-        gridCharacter.isGridLinesVisible = true
+        gridCharacter.isGridLinesVisible = false
 
         var index = 1  // Pour associer chaque case à un numéro (1 à 24)
 
@@ -183,10 +183,10 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
                 stack.children.add(picture)
                 stack.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 1;"
-                stack.prefHeight = 100.0
-                stack.minHeight = 100.0
-                stack.prefWidth = 100.0
-                stack.minWidth = 100.0
+                stack.prefHeight = 108.0
+                stack.minHeight = 108.0
+                stack.prefWidth = 108.0
+                stack.minWidth = 108.0
 
                 // OPTION CLICK / SELECTION CHARACTER
                 stack.userData = index
@@ -202,23 +202,23 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                         // Réinitialise styles des autres cases
                         gridCharacter.children.forEach { node ->
                             if (node is StackPane) {
-                                node.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
+                                node.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
                             }
                         }
 
                         // Ajoute la nouvelle sélection
                         this.listSelChar.add(id)
-                        stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
+                        stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 4;"
                     }
                     if (roundByPlayer) {
                         // SELECTION HIDE CHARACTER
                         if (this.matchState == ETAPE.ATTENTE_REFLEXION) {
                             if (!this.listSelChar.contains(id)) {
                                 this.listSelChar.add(id)
-                                stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 5;"
+                                stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 4;"
                             } else {
                                 this.listSelChar.remove(id)
-                                stack.style = "-fx-border-color: #78a9af; -fx-border-width: 5;"
+                                stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
                             }
                         }
                     }

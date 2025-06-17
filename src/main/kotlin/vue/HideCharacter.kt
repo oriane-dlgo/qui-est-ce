@@ -1,5 +1,7 @@
 package vue
 
+import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
@@ -24,6 +26,10 @@ class HideCharacter(val answer : String) : VBox() {
         proposition = createSecondButton("Proposer une solution")
 
         this.children.addAll(labelResponse, btnHide, btnOk, proposition)
+        this.alignment = Pos.CENTER
+        this.spacing = 40.0
+        this.padding = Insets(15.0)
+
     }
 
 

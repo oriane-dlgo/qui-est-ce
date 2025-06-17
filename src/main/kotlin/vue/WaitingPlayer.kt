@@ -15,10 +15,13 @@ class WaitingPlayer : VBox() {
 
     init{
 
-        this.label = createTextLabel("nope")
+        this.label = createTextLabel("Waiting opponent")
         this.children.add(label)
         this.alignment = Pos.CENTER
+
         this.padding = Insets(10.0)
+
+
     }
 
     fun setMessage(message: String){
