@@ -15,6 +15,7 @@ class WaitingPlayer : VBox() {
 
     init{
 
+
         this.label = createTextLabel("Waiting opponent")
         this.children.add(label)
         this.alignment = Pos.CENTER

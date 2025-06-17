@@ -38,7 +38,6 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
     val charSelOnGrid : MutableList<Int>
     //var labelLog : Label
     val gameClock : GameClock
-    val waitingView = WaitingPlayer()
 
     var index: Int
    // val zoneIdPerso : TextField
@@ -135,25 +134,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
         labelChar = Label()
 
-
-        viewContainer = Pane(waitingView)
-            // Centrer la VBox dans le Pane :
-        // Centrer horizontalement
-        viewContainer.widthProperty().addListener { _, _, _ ->
-            waitingView.layoutX = (viewContainer.width - waitingView.width) / 2
-        }
-
-        // Centrage verticalement
-        viewContainer.heightProperty().addListener { _, _, _ ->
-            waitingView.layoutY = (viewContainer.height - waitingView.height) / 2
-        }
-
-        // Centrer quand la taille de la VBox change
-        waitingView.boundsInParentProperty().addListener { _, _, _ ->
-            waitingView.layoutX = (viewContainer.width - waitingView.width) / 2
-            waitingView.layoutY = (viewContainer.height - waitingView.height) / 2
-        }
-
+        viewContainer = VBox(WaitingPlayer())
         viewContainer.maxHeight = 350.0
         viewContainer.prefHeight = 350.0
 
