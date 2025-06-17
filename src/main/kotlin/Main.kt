@@ -44,8 +44,8 @@ class Main : Application() {
         matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
 
         // MATCHLIST
-        matchList.joinBtn.onAction = ControleurBoutonStartMatch(client, mainView, matchList, false)
-        matchList.retourBtn.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
+        matchList.btnJoin.onAction = ControleurBoutonStartMatch(client, mainView, matchList, false)
+        matchList.btnReturn.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
 
         // GAMEBOARD
 

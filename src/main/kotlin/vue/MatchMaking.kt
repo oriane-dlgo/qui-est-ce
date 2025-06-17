@@ -21,29 +21,38 @@ class MatchMaking : StackPane() {
     val backSquare : VBox
     val labelBvn : Label
     var player : Pair<String, String> //center
+
+    val backSquare : StackPane
+    val content : VBox
+    val labelBvn : Label
     val btnNew : Button //vbox
     val btnList : Button //vbox
+    var containerReturnBtn : StackPane
     val btnReturn : Button
 
     init{
 
         player = Pair("" ,"")
 
-        backSquare = VBox()
+        backSquare = StackPane()
         backSquare.maxWidth = 500.0
         backSquare.maxHeight = 500.0
         backSquare.prefWidth = 500.0
         backSquare.prefHeight = 500.0
         backSquare.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
-        backSquare.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
-        backSquare.padding = Insets(60.0)
-        backSquare.spacing = 40.0
+        backSquare.padding = Insets(20.0)
 
-        labelBvn = createHomeLabel("")
-        labelBvn.style = """
-            -fx-font-size: 30px;
-           
-        """.trimIndent()
+
+        content = VBox().apply {
+            alignment = Pos.CENTER
+            spacing = 40.0
+            padding = Insets(0.0, 0.0, 50.0, 0.0)
+        }
+
+
+        labelBvn = createHomeLabel("Bienvenue ! ${player.first} ${player.first}").apply {
+            style = """ -fx-font-size: 30px; """
+        }
 
        // labelBvn.padding = Insets(30.0)
 
@@ -52,12 +61,17 @@ class MatchMaking : StackPane() {
         btnList = createMainButton("Liste des Parties")
         btnReturn = createMainButton("Retour")
 
-        VBox.setMargin(btnReturn, Insets(30.0, 0.0, 0.0, 0.0))
+        containerReturnBtn = StackPane()
+        btnReturn = createBackButton()
+
+        containerReturnBtn.children.add(btnReturn)
 
 
+        content.children.addAll( labelBvn, btnNew, btnList)
+        backSquare.children.addAll(content, btnReturn)
+        StackPane.setAlignment(btnReturn, Pos.TOP_LEFT)
 
-        backSquare.children.addAll( labelBvn, btnNew, btnList, btnReturn)
-        this.children.add(backSquare)
+        this.children.addAll(backSquare)
 
     }
     fun setBienvenueMessage( prenom: String) {

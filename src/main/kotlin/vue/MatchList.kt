@@ -1,122 +1,159 @@
 package vue
 
-import info.but1.sae2025.data.IdentificationJoueur
-import info.but1.sae2025.data.Joueur
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
-import javafx.scene.control.TextField
-import javafx.scene.layout.Background
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import ui.createBackButton
+import ui.createHomeLabel
 import ui.createMainButton
 import ui.createTitleLabel
 
-class MatchList(matchList : List<Int>) : BorderPane() {
+class MatchList(matchList: List<Int>) : StackPane() {
+
+    val matchList: List<Int>
+    var selectedLabel: Label?
+    var selectedId: Int
+
+    val backSquare: StackPane
+    val content : VBox
+    //val top: HBox
+    val label: Label //vbox
+    val btnJoin: Button
+
+    val listContainer: VBox //vbox
+    val gridlist: GridPane
+    val scrollbar: ScrollPane
+
+    val containerReturnBtn : StackPane
+    val btnReturn : Button
+
+    init {
+
+        this.matchList = matchList
+        selectedLabel = null
+        selectedId = -1
+        //champID = String
+
+        backSquare = StackPane()
+        backSquare.maxWidth = 500.0
+        backSquare.maxHeight = 500.0
+        backSquare.prefWidth = 500.0
+        backSquare.prefHeight = 500.0
+        backSquare.style ="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
+        backSquare.padding = Insets(20.0)
+
+        content = VBox().apply {
+            alignment = Pos.CENTER
+            spacing = 40.0
+            padding = Insets(0.0, 0.0, 20.0, 0.0)
+        }
 
 
-    val listLabel : Label //vbox
-    val containList : GridPane //vbox
-    val joinBtn : Button
-    val retourBtn : Button
-    var champID : String
-    var selectedLabel : Label?
-    val scrollbar : ScrollPane
-    val retour : Button
-    val matchList : List<Int>
+        //top = HBox()
+        label = createHomeLabel("Liste des parties").apply {
+            style = """ -fx-font-size: 30px; """
+        }
 
-    val nom : Label
+        btnJoin = createMainButton("Rejoindre")
 
+        listContainer = VBox() //vbox
 
-    init{
-
-        retour = Button("Retour")
-        nom = Label("")
-        listLabel = createTitleLabel("Liste des parties disponibles :")
-
-
-        containList = GridPane()
-        containList.maxWidth = Double.MAX_VALUE  // Fait en sorte que le GridPane prenne toujours tout la largeur
-        containList.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
-        containList.style = "-fx-background-color: white; -fx-border-radius: 10px"
-//      containList.font = Font.font("Courier New", FontWeight.BOLD, 35.0)// Met le fon en blanc
-
-
+        gridlist = GridPane()
+        gridlist.maxWidth = Double.MAX_VALUE  // Fait en sorte que le GridPane prenne toujours tout la largeur
+        gridlist.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
+        gridlist.style = "-fx-background-color: white; -fx-border-radius: 10px"
+//      gridlist.font = Font.font("Courier New", FontWeight.BOLD, 35.0)// Met le fon en blanc
 
         //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
         //le withIndex va permettre d'avoir l'index et le contenu à l'index indiqué
-        this.matchList = matchList
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
             this.styleGridPane(label)
-            this.containList.add(label, 0, i)
+            this.gridlist.add(label, 0, i)
         }
 
-
-
-        joinBtn = createMainButton("Rejoindre")
-
-        retourBtn = createMainButton("Retour")
-
-        val bottomButtons = HBox(10.0, joinBtn, retourBtn)
-        bottomButtons.padding = Insets(10.0,10.0,10.0,0.0)
-
-        champID = ""  // Variable qui va servir à stocker l'ID de la partie sélectionnée
-
-        selectedLabel = null  //  Variable qui va permettre de stocker le label sélectionné précédent
-
-        this.top = listLabel
-        this.center = containList
-        this.bottom = bottomButtons
-        this.padding = Insets(20.0)
-        BorderPane.setMargin(listLabel, Insets(10.0))
-        BorderPane.setMargin(containList, Insets(10.0))
-        BorderPane.setMargin(joinBtn, Insets(10.0))
         scrollbar = ScrollPane()
-
-        scrollbar.content = containList
+        scrollbar.content = gridlist
         scrollbar.isFitToHeight = true
         scrollbar.isFitToWidth = true
-        this.center = scrollbar
+
+        containerReturnBtn = StackPane()
+        btnReturn = createBackButton()
+        containerReturnBtn.children.add(btnReturn)
+
+        listContainer.children.add(scrollbar)
+
+        content.children.addAll(label, listContainer, btnJoin)
+        backSquare.children.addAll(content, btnReturn)
+        StackPane.setAlignment(btnReturn, Pos.TOP_LEFT)
+
+        this.children.add(backSquare)
+        this.padding = Insets(20.0)
 
 
-
-        if (champID.isEmpty()) {
-            joinBtn.isDisable = true  // désactive le bouton (grisé, non cliquable)
+        if (selectedLabel == null) {
+            btnJoin.isDisable = true  // désactive le bouton (grisé, non cliquable)
         }
     }
+    /*
 
     fun styleGridPane(label: Label) {          //fonction qui permet d'afficher une bordure une fois l'ID cliqué
         label.style = "-fx-padding: 3px"
         label.font = Font.font("Courier New", FontWeight.BOLD, 20.0)
         label.setOnMouseClicked {
-            selectedLabel?.style = ""   //label précédent sans style
+            //selectedLabel?.style = ""   //label précédent sans style
             label.style = "-fx-border-color: #61888c; -fx-border-radius: 8px; -fx-padding: 5px " // Bordure
-            selectedLabel = label //actualise le label actuel en label précédent
-            champID = label.text // champID prend la valeur du label
+            //selectedLabel = label //actualise le label actuel en label précédent
+            //selectedLabel = label.text // champID prend la valeur du label
 
             // Mise à jour du bouton dès que champID change
-            joinBtn.isDisable = champID.isEmpty()
+            btnJoin.isDisable = selectedLabel == -1
+
+        }
+*/
+
+    fun styleGridPane(label: Label) {
+        label.style = "-fx-padding: 5px;"
+        label.font = Font.font("Courier New", FontWeight.BOLD, 20.0)
+
+        label.setOnMouseClicked {
+            // Enlève le style de l'ancien label sélectionné
+            selectedLabel?.style = "-fx-padding: 5px; -fx-font-size: 20px;"
+
+            // Applique le style au nouveau
+            label.style = """
+            -fx-border-color: #61888c;
+            -fx-border-radius: 8px;
+            -fx-padding: 5px;
+            -fx-font-size: 20px;
+        """.trimIndent()
+
+            // Mets à jour la sélection
+            selectedLabel = label
+
+            // Active le bouton Rejoindre
+            btnJoin.isDisable = false
 
         }
 
-
+        fun setOnRetourAction(handler: EventHandler<ActionEvent>) {
+            btnReturn.onAction = handler
+        }
     }
-    fun setOnRetourAction(handler: EventHandler<ActionEvent>) {
-        retourBtn.onAction = handler
-    }
-
 //    fun getNameCreatorMatch(nom : String, prenom : String){
 //        nom.text = "Créé par le joueur $nom $prenom"
 //    }
-}
+    }
 
 

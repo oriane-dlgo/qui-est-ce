@@ -9,6 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.util.Duration
@@ -38,36 +39,38 @@ class Login : StackPane() {
         backSquare.prefHeight = 500.0
         backSquare.style =
             "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
-        backSquare.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
-        backSquare.padding = Insets(60.0)
-        backSquare.spacing = 40.0
+        backSquare.alignment = Pos.CENTER
+        backSquare.padding = Insets(20.0)
+        backSquare.spacing = 20.0
+
+
 
         labelTitle = createHomeLabel("C KI LUI ?")
         labelTitle.style = """
             -fx-font-family: 'Fascinate';
-            -fx-font-size: 58px;
+            -fx-font-size: 70px;
             
         """.trimIndent()
 
-        boxTextEntries = VBox()
-        boxTextEntries.spacing = 20.0
+        boxTextEntries = VBox().apply {
+            padding = Insets(0.0, 125.0, 40.0, 125.0)
+            alignment = Pos.CENTER
+            spacing = 20.0
+        }
 
         boxLastName = VBox()
-
         labelLastName = createHomeLabel("Nom")
-
         textFieldLastName = createHomeTextField("Chirrac")
 
         boxName = VBox()
-
         labelName = createHomeLabel("Prenom")
-
         textFieldName = createHomeTextField("Jacques")
 
         btnLogin = createMainButton("Jouer")
 
 
         boxLastName.children.addAll(labelLastName, textFieldLastName)
+
         boxName.children.addAll(labelName, textFieldName)
 
         boxTextEntries.children.addAll(boxLastName, boxName)
@@ -76,22 +79,9 @@ class Login : StackPane() {
 
         children.add(backSquare)
 
-        val fade = FadeTransition(Duration.millis(1500.0), backSquare).apply {
-            fromValue = 0.0
-            toValue = 1.0
-        }
 
-        val scale = ScaleTransition(Duration.millis(1500.0), backSquare).apply {
-            fromX = 0.8
-            fromY = 0.8
-            toX = 1.0
-            toY = 1.0
-        }
 
-        val animation = SequentialTransition(fade, scale)
-        animation.play()
     }
-
     fun startLogin() {
         val fade = FadeTransition(Duration.millis(500.0), backSquare).apply {
             fromValue = 0.0

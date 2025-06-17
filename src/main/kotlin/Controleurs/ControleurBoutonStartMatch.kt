@@ -18,7 +18,7 @@ class ControleurBoutonStartMatch(val client: Client, val mainView : MainView, va
         if (create){
             match = client.matchCreate()
         }else{
-            match = client.matchJoin(matchList.champID.toInt())
+                match = client.matchJoin(matchList.selectedId)
         }
         val gameBoard = GameBoard(client, mainView, match)
 
