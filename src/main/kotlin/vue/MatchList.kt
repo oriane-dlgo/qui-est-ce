@@ -14,11 +14,8 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
-import ui.createBackButton
-import ui.createHomeLabel
-import ui.createMainButton
-import ui.createRefreshButton
-import ui.createTitleLabel
+import modele.Match
+import ui.*
 
 class MatchList(matchList: List<Int>) : StackPane() {
 
@@ -131,8 +128,13 @@ class MatchList(matchList: List<Int>) : StackPane() {
     fun updateMatchListGrid(){
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
+
+            val label2 = createNomLabel("Partie n° ")
+            val label3 = createNomLabel("créé par ")
             this.styleGridPane(label)
-            this.gridlist.add(label, 0, i)
+            this.gridlist.add(label, 1, i)
+            this.gridlist.add(label2, 0, i)
+            this.gridlist.add(label3, 2, i)
         }
     }
 
