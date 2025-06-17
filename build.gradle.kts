@@ -27,6 +27,7 @@ dependencies {
     implementation("org.openjfx:javafx-fxml:21")
 }
 
+
 tasks.test {
     useJUnitPlatform()
 

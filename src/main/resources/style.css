@@ -68,7 +68,6 @@
 
 .back-button{
     -fx-background-color: transparent;
-    -fx-background-image: url("backBlue.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -79,9 +78,7 @@
     -fx-cursor: hand;
 }
 
-.back-button : hover{
-    -fx-background-image: url("backDark.png");
-}
+
 
 .title-label{
     -fx-font-size: 35px;

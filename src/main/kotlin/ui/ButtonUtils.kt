@@ -36,12 +36,13 @@ fun createBackButton() : Button {
 
     val size = 50.0
 
-    val imageNormal = ImageView(Image("assets/backBlue.png")).apply {
+    val imageNormal = ImageView(Image(object {}.javaClass.getResource("/assets/backBlue.png")!!.toExternalForm())).apply {
         this.fitWidth = size
         this.fitHeight = size
         this.isPreserveRatio = true
     }
-    val imageHover = ImageView(Image("assets/backDark.png")).apply {
+
+    val imageHover = ImageView(Image(object {}.javaClass.getResource("/assets/backDark.png")!!.toExternalForm())).apply {
        this.fitWidth = size
         this.fitHeight = size
         this.isPreserveRatio = true
