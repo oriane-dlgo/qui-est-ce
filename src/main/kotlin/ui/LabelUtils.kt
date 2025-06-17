@@ -20,8 +20,15 @@ fun createHomeLabel(text : String) : Label{
     return label
 }
 
+
 fun createNomLabel(text : String) : Label{
     val label = Label(text)
     label.styleClass.add("nom-label")
+    return label
+}
+
+fun createFascinateLabel(text : String) : Label{
+    val label = Label(text)
+    label.styleClass.add("fascinate-label")
     return label
 }

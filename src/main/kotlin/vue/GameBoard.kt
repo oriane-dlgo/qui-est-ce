@@ -174,6 +174,13 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         this.viewContainer.children.setAll(view)
     }
 
+    fun switchEndView(view : VBox){
+        this.gridPanel.children.setAll(view)
+    }
+
+    //fun afficherBtnReplay(button : Button){
+    //  this.viewContainer.children.setAll((button))
+    //}
 }
 
 

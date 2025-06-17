@@ -179,11 +179,11 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                         // DO : Affiche la vue WIN et LOOSE
                         if (currentPlayerNo == 2) {
                             val win = Win(match.getRound())
-                            gameBoard.switchChildView(win)
+                            gameBoard.switchEndView(win)
                             //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         } else {
                             val loose = Loose(match.getRound())
-                            gameBoard.switchChildView(loose)
+                            gameBoard.switchEndView(loose)
                             //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         }
                         match.updateKeyPass(6)
@@ -279,11 +279,12 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                         // DO : Affiche la vue WIN et LOOSE
                         if (currentPlayerNo == 2) {
                             val win = Win(match.getRound())
-                            gameBoard.switchChildView(win)
+                            gameBoard.switchEndView(win)
+
                             //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         } else {
                             val loose = Loose(match.getRound())
-                            gameBoard.switchChildView(loose)
+                            gameBoard.switchEndView(loose)
                             //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         }
                         match.updateKeyPass(6)

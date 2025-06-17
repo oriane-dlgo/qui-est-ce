@@ -109,6 +109,13 @@
 
 }
 
+.fascinate-label{
+    -fx-font-size: 45px;
+    -fx-text-fill: #000b;
+    -fx-font-family: "Fascinate";
+    -fx-font-weight: bold;
+}
+
 .home-textfield{
 
     -fx-background-color: transparent;
