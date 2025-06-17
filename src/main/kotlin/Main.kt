@@ -1,3 +1,4 @@
+import Controleurs.ControleurBoutonBack
 import Controleurs.ControleurBoutonLogin
 import Controleurs.ControleurBoutonStartMatch
 import Controleurs.ControleurBoutonRejoindrePartie
@@ -7,7 +8,6 @@ import javafx.scene.Scene
 import javafx.scene.text.Font
 import javafx.stage.Stage
 import modele.Client
-import vue.GameBoard
 import vue.Login
 import vue.MainView
 import vue.MatchList
@@ -18,11 +18,13 @@ class Main : Application() {
     override fun start(stage: Stage) {
 
         Font.loadFont(javaClass.getResource("/fonts/Fascinate-Regular.ttf")?.toExternalForm(), 80.0)
+        Font.loadFont(javaClass.getResource("/fonts/FascinateInline-Regular.ttf")?.toExternalForm(), 80.0)
+        Font.loadFont(javaClass.getResource("/fonts/Satisfy-Regular.ttf")?.toExternalForm(), 80.0)
 
         val mainView = MainView()
         val client = Client(server = QuiEstCeClient("localhost", 8080), mainView)
 
-        val welcome = Welcom()
+        val welcome = Welcome()
         val login = Login()
         val matchMaking = MatchMaking()
 
@@ -30,7 +32,7 @@ class Main : Application() {
 
 
         // WELCOME
-        client.showPopUp(welcome,login, 0.5) // 0.5 de base __ 0.0 pour dev
+        client.start(welcome,login, 0.5) // 0.5 de base __ 0.0 pour dev
 
         // LOGIN
         login.btnLogin.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
@@ -38,14 +40,15 @@ class Main : Application() {
 
         // MATCHMAKING
         matchMaking.btnNew.onAction = ControleurBoutonStartMatch(client, mainView, matchList, true)
-        matchMaking.btnJoin.onAction = ControleurBoutonRejoindrePartie(client, mainView, matchList)
-        //matchMaking.btnNew.onAction = GameClock(match, gameBoardView, mainView))
+        matchMaking.btnList.onAction = ControleurBoutonRejoindrePartie(client, mainView, matchList)
+        matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
 
         // MATCHLIST
         matchList.joinBtn.onAction = ControleurBoutonStartMatch(client, mainView, matchList, false)
         matchList.retourBtn.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
 
         // GAMEBOARD
+
 
 
 

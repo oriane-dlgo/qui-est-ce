@@ -6,7 +6,7 @@ import javafx.scene.text.Font
 import javafx.scene.text.FontPosture
 import javafx.scene.text.FontWeight
 
-class Welcom : VBox() {
+class Welcome : VBox() {
     val label: Label
 
     init {

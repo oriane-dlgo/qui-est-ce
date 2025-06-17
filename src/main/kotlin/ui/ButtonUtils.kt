@@ -5,6 +5,7 @@ import javafx.scene.control.Button
 fun createMainButton(text: String): Button {
     val button = Button(text)
     button.styleClass.add("main-button")
+    button.maxHeight = 10.0
     return button
 }
 

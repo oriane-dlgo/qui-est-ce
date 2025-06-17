@@ -1,30 +1,26 @@
 package modele
 
+import Welcome
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import javafx.animation.FadeTransition
-import javafx.animation.KeyFrame
-import javafx.animation.Timeline
-import javafx.event.EventHandler
-import javafx.scene.layout.Pane
 import javafx.util.Duration
 import kotlinx.serialization.json.Json
-import vue.GameBoard
+import vue.Login
 import vue.MainView
-import vue.Win
 import java.io.File
 
 class Client(server: QuiEstCeClient, val mainView: MainView) {
 
     private var server: QuiEstCeClient
-    private var playerList: MutableList<Pair<Joueur,IdentificationJoueur>>
+    private var playerList: MutableList<Pair<Joueur, IdentificationJoueur>>
     private var playerListServer: MutableList<Pair<Joueur, IdentificationJoueur?>>
     private lateinit var currentMatch: Match
-    private var matchList : List<Int>
+    private var matchList: List<Int>
     private var currentPlayer: Pair<Joueur, IdentificationJoueur>
-    var title : String
+    var title: String
 
     init {
         this.server = server
@@ -34,21 +30,22 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         this.matchList = server.requeteListeParties()
         this.title = "Match n°$this.id"
 
-        this.currentPlayer= Pair(Joueur("", ""), IdentificationJoueur(0, ""))
+        this.currentPlayer = Pair(Joueur("", ""), IdentificationJoueur(0, ""))
 
     }
-//
+
+    //
 //
 //
 //
 // Fonctions principales
-    fun playerLogin(lastName: String, name: String) {
+    fun playerLogin(lastName: String, name: String): Pair<String, String> {
 
-        var lastName = lastName.uppercase()
-        var name = name.lowercase()
+        var lastName = lastName.uppercase() //.substring(1).lowercase()
+        var name = name.uppercase() //.substring(1).lowercase()
         var player = Joueur(lastName, name)
 
-        var matchingPlayerServer = playerListServer.find { it.first== player }
+        var matchingPlayerServer = playerListServer.find { it.first == player }
         var matchingPlayerJson = playerList.find { it.first == player }
 
         if (matchingPlayerServer == null) {
@@ -69,6 +66,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
                 this.currentPlayer = matchingPlayerJson
             }
         }
+        return Pair(lastName, name)
 
 
     }
@@ -78,7 +76,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         val playerIdKey = this.currentPlayer.second
         val matchId = server.requeteCreationPartie(playerIdKey.id, playerIdKey.cle)
 
-        val match = Match(server, matchId,playerIdKey, 1)
+        val match = Match(server, matchId, playerIdKey, 1)
         this.currentMatch = match
 
 
@@ -86,7 +84,8 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         return match
 
     }
-    fun matchJoin(matchId : Int) : Match{
+
+    fun matchJoin(matchId: Int): Match {
         val playerIdKey = this.currentPlayer.second
         server.requeteRejoindrePartie(matchId, playerIdKey.id, playerIdKey.cle)
 
@@ -141,7 +140,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         return list
     }
 
-    fun checkJsonPresent(){
+    fun checkJsonPresent() {
 
         val dataDir = File("data")
         if (!dataDir.exists()) {
@@ -154,11 +153,12 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         }
 
     }
-    fun updateMatchList(){
+
+    fun updateMatchList() {
         this.matchList = server.requeteListeParties()
     }
-
-    fun showPopUp(viewToPop: Pane,  viewToBack : Pane, time : Double, stat : Boolean = false) {
+/*
+    fun showPopUp(viewToPop: Pane, viewToBack: Pane, time: Double, stat: Boolean = false) {
         viewToPop.opacity = 0.0
         this.mainView.center = viewToPop
 
@@ -179,6 +179,38 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         // Une fois la disparition finie, on remet viewToBack
         fadeOut.setOnFinished {
             this.mainView.center = viewToBack
+        }
+
+        // Enchaîner les transitions
+        fadeIn.setOnFinished {
+            fadeOut.play()
+        }
+
+        fadeIn.play()
+    }
+    */
+    fun start(welcome: Welcome, login: Login, time: Double, stat: Boolean = false) {
+        welcome.opacity = 0.0
+        this.mainView.center = welcome
+
+        // Transition d'apparition
+        val fadeIn = FadeTransition(Duration.seconds(time + 0.5), welcome).apply {
+            fromValue = 0.0
+            toValue = 1.0
+            delay = Duration.seconds(0.5)
+        }
+
+        // Transition de disparition après `time` secondes
+        val fadeOut = FadeTransition(Duration.seconds(time + 0.5), welcome).apply {
+            fromValue = 1.0
+            toValue = 0.0
+            delay = Duration.seconds(0.5)
+        }
+
+        // Une fois la disparition finie, on remet viewToBack
+        fadeOut.setOnFinished {
+            this.mainView.center = login
+            login.startLogin()
         }
 
         // Enchaîner les transitions
@@ -225,6 +257,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
 //
 /// Fonctions de recuperations de données
     fun getPlayerList() = this.playerList
+
     //fun getMatchList() = this.matchList
     fun getMatchList() = this.matchList
 

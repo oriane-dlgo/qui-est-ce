@@ -1,62 +1,74 @@
 package vue
 
-import Controleurs.ControleurBoutonValiderPerso
 import Controleurs.GameClock
-import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.ETAPE
-import javafx.animation.Animation
-import javafx.animation.KeyFrame
-import javafx.animation.Timeline
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.Label
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
-import javafx.util.Duration
 import modele.Client
 import modele.Match
 
 class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane() {
+
+    var globalContainer : HBox
+    var gridPanel : VBox
     var gridCharacter: GridPane
-    val info: GridPane
-    var photoContainer: StackPane
+    var rightPanel : VBox
+    var character : VBox
+    var pictureContainer: StackPane
+    var picture : Rectangle
+    var labelChar : Label
     var viewContainer : Pane
     val match : Match
     val charSelOnGrid : MutableList<Int>
-    var labelLog : Label
+    //var labelLog : Label
     val gameClock : GameClock
 
     var index: Int
-    val zoneIdPerso : TextField
 
     init {
-        this.match = match
-        this.gameClock = GameClock(match, this, mainView)
+        this.charSelOnGrid = mutableListOf()
+        globalContainer = HBox()
+
+        // LOG A SUPRIMER
+        // labelLog = Label(match.printState(ETAPE.CREEE))
+        // this.bottom = labelLog
+
+
+        // CENTER PANEL - GRID
+        gridPanel = VBox()
+        gridPanel.maxHeight = 500.0
+        gridPanel.prefHeight = 500.0
+        gridPanel.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
+        gridPanel.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
+        gridPanel.padding = Insets(20.0)
+
+
         gridCharacter = GridPane()
+        gridCharacter.hgap = 10.0
+        gridCharacter.vgap = 5.0
 
+        /*
+        gridCharacter.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px;"
         gridCharacter.maxWidth = 600.0
-        gridCharacter.maxHeight = 400.0
-        gridCharacter.prefWidth = 600.0
+        gridCharacter.maxHeight = 430.0
+        gridCharacter.prefWidth = 650.0
         gridCharacter.prefHeight = 400.0
-
         gridCharacter.isGridLinesVisible = true
+
+
+
         gridCharacter = gridCharacter.apply {
             prefWidth = 100.0
             prefHeight = 100.0
             background = Background(
-                BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+                BackgroundFill(Color.rgb(255, 255, 255, 0.9), CornerRadii(10.0), Insets.EMPTY)
             )
         }
-        match.updateGrid(gridCharacter, false)
 
-
+         */
         //Contraintes des 6 colonnes, sur les 6 colonnes du grid, on va occuper tout l'espace dispo et comme ça c'est responsive
         repeat(6) {
             val col = ColumnConstraints().apply {
@@ -65,7 +77,6 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
             }
             gridCharacter.columnConstraints.add(col)
         }
-
         //Contraintes des 4 lignes, idem que contrainte colonne mais avec les lignes
         repeat(4) {
             val row = RowConstraints().apply {
@@ -75,47 +86,66 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
             gridCharacter.rowConstraints.add(row)
         }
 
-        labelLog = Label(match.printState(ETAPE.CREEE))
-        this.center = gridCharacter
-        this.bottom = labelLog
-        this.charSelOnGrid = mutableListOf()
 
-        info = GridPane().apply{
-            vgap = 20.0
-            padding = Insets(70.0)
-            hgap = 50.0
+        this.match = match
+        this.gameClock = GameClock(match, this, mainView)
+        this.match.updateGrid(gridCharacter, false)
 
-        }
-        this.right = info
-        this.index = 0
+        // RIGHT PANEL
+        rightPanel = VBox()
+        rightPanel.maxWidth = 250.0
+        rightPanel.maxHeight = 500.0
+        rightPanel.prefWidth = 250.0
+        rightPanel.prefHeight = 500.0
+        rightPanel.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
+        rightPanel.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
+        rightPanel.padding = Insets(60.0)
+        rightPanel.spacing = 40.0
 
 
+        character = VBox()
 
-        var photo = Rectangle(100.0, 100.0).apply {
+        picture = Rectangle(100.0, 100.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }
-        photoContainer = StackPane(photo)
-        photoContainer.maxWidth = Double.MAX_VALUE
-        photoContainer.maxHeight = Double.MAX_VALUE
+        pictureContainer = StackPane(picture)
+        //pictureContainer.maxWidth = Double.MAX_VALUE
+        //pictureContainer.maxHeight = Double.MAX_VALUE
 
-        zoneIdPerso = TextField()
+        labelChar = Label()
 
-        this.viewContainer = Pane(WaitingPlayer())
+        viewContainer = Pane(WaitingPlayer())
+        viewContainer.maxHeight = 350.0
+        viewContainer.prefHeight = 350.0
 
-        info.add(photoContainer, 0, 0)
-        info.add(zoneIdPerso, 0, 1)
-        info.add(viewContainer, 0, 2)
-        info.alignment = Pos.CENTER
+        character.children.addAll(pictureContainer, labelChar)
+        rightPanel.children.addAll(character, viewContainer)
+
+
+
+        gridPanel.children.add(gridCharacter)
+
+        globalContainer.children.addAll(gridPanel, rightPanel)
+        globalContainer.alignment = Pos.CENTER
+        globalContainer.spacing = 20.0
+
+        this.index = 0
+        this.center = globalContainer
+
+
+
     }
-
+/*
     fun setRightView(newVue: Node) {
-        val nodesToRemove = info.children.filter {
+        val nodesToRemove = dynamicView.children.filter {
             GridPane.getColumnIndex(it) == 0 && GridPane.getRowIndex(it) == 3
         }
-        info.children.removeAll(nodesToRemove)
-        info.add(newVue, 0, 3)
+        dynamicView.children.removeAll(nodesToRemove)
+        dynamicView.add(newVue, 0, 3)
     }
+*/
+
 
     fun switchChildView(view : Pane){
         this.viewContainer.children.setAll(view)

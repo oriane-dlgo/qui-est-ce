@@ -1,60 +1,68 @@
 package vue
 
+import javafx.animation.FadeTransition
+import javafx.animation.ParallelTransition
+import javafx.animation.ScaleTransition
+import javafx.animation.SequentialTransition
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
-import ui.createMainButton
-import ui.createSmallButton
-import ui.createTitleLabel
+import javafx.util.Duration
+import ui.*
 
 class Login : StackPane() {
 
-    val backSquare : VBox
-    val image: ImageView
-    val boxTextEntries : VBox
-    val boxLastName : VBox
-    val labelLastName : Label
-    val textFieldLastName : TextField
-    val boxName : VBox
-    val labelName : Label
-    val textFieldName : TextField
-    val btnLogin : Button //hbox
+    val backSquare: VBox
 
-    init{
+    //val image: ImageView
+    val labelTitle: Label
+    val boxTextEntries: VBox
+    val boxLastName: VBox
+    val labelLastName: Label
+    val textFieldLastName: TextField
+    val boxName: VBox
+    val labelName: Label
+    val textFieldName: TextField
+    val btnLogin: Button //hbox
+
+    init {
 
         backSquare = VBox()
-        backSquare.maxWidth = 300.0
-        backSquare.maxHeight = 400.0
-        backSquare.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
+        backSquare.maxWidth = 500.0
+        backSquare.maxHeight = 500.0
+        backSquare.prefWidth = 500.0
+        backSquare.prefHeight = 500.0
+        backSquare.style =
+            "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
         backSquare.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
         backSquare.padding = Insets(60.0)
         backSquare.spacing = 40.0
 
-        image = ImageView(Image("/assets/loginDarkBlue.png"))
-        image.fitWidth = 100.0 // adapte la taille si tu veux
-        image.isPreserveRatio = true
+        labelTitle = createHomeLabel("C KI LUI ?")
+        labelTitle.style = """
+            -fx-font-family: 'Fascinate';
+            -fx-font-size: 58px;
+            
+        """.trimIndent()
 
         boxTextEntries = VBox()
+        boxTextEntries.spacing = 20.0
 
         boxLastName = VBox()
 
-        labelLastName = createTitleLabel("Nom :")
+        labelLastName = createHomeLabel("Nom")
 
-        textFieldLastName = TextField("Chirrac")
+        textFieldLastName = createHomeTextField("Chirrac")
 
         boxName = VBox()
 
-        labelName = Label("Prenom :")
+        labelName = createHomeLabel("Prenom")
 
-        textFieldName = TextField("Jacques")
+        textFieldName = createHomeTextField("Jacques")
 
         btnLogin = createMainButton("Jouer")
 
@@ -64,10 +72,41 @@ class Login : StackPane() {
 
         boxTextEntries.children.addAll(boxLastName, boxName)
 
-        backSquare.children.addAll(image, boxTextEntries, btnLogin)
+        backSquare.children.addAll(labelTitle, boxTextEntries, btnLogin)
 
         children.add(backSquare)
 
+        val fade = FadeTransition(Duration.millis(1500.0), backSquare).apply {
+            fromValue = 0.0
+            toValue = 1.0
+        }
+
+        val scale = ScaleTransition(Duration.millis(1500.0), backSquare).apply {
+            fromX = 0.8
+            fromY = 0.8
+            toX = 1.0
+            toY = 1.0
+        }
+
+        val animation = SequentialTransition(fade, scale)
+        animation.play()
     }
 
+    fun startLogin() {
+        val fade = FadeTransition(Duration.millis(500.0), backSquare).apply {
+            fromValue = 0.0
+            toValue = 1.0
+        }
+
+        val scale = ScaleTransition(Duration.millis(500.0), backSquare).apply {
+            fromX = 0.8
+            fromY = 0.8
+            toX = 1.0
+            toY = 1.0
+        }
+
+        val animation = ParallelTransition(fade, scale)
+        animation.play()
+    }
 }
+

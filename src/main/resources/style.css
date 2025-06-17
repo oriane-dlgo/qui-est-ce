@@ -1,4 +1,5 @@
 
+/*
 .main-button {
     -fx-background-color: #61888c;
     -fx-text-fill: white;
@@ -8,6 +9,27 @@
     -fx-background-radius: 8;
     -fx-border-radius: 8;
     -fx-cursor: hand;
+}
+*/
+.main-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #61888c;
+    -fx-font-family: "Satisfy";
+    -fx-font-weight: bold;
+    -fx-font-size: 23px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #61888c;
+    -fx-border-width: 5px;
+    -fx-cursor: hand;
+    -fx-min-width : 250px;
+    -fx-padding: 0 0 7 0;
+
+
+}
+.main-button:hover{
+    -fx-border-color: rgba(0,0,0, 0.7);
+    -fx-text-fill: rgba(0,0,0, 0.7);
 }
 
 .small-button{
@@ -21,7 +43,7 @@
     -fx-cursor: hand;
 }
 
-.button:hover {
+.small-button:hover {
     -fx-background-color: #4e6b6e;
     -fx-text-fill: black;
 }
@@ -38,4 +60,25 @@
     -fx-text-fill: white;
     -fx-font-family: "Courier New";
     -fx-font-weight: bold;
+}
+
+.home-label{
+    -fx-font-size: 23px;
+    -fx-text-fill: #61888c;
+    -fx-font-family: "Satisfy";
+    -fx-font-weight: bold;
+
+}
+
+.home-textfield{
+
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #61888c transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 5 0 5 0;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: #888888;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-text-fill: #333333;
 }

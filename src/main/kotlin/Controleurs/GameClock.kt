@@ -43,7 +43,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
-                gameBoard.bottom = Label(match.printState(matchState))
+                //gameBoard.bottom = Label(match.printState(matchState))
 
                 if (matchState == ETAPE.CREEE) {
 
@@ -102,7 +102,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                         if (currentPlayerNo == 1) {
                             val question = Question()
                             gameBoard.switchChildView(question)
-                            question.question.onAction = ControleurBoutonQuestion(match, gameBoard)
+                            question.question.onAction = ControleurBoutonQuestion(match, gameBoard, question)
                         } else {
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)
@@ -198,7 +198,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                         if (currentPlayerNo == 2) {
                             val question = Question()
                             gameBoard.switchChildView(question)
-                            question.question.onAction = ControleurBoutonQuestion(match, gameBoard)
+                            question.question.onAction = ControleurBoutonQuestion(match, gameBoard, question)
                         } else {
                             val waitingPlayer = WaitingPlayer()
                             gameBoard.switchChildView(waitingPlayer)

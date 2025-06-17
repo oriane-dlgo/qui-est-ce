@@ -1,6 +1,5 @@
 package Controleurs
 
-import info.but1.sae2025.data.ETAPE
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import modele.Match
@@ -22,15 +21,14 @@ class ControleurBoutonValiderPerso(val match: Match, val gameBoard: GameBoard) :
                     i++
                     if (i == index) {
                         match.pickCharacter(row, col)
-                        gameBoard.photoContainer.children.clear()
-                        gameBoard.photoContainer.children.add(match.getPictureOf(row, col, false))
+                        gameBoard.pictureContainer.children.clear()
+                        gameBoard.pictureContainer.children.add(match.getPictureOf(row, col, false))
                     }
                 }
             }
             //match.updateMatchState()
             match.resetListSelChar(gameBoard)
-            gameBoard.center = match.updateGrid(gameBoard.gridCharacter, true)
-            gameBoard.zoneIdPerso.text = ""
+            gameBoard.gridCharacter = match.updateGrid(gameBoard.gridCharacter, true)
             match.charPickedNo = 1
         }
     }

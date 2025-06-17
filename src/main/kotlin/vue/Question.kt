@@ -1,15 +1,18 @@
 package vue
 
 import javafx.scene.control.Button
+import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 
 class Question : VBox() {
+    val textField : TextField
     val question : Button
 
 
     init{
+        textField = TextField("")
         question = Button("Poser une question")
         question.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
         question.setOnMouseEntered {
@@ -22,7 +25,7 @@ class Question : VBox() {
 
 
 
-        this.children.addAll(question)
+        children.addAll(question, textField)
 
 
     }
