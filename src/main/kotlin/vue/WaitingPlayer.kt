@@ -33,7 +33,6 @@ class WaitingPlayer : VBox() {
         rotate.isAutoReverse = false
         rotate.play()
         this.children.addAll(imageView, label)
-
         label.isWrapText = true
 
 

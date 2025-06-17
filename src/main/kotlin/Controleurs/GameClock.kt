@@ -82,7 +82,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                     // Switch View - Waiting Player
                     val waitingPlayer = WaitingPlayer()
-                    waitingPlayer.setMessage("Ton adversaire choisi\nson personnage...")
+                    waitingPlayer.setMessage("Ton adversaire choisi son personnage...")
                     gameBoard.switchChildView(waitingPlayer)
                 }
                 // ANTI JUMP_OVER_STATE //  Passage a ATTENTE_QUESTION si serveur & client OK
@@ -122,7 +122,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         // Switch View - Answer
                         val waitingPlayer = WaitingPlayer()
-                        waitingPlayer.setMessage("Ton adversaire répond\nà ta question...")
+                        waitingPlayer.setMessage("Ton adversaire répond à ta question...")
                         gameBoard.switchChildView(waitingPlayer)
 
                     }
@@ -193,7 +193,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         // Switch View - Win
                         val win = Win(match.getRound())
-                        gameBoard.switchChildView(win)
+                        gameBoard.switchEndView(win)
                         //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                     }
                 }
@@ -210,7 +210,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         // Switch View - Question
                         val waitingPlayer = WaitingPlayer()
-                        waitingPlayer.setMessage("Ton adversaire pose\nsa question...")
+                        waitingPlayer.setMessage("Ton adversaire pose sa question...")
                         gameBoard.switchChildView(waitingPlayer)
                     }
                     // ANTI JUMP_OVER_STATE // Passage a ATTENTE_REPONSE si serveur & client OK
@@ -272,7 +272,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         // Switch View - Loose
                         val loose = Loose(match.getRound())
-                        gameBoard.switchChildView(loose)
+                        gameBoard.switchEndView(loose)
                         //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                     }
                 }
