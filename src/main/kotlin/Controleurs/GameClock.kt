@@ -7,19 +7,23 @@ import javafx.animation.Timeline
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.util.Duration
+import modele.Client
 import modele.Match
 import vue.Answer
 import vue.GameBoard
 import vue.Question
 import vue.HideCharacter
+import vue.Login
 import vue.Loose
 import vue.MainView
+import vue.MatchMaking
 import vue.PickCharacter
 import vue.TestPopUp
 import vue.WaitingPlayer
 import vue.Win
 
-class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainView) : EventHandler<ActionEvent> {
+class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, val mainView: MainView) :
+    EventHandler<ActionEvent> {
 
     var waitingPlayer: WaitingPlayer = WaitingPlayer()
 
@@ -31,6 +35,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
     init {
 
         keyPass = match.getKeyPass()
+        var (lastName, name) = client.getCurrentPlayer().first
         //charPickBool = false
         matchState = ETAPE.CREEE
 
@@ -193,8 +198,12 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         // Switch View - Win
                         val win = Win(match.getRound())
-                        gameBoard.switchEndView(win)
-                        //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
+                        gameBoard.switchChildView(win)
+
+                        var login = Login()
+                        login.textFieldLastName.text = lastName
+                        login.textFieldName.text = name
+                        win.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, MatchMaking())
                     }
                 }
 
@@ -272,8 +281,12 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         // Switch View - Loose
                         val loose = Loose(match.getRound())
-                        gameBoard.switchEndView(loose)
+                        gameBoard.switchChildView(loose)
                         //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
+                        var login = Login()
+                        login.textFieldLastName.text = lastName
+                        login.textFieldName.text = name
+                        loose.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, MatchMaking())
                     }
                 }
 

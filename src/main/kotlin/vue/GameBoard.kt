@@ -103,7 +103,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
 
         this.match = match
-        this.gameClock = GameClock(match, this, mainView)
+        this.gameClock = GameClock(client, match, this, mainView)
         this.match.updateGrid(gridCharacter, false)
 
         // RIGHT PANEL

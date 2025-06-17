@@ -271,6 +271,8 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
     fun getCurrentPlayer() = this.currentPlayer
     fun getCurrentMatch() = this.currentMatch
     fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
+    fun getPlayerById(id : Int) = server.requeteJoueur(id)
+
 
 
 }
