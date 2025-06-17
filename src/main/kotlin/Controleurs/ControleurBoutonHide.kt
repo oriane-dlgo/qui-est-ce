@@ -14,7 +14,7 @@ class ControleurBoutonHide(val match: Match, val gameBoard: GameBoard) : EventHa
     override fun handle(p0: ActionEvent?) {
 
         val list = match.getListSelChar()
-        gameBoard.center = match.updateGrid( gameBoard.gridCharacter, true , list)
+        gameBoard.gridCharacter = match.updateGrid( gameBoard.gridCharacter, true , list)
     }
 }
 

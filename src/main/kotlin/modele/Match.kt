@@ -183,6 +183,10 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
                 stack.children.add(picture)
                 stack.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 1;"
+                stack.prefHeight = 100.0
+                stack.minHeight = 100.0
+                stack.prefWidth = 100.0
+                stack.minWidth = 100.0
 
                 // OPTION CLICK / SELECTION CHARACTER
                 stack.userData = index

@@ -3,29 +3,27 @@ package vue
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
+import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import ui.createMainButton
+import ui.createSecondButton
+import ui.createTextLabel
 
 class PickCharacter : VBox() {
     val btnValid : Button
+    val label : Label
 
     init{
 
-        btnValid = Button("Valider")
-        btnValid.style = "-fx-background-color: #61888c; -fx-text-fill: white"      // Couleur du fond et de l'écriture
-        btnValid.setOnMouseEntered {
-            btnValid.style = "-fx-background-color: #4e6b6e; -fx-text-fill: black;" // Couleur du fond et de l'écriture lorsque la souris passe dessus
-        }
-        btnValid.setOnMouseExited {
-            btnValid.style = "-fx-background-color: #61888c; -fx-text-fill: white;" // Couleur du fond et de l'écriture lorsque la souris n'est plus dessus
-        }
-        btnValid.font = Font.font("Courier New", FontWeight.BOLD, 20.0) // Change la police et la taille
+        btnValid = createMainButton("Valider")
+        label = createTextLabel("Choisissez votre personnage")
+        this.children.addAll(label, btnValid)
 
-        this.children.add(btnValid)
         this.alignment = Pos.CENTER
-        this.spacing = 10.0
-        this.padding = Insets(25.0)
+        this.spacing = 40.0
+        this.padding = Insets(15.0)
 
     }
 }

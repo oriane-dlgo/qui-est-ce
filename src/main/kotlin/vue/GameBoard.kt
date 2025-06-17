@@ -1,12 +1,25 @@
 package vue
 
+import Controleurs.ControleurBoutonValiderPerso
 import Controleurs.GameClock
+import info.but1.sae2025.QuiEstCeClient
+import info.but1.sae2025.data.ETAPE
+import javafx.animation.Animation
+import javafx.animation.KeyFrame
+import javafx.animation.Timeline
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
+import javafx.util.Duration
 import modele.Client
 import modele.Match
 
@@ -27,6 +40,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
     val gameClock : GameClock
 
     var index: Int
+   // val zoneIdPerso : TextField
 
     init {
         this.charSelOnGrid = mutableListOf()
@@ -122,8 +136,6 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         character.children.addAll(pictureContainer, labelChar)
         rightPanel.children.addAll(character, viewContainer)
 
-
-
         gridPanel.children.add(gridCharacter)
 
         globalContainer.children.addAll(gridPanel, rightPanel)
@@ -132,8 +144,6 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
         this.index = 0
         this.center = globalContainer
-
-
 
     }
 /*
