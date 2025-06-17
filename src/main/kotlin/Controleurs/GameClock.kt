@@ -52,9 +52,10 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                     // DO : Affiche la vue d'attente d'adversaire
                     println("Attente du joueur adverse")
                     matchState = match.getMatchState()
-                    val test = TestPopUp()
-                    gameBoard.switchChildView(test)
-                    test.btn.onAction = ControleurBoutonTest(mainView, gameBoard)
+                    //              val test = TestPopUp()
+                    waitingPlayer.setMessage("En attente d'un adversaire...")
+                    gameBoard.switchChildView(waitingPlayer)
+                    //               test.btn.onAction = ControleurBoutonTest(mainView, gameBoard)
 
                 }
                 if (matchState == ETAPE.INITIALISATION && match.charPickedNo == -1 && keyPass.find { it == 1 } == null) {
@@ -74,6 +75,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                     // DO : Affiche la vue d'attente d'adversaire
                     //keyPass.add(2)
                     val waitingPlayer = WaitingPlayer()
+                    waitingPlayer.setMessage("Ton adversaire choisi son personnage...")
                     gameBoard.switchChildView(waitingPlayer)
 
                     match.updateKeyPass(2)
@@ -105,6 +107,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                             question.question.onAction = ControleurBoutonQuestion(match, gameBoard, question)
                         } else {
                             val waitingPlayer = WaitingPlayer()
+                            waitingPlayer.setMessage("Ton adversaire pose sa question...")
                             gameBoard.switchChildView(waitingPlayer)
                         }
                         match.updateKeyPass(3)
@@ -128,6 +131,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
+                            waitingPlayer.setMessage("Ton adversaire répond à ta question...")
                             gameBoard.switchChildView(waitingPlayer)
                         }
                         match.updateKeyPass(4)
@@ -152,6 +156,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
+                            waitingPlayer.setMessage("Ton adversaire rélféchit...")
                             gameBoard.switchChildView(waitingPlayer)
                         }
                         match.updateKeyPass(5)
@@ -201,6 +206,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                             question.question.onAction = ControleurBoutonQuestion(match, gameBoard, question)
                         } else {
                             val waitingPlayer = WaitingPlayer()
+                            waitingPlayer.setMessage("Ton adversaire pose sa question...")
                             gameBoard.switchChildView(waitingPlayer)
                         }
                         match.updateKeyPass(3)
@@ -224,6 +230,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
+                            waitingPlayer.setMessage("Ton adversaire répond à ta question...")
                             gameBoard.switchChildView(waitingPlayer)
                         }
                         match.updateKeyPass(4)
@@ -249,6 +256,7 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
 
                         } else {
                             val waitingPlayer = WaitingPlayer()
+                            waitingPlayer.setMessage("Ton adversaire rélféchit....")
                             gameBoard.switchChildView(waitingPlayer)
                         }
                         match.updateKeyPass(5)
@@ -274,8 +282,8 @@ class GameClock(val match: Match, val gameBoard: GameBoard, val mainView: MainVi
                             gameBoard.switchChildView(win)
                             //win.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         } else {
-                            //val loose = Loose(match.getRound())
-                            //gameBoard.
+                            val loose = Loose(match.getRound())
+                            gameBoard.switchChildView(loose)
                             //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         }
                         match.updateKeyPass(6)
