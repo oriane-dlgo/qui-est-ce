@@ -19,3 +19,9 @@ fun createHomeLabel(text : String) : Label{
     label.styleClass.add("home-label")
     return label
 }
+
+fun createNomLabel(text : String) : Label{
+    val label = Label(text)
+    label.styleClass.add("nom-label")
+    return label
+}

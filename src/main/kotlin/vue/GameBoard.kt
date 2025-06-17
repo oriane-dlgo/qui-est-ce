@@ -144,6 +144,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
 
         character.padding = Insets(18.0)
+        character.alignment = Pos.CENTER
 
 
 
