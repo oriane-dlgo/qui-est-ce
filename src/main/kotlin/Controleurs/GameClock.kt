@@ -198,7 +198,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
 
                         // Switch View - Win
                         val win = Win(match.getRound())
-                        gameBoard.switchChildView(win)
+                        gameBoard.switchEndView(win)
 
                         var login = Login()
                         login.textFieldLastName.text = lastName
@@ -281,7 +281,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
 
                         // Switch View - Loose
                         val loose = Loose(match.getRound())
-                        gameBoard.switchChildView(loose)
+                        gameBoard.switchEndView(loose)
                         //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         var login = Login()
                         login.textFieldLastName.text = lastName

@@ -35,7 +35,7 @@ class Win(val round : Int): VBox() {
         imageView.fitHeight = 100.0
 
         btnAgain = Button("Recommencer")
-        this.children.addAll(imageView,labelV,label,label1)
+        this.children.addAll(imageView,labelV,label,label1, btnAgain)
         this.padding = Insets(20.0)
         this.alignment = Pos.CENTER
     }
