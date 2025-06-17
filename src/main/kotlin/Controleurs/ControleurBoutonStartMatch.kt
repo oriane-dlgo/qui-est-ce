@@ -9,16 +9,22 @@ import vue.MainView
 import vue.MatchList
 import vue.MatchMaking
 
-class ControleurBoutonStartMatch(val client: Client, val mainView : MainView, val matchList: MatchList, val create : Boolean): EventHandler<ActionEvent> {
+class ControleurBoutonStartMatch(
+    val client: Client,
+    val mainView: MainView,
+    val matchList: MatchList,
+    val create: Boolean
+) : EventHandler<ActionEvent> {
 
-    override fun handle(event : ActionEvent){
+    override fun handle(event: ActionEvent) {
 
-        val match : Match
+        val match: Match
 
-        if (create){
+        if (create) {
             match = client.matchCreate()
-        }else{
-                match = client.matchJoin(matchList.selectedId)
+        } else {
+            match = client.matchJoin(matchList.selectedId)
+            println(matchList.selectedId)
         }
         val gameBoard = GameBoard(client, mainView, match)
 

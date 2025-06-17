@@ -41,12 +41,17 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
 // Fonctions principales
     fun playerLogin(lastName: String, name: String): Pair<String, String> {
 
-        var lastName = lastName.uppercase() //.substring(1).lowercase()
-        var name = name.uppercase() //.substring(1).lowercase()
+        var lastName = lastName.uppercase()
+        var name = name.lowercase()
         var player = Joueur(lastName, name)
+
+        playerListServer = getPlayerListServer()
 
         var matchingPlayerServer = playerListServer.find { it.first == player }
         var matchingPlayerJson = playerList.find { it.first == player }
+
+        println("find on server $matchingPlayerServer")
+        println("find on local : $matchingPlayerJson")
 
         if (matchingPlayerServer == null) {
             var idKey = server.requeteCreationJoueur(lastName, name)

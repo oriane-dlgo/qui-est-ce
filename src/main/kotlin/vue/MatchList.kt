@@ -141,6 +141,7 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
             // Mets à jour la sélection
             selectedLabel = label
+            selectedId = label.text.toInt()
 
             // Active le bouton Rejoindre
             btnJoin.isDisable = false
