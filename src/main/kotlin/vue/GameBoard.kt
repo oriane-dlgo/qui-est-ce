@@ -113,7 +113,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         rightPanel.prefWidth = 250.0
         rightPanel.prefHeight = 500.0
         rightPanel.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
-        rightPanel.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
+        rightPanel.alignment = Pos.CENTER
         rightPanel.padding = Insets(10.0)
         rightPanel.spacing = 40.0
 

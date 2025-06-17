@@ -16,6 +16,7 @@ import vue.GameBoard
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import javax.swing.text.MutableAttributeSet
+import kotlin.rem
 
 class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJoueur, playerNo: Int) {
 
@@ -29,6 +30,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private var listSelChar: MutableList<Int>
     private var listHideChar: MutableList<Int>
     private var keyPass: MutableList<Int>
+    private var keySel: Int
+    private var keyHide: Int
+    private var roundByPlayer: Boolean
 
     private var matchState: ETAPE
 
@@ -47,6 +51,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
 
     init {
+
         this.server = server
         this.matchId = matchId
         this.playerIdKey = playerIdKey
@@ -54,11 +59,18 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.playerGrid = server.requeteGrilleJoueur(this.matchId, this.playerIdKey.id)
 
         this.keyPass = mutableListOf()
+        this.keySel = -1
+        this.keyHide = 0
         this.matchState = ETAPE.CREEE
 
         this.listSelChar = mutableListOf()
         this.listHideChar = mutableListOf()
 
+        this.roundCounter = 1
+        this.characterPicked = Personnage("", "", "")
+
+        roundByPlayer =
+            (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
 
         if (playerNo == 1) {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur2
@@ -71,11 +83,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
 
 
-
-        this.roundCounter = 1
-        this.characterPicked = Personnage("", "", "")
-
-
     }
     //
     //
@@ -84,11 +91,14 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     // Fonctions principales
 
     fun endOfRound() {
+
         server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
     }
 
     fun nextRound() {
         roundCounter++
+        roundByPlayer =
+            (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
     }
     /*fun nextRound(iCloseIt :Boolean = false) {
         this.roundCounter += 1
@@ -97,7 +107,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
     }*/
 
-    fun printState(matchState : ETAPE): String {
+    fun printState(matchState: ETAPE): String {
         val state = server.requeteEtatPartie(this.matchId)
         val log =
             "     Etape match : ${matchState}                    Tour n° $roundCounter                    Joueur n° $playerNo"
@@ -170,9 +180,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
     }
 
+
     fun updateGrid(gridCharacter: GridPane, opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
 
-        val roundByPlayer = (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
 
         gridCharacter.children.clear()
         gridCharacter.isGridLinesVisible = false
@@ -201,8 +211,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                 stack.setOnMouseClicked {
                     val id = stack.userData as Int
 
-                    // SELECTION SECRET CHARACTER
-                    if ((this.matchState == ETAPE.INITIALISATION && this.charPickedNo == -1) || (this.matchState == ETAPE.ATTENTE_QUESTION && roundByPlayer)) {
+                    // SELECTION 1 BY 1
+                    if (this.keySel == 1) {
                         // Un seul personnage sélectionnable
                         // Nettoie ancienne sélection
                         this.listSelChar.clear()
@@ -210,24 +220,23 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                         // Réinitialise styles des autres cases
                         gridCharacter.children.forEach { node ->
                             if (node is StackPane) {
-                                node.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
+                                node.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 4;"
                             }
                         }
 
                         // Ajoute la nouvelle sélection
                         this.listSelChar.add(id)
-                        stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 4;"
+                        stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
                     }
-                    if (roundByPlayer) {
-                        // SELECTION HIDE CHARACTER
-                        if (this.matchState == ETAPE.ATTENTE_REFLEXION) {
-                            if (!this.listSelChar.contains(id)) {
-                                this.listSelChar.add(id)
-                                stack.style = "-fx-border-color: #4e6b6e; -fx-border-width: 4;"
-                            } else {
-                                this.listSelChar.remove(id)
-                                stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
-                            }
+                    if (this.keySel == 2) {
+                        // SELECTION MULTIPLE
+                        if (!this.listSelChar.contains(id)) {
+                            this.listSelChar.add(id)
+                            stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
+                        } else {
+                            this.listSelChar.remove(id)
+                            stack.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 4;"
+
                         }
                     }
                 }
@@ -247,6 +256,10 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         server.requeteDonnerReponse(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, answer)
     }
 
+    fun updateKeyHide() {
+        this.keyHide++
+    }
+
     fun updateKeyPass(number: Int, erase: Boolean = false): MutableList<Int> {
         if (erase) {
             this.keyPass.subList(1, keyPass.size).clear()
@@ -260,17 +273,21 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         return this.keyPass
     }
 
+    fun makeGuess(caseId: Int) {
 
-    fun makeGuess(caseId : Int){
+        this.listHideChar.add(caseId)
 
         val position = getRowCol(caseId)
         if (position != null) {
             val (row, col) = position
             server.requeteTrouve(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         }
+
+
     }
-    fun getRowCol(caseId : Int): Pair<Int, Int>?{
-        var i : Int = 0
+
+    fun getRowCol(caseId: Int): Pair<Int, Int>? {
+        var i: Int = 0
         for (row in 0 until 4) {
             for (col in 0 until 6) {
                 i++
@@ -281,6 +298,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
         return null
     }
+
+
     /*
         fun checkGuess(player: Int): Boolean {
             return this.characterGuess == this.characterPicked[player]
@@ -295,7 +314,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                      this.saved = true
                  }
                   */
-
+    fun updateKeySel(key: Int) {
+        this.keySel = key
+    }
 
     //
 //
@@ -320,6 +341,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getCurrentPlayer() = this.playerNo
     fun getPlayerNo() = this.playerNo
     fun getListSelChar() = this.listSelChar
+    fun getRoundByPlayer() = this.roundByPlayer
+    fun getKeyHide() = this.keyHide
 
 
     /*
