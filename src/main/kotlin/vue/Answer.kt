@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 import modele.Match
+import ui.createHomeLabel
+import ui.createSecondButton
 import ui.createSmallButton
 
 class Answer(question : String) : VBox (){
@@ -14,15 +16,15 @@ class Answer(question : String) : VBox (){
     var question : Label
     val btnOui : Button
     val btnNon : Button
-    val contain : HBox
+    val contain : VBox
 
     init{
-        this.question = Label(question)
-        btnOui = createSmallButton("Oui")
+        this.question = createHomeLabel(question)
+        btnOui = createSecondButton("Oui")
 
-        btnNon = createSmallButton("Non")
+        btnNon = createSecondButton("Non")
 
-        contain = HBox()
+        contain = VBox()
         contain.children.addAll(btnOui, btnNon)
         this.children.addAll(this.question, contain)
     }

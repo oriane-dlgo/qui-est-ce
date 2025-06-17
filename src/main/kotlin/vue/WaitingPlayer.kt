@@ -12,8 +12,8 @@ class WaitingPlayer : VBox() {
     val label : Label
 
     init{
-        this.label = createTextLabel("Waiting opponent")
 
+        this.label = createTextLabel("Waiting opponent")
         this.children.add(label)
 
     }
