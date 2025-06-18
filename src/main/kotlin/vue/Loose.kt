@@ -23,7 +23,7 @@ class Loose(val round : Int): VBox() {
 
     init{
 
-        labelD = createFascinateLabel("DEFAITE ! ")
+        labelD = createFascinateLabel("Defaite !")
         labelD.padding = Insets(50.0,0.0,30.0,0.0)
         label = createTextLabel("Ton adversaire a été plus rapide que toi... ")
         label2 = createTextLabel("La partie a durée $round tours.")

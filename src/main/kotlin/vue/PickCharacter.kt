@@ -5,25 +5,40 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
+import modele.Match
 import ui.createMainButton
-import ui.createSecondButton
 import ui.createTextLabel
 
-class PickCharacter : VBox() {
-    val btnValid : Button
+class PickCharacter() : VBox() {
+    val btnOk : Button
     val label : Label
+    val selectedChar : Boolean = false
 
     init{
 
-        btnValid = createMainButton("Valider")
+        btnOk = createMainButton("Valider")
         label = createTextLabel("Choisissez votre personnage")
-        this.children.addAll(label, btnValid)
+        this.children.addAll(label, btnOk)
 
         this.alignment = Pos.CENTER
         this.spacing = 40.0
         this.padding = Insets(15.0)
 
+        btnOk.isDisable = true
+
+        /*
+        if (!match.isPlayerSelected()) {
+            btnOk.isDisable = true  // désactive le bouton (grisé, non cliquable)
+        }
+
+         */
+
+    }
+    fun updateBtn(match : Match){
+        if (!match.isPlayerSelected()) {
+            btnOk.isDisable = true  // désactive le bouton (grisé, non cliquable)
+        }else{
+            btnOk.isDisable = false
+        }
     }
 }

@@ -38,7 +38,7 @@ class WaitingPlayer : VBox() {
 
 
         this.alignment = Pos.CENTER
-        this.padding = Insets(10.0)
+        this.padding = Insets(60.0, 10.0, 0.0, 10.0)
 
     }
 

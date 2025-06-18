@@ -9,6 +9,7 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import modele.Match
 import ui.createSecondButton
 import ui.createTextLabel
 
@@ -33,6 +34,14 @@ class Question : VBox() {
 
 
 
+    }
+
+    fun updateBtn(){
+        if (this.textArea.text == "") {
+            btnOk.isDisable = true  // désactive le bouton (grisé, non cliquable)
+        }else{
+            btnOk.isDisable = false
+        }
     }
 
 

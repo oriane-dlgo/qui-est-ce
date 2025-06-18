@@ -230,6 +230,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
                         // Ajoute la nouvelle sélection
                         this.listSelChar.add(id)
+
                         stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
 
                     }
@@ -345,5 +346,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getKeyHide() = this.keyHide
     fun getKeySel() = this.keySel
     fun getListHide() = this.listHideChar
+    fun isPlayerSelected() = (this.listSelChar.size != 0)
+
 
 }
