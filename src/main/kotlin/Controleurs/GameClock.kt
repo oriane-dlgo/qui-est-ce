@@ -31,7 +31,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
     var waitingPlayer: WaitingPlayer = WaitingPlayer()
 
     var keyPass: MutableList<Int>
-
+    val answer = Answer(match.getQuestion())
     val pickView = PickCharacter()
     val question = Question()
 
@@ -262,7 +262,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         match.updateKeyPass(4)
 
                         // Switch View - Answer
-                        val answer = Answer(match.getQuestion())
+
                         gameBoard.switchChildView(answer)
                         answer.btnOui.onAction = ControleurBoutonReponse(match, gameBoard, answer, 1)
                         answer.btnNon.onAction = ControleurBoutonReponse(match, gameBoard, answer, 2)
@@ -270,6 +270,9 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                     // ANTI JUMP_OVER_STATE // Passage a ATTENTE_REFLEXION si serveur & client OK
                     if (matchState == ETAPE.ATTENTE_REPONSE && matchState != match.getMatchState() && keyPass.any { it == 4 }) {
                         matchState = ETAPE.ATTENTE_REFLEXION
+                    }
+                    if (matchState == ETAPE.ATTENTE_REPONSE){
+                        answer.updateQuestion(match.getQuestion())
                     }
 
 
