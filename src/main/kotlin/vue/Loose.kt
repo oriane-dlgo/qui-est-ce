@@ -20,7 +20,6 @@ class Loose(val round : Int): VBox() {
     val label2 : Label
     var img : Image
     val imageView : ImageView
-    var btnAgain : Button
 
     init{
 
@@ -34,9 +33,8 @@ class Loose(val round : Int): VBox() {
         imageView.fitWidth = 100.0
         imageView.fitHeight = 100.0
 
-        btnAgain = createSmallButton("Recommencer")
 
-        this.children.addAll(imageView,labelD, label,label2, btnAgain)
+        this.children.addAll(imageView,labelD, label,label2)
         this.padding = Insets(20.0)
         this.alignment = Pos.CENTER
     }
