@@ -29,9 +29,10 @@ class Answer(question : String) : VBox (){
         btnNon = createSecondButton("Non")
 
         btnBox = VBox(10.0,btnOui,btnNon)
-        this.children.addAll(labelQuestion, btnBox)
         btnBox.alignment = Pos.CENTER
         btnBox.padding = Insets(15.0,0.0,0.0,0.0)
+
+        this.children.addAll(labelQuestion, btnBox)
         this.alignment = Pos.CENTER
         this.padding = Insets(20.0,0.0,0.0,0.0)
         this.spacing = 20.0
