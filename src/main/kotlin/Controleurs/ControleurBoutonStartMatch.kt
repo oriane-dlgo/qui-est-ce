@@ -6,6 +6,8 @@ import javafx.event.EventHandler
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.ButtonType
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import modele.Client
 import modele.Match
 import vue.GameBoard
@@ -35,9 +37,23 @@ class ControleurBoutonStartMatch(
             }
             catch(e : QuiEstCeException){
                 val dialog = Alert(AlertType.INFORMATION)
-                dialog.title = "Cette partie n'est plus disponible"
-                dialog.contentText = "Cette partie à déjà ses deux joueurs, " +
-                        "essaies d'en rejoindre une autre"
+                dialog.title = "Attention"
+                dialog.headerText = ""
+                dialog.contentText = "Cette partie à déjà ses deux joueurs, \n essaies d'en rejoindre une autre"
+                val image = javaClass.getResource("/assets/error_80dp_61888C_FILL0_wght400_GRAD0_opsz48.png")
+                    if (image != null) {
+                    val imagee = Image(image.toExternalForm())
+                    val imageView = ImageView(imagee)
+                    imageView.fitHeight = 80.0
+                    imageView.fitWidth = 80.0
+                    dialog.graphic = imageView
+                }
+
+
+                val css = javaClass.getResource("/style.css")
+                if (css != null) {
+                    dialog.dialogPane.stylesheets.add(css.toExternalForm())
+                }
                 dialog.showAndWait()
 
             }

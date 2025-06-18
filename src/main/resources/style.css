@@ -129,3 +129,55 @@
     -fx-text-fill: #333333;
     -fx-max-width: 250px;
 }
+
+
+.dialog-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-border-color:  #61888c;
+    -fx-border-width: 1px;
+}
+
+.dialog-pane .content.label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #61888c;
+    -fx-font-family: "Satisfy";
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Titre du dialog */
+.dialog-pane .header-panel .label {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-font-size: 100px;
+    -fx-text-fill: #61888c;
+    -fx-font-family: "Satisfy";
+}
+
+/* Boutons du dialog */
+.dialog-pane .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #61888c;
+    -fx-font-family: "Satisfy" ;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 0 0 7 0;
+    -fx-border-color: #61888c;
+    -fx-border-width: 5px;
+}
+
+/* Bouton hover (optionnel) */
+.dialog-pane .button:hover {
+    -fx-background-color: #78a9af;
+    -fx-text-fill: white;
+}
+
+
+.dialog-pane .title {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-font-size: 100px;
+    -fx-text-fill: #61888c;
+    -fx-font-family: "Satisfy";
+}
