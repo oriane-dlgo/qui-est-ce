@@ -16,6 +16,7 @@ import vue.HideCharacter
 import vue.Login
 import vue.Loose
 import vue.MainView
+import vue.MatchList
 import vue.MatchMaking
 import vue.NextRound
 import vue.PickCharacter
@@ -44,7 +45,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
-                print("KEY SEL : ${ match.getKeySel() }")
+                print("KEY SEL : ${match.getKeySel()}")
                 print("LIST SEL : ${match.getListSelChar()}")
                 println("LIST HIDE : ${match.getListHide()}")
 
@@ -208,7 +209,13 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         var login = Login()
                         login.textFieldLastName.text = lastName
                         login.textFieldName.text = name
-                        win.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, MatchMaking())
+                        var matchMaking = MatchMaking()
+                        matchMaking.btnNew.onAction =
+                            ControleurBoutonStartMatch(client, mainView, MatchList(client.getMatchList()), true)
+                        matchMaking.btnList.onAction =
+                            ControleurBoutonRejoindrePartie(client, mainView, MatchList(client.getMatchList()))
+                        matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
+                        win.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
                     }
                 }
 
@@ -277,7 +284,6 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                             matchState = ETAPE.ATTENTE_QUESTION
 
 
-
                         }
                     }
 
@@ -292,11 +298,18 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         // Switch View - Loose
                         val loose = Loose(match.getRound())
                         gameBoard.switchEndView(loose)
-                        //loose.btnAgain.onAction = ControleurBoutonAgain(match, gameBoard)
                         var login = Login()
                         login.textFieldLastName.text = lastName
                         login.textFieldName.text = name
-                        loose.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, MatchMaking())
+                        var matchMaking = MatchMaking()
+                        matchMaking.btnNew.onAction =
+                            ControleurBoutonStartMatch(client, mainView, MatchList(client.getMatchList()), true)
+                        matchMaking.btnList.onAction =
+                            ControleurBoutonRejoindrePartie(client, mainView, MatchList(client.getMatchList()))
+                        matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
+                        loose.btnAgain.onAction = ControleurBoutonLogin(
+                            client, mainView, login, matchMaking
+                        )
                     }
                 }
 
