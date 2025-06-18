@@ -9,6 +9,7 @@ import javafx.event.EventHandler
 import javafx.util.Duration
 import modele.Client
 import modele.Match
+import ui.createSecondButton
 import vue.Answer
 import vue.GameBoard
 import vue.Question
@@ -215,7 +216,8 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         matchMaking.btnList.onAction =
                             ControleurBoutonRejoindrePartie(client, mainView, MatchList(client.getMatchList()))
                         matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
-                        win.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
+                        gameBoard.initBtnAgain()
+                        gameBoard.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
                     }
                 }
 
@@ -307,9 +309,10 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         matchMaking.btnList.onAction =
                             ControleurBoutonRejoindrePartie(client, mainView, MatchList(client.getMatchList()))
                         matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
-                        loose.btnAgain.onAction = ControleurBoutonLogin(
-                            client, mainView, login, matchMaking
-                        )
+                        gameBoard.initBtnAgain()
+                        gameBoard.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
+
+
                     }
                 }
 

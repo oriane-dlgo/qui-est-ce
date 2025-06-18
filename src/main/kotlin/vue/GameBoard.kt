@@ -22,6 +22,7 @@ import javafx.scene.shape.Rectangle
 import javafx.util.Duration
 import modele.Client
 import modele.Match
+import ui.createSecondButton
 
 class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane() {
 
@@ -33,9 +34,10 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
     var pictureContainer: StackPane
     var picture : Rectangle
     var labelChar : Label
-    var viewContainer : Pane
+    var viewContainer : VBox
     val match : Match
     val charSelOnGrid : MutableList<Int>
+    var btnAgain : Button = createSecondButton("Recommencer")
     //var labelLog : Label
     val gameClock : GameClock
 
@@ -46,6 +48,8 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         this.charSelOnGrid = mutableListOf()
         globalContainer = HBox()
 
+
+
         // LOG A SUPRIMER
         // labelLog = Label(match.printState(ETAPE.CREEE))
         // this.bottom = labelLog
@@ -55,6 +59,8 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         gridPanel = VBox()
         gridPanel.maxHeight = 500.0
         gridPanel.prefHeight = 500.0
+        gridPanel.minWidth = 700.0
+        gridPanel.prefWidth = 700.0
         gridPanel.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
         gridPanel.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
         gridPanel.padding = Insets(20.0)
@@ -178,11 +184,19 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
     fun switchEndView(view : VBox){
         this.gridPanel.children.setAll(view)
+
     }
 
     //fun afficherBtnReplay(button : Button){
     //  this.viewContainer.children.setAll((button))
     //}
+
+    fun initBtnAgain(){
+        this.viewContainer.children.clear()
+        this.viewContainer.children.add(btnAgain)
+        viewContainer. alignment = Pos.CENTER
+        viewContainer.padding = Insets(50.0, 0.0, 0.0, 0.0)
+    }
 }
 
 

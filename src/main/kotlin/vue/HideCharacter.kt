@@ -54,6 +54,7 @@ class HideCharacter(val answer : String) : VBox() {
 
         // label3
         // btnOk
+
         this.alignment = Pos.CENTER
         this.spacing = 10.0
         this.padding = Insets(15.0)
