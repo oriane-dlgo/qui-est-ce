@@ -14,11 +14,12 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import modele.Client
 import modele.Match
 import ui.*
 
 class MatchList(matchList: List<Int>) : StackPane() {
-
+    val matchIdToRow = mutableMapOf<Int, Int>()
     var matchList: List<Int>
     var selectedLabel: Label?
     var selectedId: Int
@@ -124,17 +125,22 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
         }
 */
+    fun getIdCreator(){
+
+    }
 
     fun updateMatchListGrid(){
         for ((i, match) in matchList.withIndex()) {
             val label = Label(match.toString())
 
             val label2 = createNomLabel("Partie n° ")
-            val label3 = createNomLabel("créé par ")
+
             this.styleGridPane(label)
             this.gridlist.add(label, 1, i)
             this.gridlist.add(label2, 0, i)
-            this.gridlist.add(label3, 2, i)
+
+
+            matchIdToRow[match] = i
         }
     }
 
@@ -163,6 +169,7 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
         }
 
+
         fun setOnRetourAction(handler: EventHandler<ActionEvent>) {
             btnReturn.onAction = handler
         }
@@ -170,6 +177,19 @@ class MatchList(matchList: List<Int>) : StackPane() {
 //    fun getNameCreatorMatch(nom : String, prenom : String){
 //        nom.text = "Créé par le joueur $nom $prenom"
 //    }
-    }
+//fun desactiverLigne(matchId: Int) {
+//    val rowIndex = matchIdToRow[matchId] ?: return
+//    println("Désactivation ligne $rowIndex pour matchId = $matchId")
+//
+//    for (node in gridlist.children) {
+//        val nodeRow = GridPane.getRowIndex(node) ?: 0
+//        if (nodeRow == rowIndex) {
+//            node.isDisable = true
+//            node.style += " -fx-opacity: 0.5;"
+//        }
+//    }
+//}
 
 
+
+}

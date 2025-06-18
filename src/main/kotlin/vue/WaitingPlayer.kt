@@ -25,8 +25,9 @@ class WaitingPlayer : VBox() {
         this.label = createTextLabel("Waiting opponent")
         image = Image(javaClass.getResource("/assets/progress_activity_1000dp_61888C_FILL0_wght400_GRAD0_opsz48.png")!!.toExternalForm())
         imageView = ImageView(image)
-        imageView.fitWidth = 100.0
+        imageView.fitWidth = 50.0
         imageView.isPreserveRatio = true
+
         val rotate = RotateTransition(Duration.seconds(2.0), imageView)
         rotate.byAngle = 360.0
         rotate.cycleCount = RotateTransition.INDEFINITE
