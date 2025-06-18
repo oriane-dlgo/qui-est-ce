@@ -114,7 +114,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         // Switch View - Question
                         val question = Question()
                         gameBoard.switchChildView(question)
-                        question.question.onAction = ControleurBoutonQuestion(match, gameBoard, question)
+                        question.btnOk.onAction = ControleurBoutonQuestion(match, gameBoard, question)
                     }
                     // ANTI JUMP_OVER_STATE // Passage a ATTENTE_REPONSE si serveur & client OK
                     if (matchState == ETAPE.ATTENTE_QUESTION && matchState != match.getMatchState() && keyPass.any { it == 3 }) {
