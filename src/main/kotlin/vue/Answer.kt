@@ -37,4 +37,8 @@ class Answer(question : String) : VBox (){
         this.padding = Insets(20.0,0.0,0.0,0.0)
         this.spacing = 20.0
     }
+
+    fun updateQuestion(question : String){
+        this.labelQuestion = createHomeLabel(question)
+    }
 }
