@@ -347,6 +347,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getKeySel() = this.keySel
     fun getListHide() = this.listHideChar
     fun isPlayerSelected() = (this.listSelChar.size != 0)
+    fun getMatchId() = this.matchId
 
 
 }

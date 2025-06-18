@@ -7,15 +7,11 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
-import modele.Client
-import modele.Match
 import ui.*
 
 class MatchList(matchList: List<Int>) : StackPane() {
@@ -31,7 +27,7 @@ class MatchList(matchList: List<Int>) : StackPane() {
     val btnJoin: Button
 
     val listContainer: VBox //vbox
-    val gridlist: GridPane
+    val gridList: GridPane
     val scrollbar: ScrollPane
 
     //val containerRefreshBtn : StackPane
@@ -71,10 +67,10 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
         listContainer = VBox() //vbox
 
-        gridlist = GridPane()
-        gridlist.maxWidth = Double.MAX_VALUE  // Fait en sorte que le GridPane prenne toujours tout la largeur
-        gridlist.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
-        gridlist.style = "-fx-background-color: white; -fx-border-radius: 10px"
+        gridList = GridPane()
+        gridList.maxWidth = Double.MAX_VALUE  // Fait en sorte que le GridPane prenne toujours tout la largeur
+        gridList.padding = Insets(10.0)  // Bordure de 10 autour de ce qu'il y a dans le GridPane
+        gridList.style = "-fx-background-color: white; -fx-border-radius: 10px"
 //      gridlist.font = Font.font("Courier New", FontWeight.BOLD, 35.0)// Met le fon en blanc
 
         //la boucle va remplir le gridpane containList avec la fonction du modele Client getMatchServerList()
@@ -82,7 +78,7 @@ class MatchList(matchList: List<Int>) : StackPane() {
         updateMatchListGrid()
 
         scrollbar = ScrollPane()
-        scrollbar.content = gridlist
+        scrollbar.content = gridList
         scrollbar.isFitToHeight = true
         scrollbar.isFitToWidth = true
 
@@ -125,21 +121,20 @@ class MatchList(matchList: List<Int>) : StackPane() {
 
         }
 */
-    fun getIdCreator(){
 
-    }
-    val gridTest = GridPane()
+    // test for push
+
 
     fun updateMatchListGrid(){
-        gridlist.children.clear()
+        gridList.children.clear()
         for ((i, match) in matchList.asReversed().withIndex()) {
             val label = Label(match.toString())
 
             val label2 = createNomLabel("Partie n° ")
 
             this.styleGridPane(label)
-            this.gridTest.add(label, 1, i)
-            this.gridTest.add(label2, 0, i)
+            this.gridList.add(label, 1, i)
+            this.gridList.add(label2, 0, i)
 
 
             matchIdToRow[match] = i
@@ -186,7 +181,7 @@ class MatchList(matchList: List<Int>) : StackPane() {
         val rowIndex = matchIdToRow[matchId] ?: return
         println("Désactivation ligne $rowIndex pour matchId = $matchId")
 
-        for (node in gridlist.children) {
+        for (node in gridList.children) {
             val nodeRow = GridPane.getRowIndex(node) ?: 0
             if (nodeRow == rowIndex) {
                 node.isDisable = true

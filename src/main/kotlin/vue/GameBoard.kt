@@ -41,6 +41,8 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
     //var labelLog : Label
     val gameClock : GameClock
 
+    val labelIdMatch : Label
+
     var index: Int
    // val zoneIdPerso : TextField
 
@@ -49,6 +51,9 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         globalContainer = HBox()
 
 
+        labelIdMatch = Label("ID partie : ${ match.getMatchId().toString() }").apply {
+            style = "-fx-font-family: \"Satisfy\";"
+        }
 
         // LOG A SUPRIMER
         // labelLog = Label(match.printState(ETAPE.CREEE))
@@ -148,7 +153,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
 
 
         character.children.addAll(pictureContainer, labelChar)
-        rightPanel.children.addAll(character, viewContainer)
+        rightPanel.children.addAll(character, viewContainer, labelIdMatch)
 
 
         character.padding = Insets(18.0)

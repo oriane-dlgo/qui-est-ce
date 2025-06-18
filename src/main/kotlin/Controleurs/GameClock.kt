@@ -51,10 +51,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
-                print("KEY SEL : ${match.getKeySel()}")
-                print("LIST SEL : ${match.getListSelChar()}")
-                println("LIST HIDE : ${match.getListHide()}")
-                println("${match.isPlayerSelected()}")
+                println("KEY HIDE : ${match.getKeyHide()}")
 
 
                 // ***** CREE *****

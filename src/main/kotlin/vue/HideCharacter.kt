@@ -21,7 +21,7 @@ class HideCharacter(val answer : String) : VBox() {
     val btnOk : Button
     val btnBox : VBox
     val box1 : VBox
-    val box2 : VBox
+    // val box2 : VBox
 
 
     init{
@@ -48,8 +48,12 @@ class HideCharacter(val answer : String) : VBox() {
         label4 = createTextLabel("Voulez vous faire un guess ?")
         label4.style = "-fx-font-size: 16px"
         label4.isWrapText = true
-        box2 = VBox(40.0,label4,btnBox)
-        box2.alignment = Pos.CENTER
+        label4.padding = Insets(0.0, 0.0, 40.0, 0.0)
+
+
+        /*box2 = VBox()
+        box2.children.addAll(label4, btnBox)
+        box2.alignment = Pos.CENTER*/
         // btnYes
         // btnNo
 
@@ -67,7 +71,7 @@ class HideCharacter(val answer : String) : VBox() {
        when(key){
            0 -> this.children.addAll(label1,label2, btnYes, btnNo)
            1 -> this.children.addAll(label3, btnOk)
-           2 -> this.children.addAll(box2)
+           2 -> this.children.addAll(label4, btnYes, btnNo)
            3 -> this.children.addAll(label3, btnOk)
        }
     }
