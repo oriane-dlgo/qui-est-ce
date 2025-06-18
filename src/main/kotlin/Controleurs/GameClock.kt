@@ -17,6 +17,7 @@ import vue.Login
 import vue.Loose
 import vue.MainView
 import vue.MatchMaking
+import vue.NextRound
 import vue.PickCharacter
 import vue.TestPopUp
 import vue.WaitingPlayer
@@ -43,8 +44,6 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
-                println(" Key Hide = ${match.getKeyHide()},     Key Pass = ${match.getKeyPass()}")
-                println("Player n° ${match.getPlayerNo()}, round  : ${match.getRound()}, ${match.getRoundByPlayer()}")
 
                 // ***** CREE *****
                 if (matchState == ETAPE.CREEE) {
@@ -182,8 +181,9 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         if (match.getMatchState() == ETAPE.TERMINEE) {
                             matchState = ETAPE.TERMINEE
                         } else {
+                            var popUp = NextRound(match.nextRound())
+                            client.nextRoundPopUp(match, gameBoard, popUp)
                             matchState = ETAPE.ATTENTE_QUESTION
-                            match.nextRound()
                             keyPass = match.updateKeyPass(0, true)
                         }
                     }
@@ -211,7 +211,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                 // Si c'est le round du joueur actuel de repondre
                 else {
                     // ***** QUESTION *****
-                    if (matchState == ETAPE.ATTENTE_QUESTION && keyPass.find { it == 3 } == null) {
+                    if (matchState == ETAPE.ATTENTE_QUESTION && keyPass.find { it == 3 } == null && keyPass.find { it == 7 } == null) {
                         // STATE : TOUR IMPAIR -> joueur 1 questionne, joueur 2 wait
 
                         // Ajout de la KeyPass
@@ -265,9 +265,13 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         if (match.getMatchState() == ETAPE.TERMINEE) {
                             matchState = ETAPE.TERMINEE
                         } else {
-                            matchState = ETAPE.ATTENTE_QUESTION
-                            match.nextRound()
+                            var popUp = NextRound(match.nextRound())
+                            client.nextRoundPopUp(match, gameBoard, popUp)
                             keyPass = match.updateKeyPass(0, true)
+                            matchState = ETAPE.ATTENTE_QUESTION
+
+
+
                         }
                     }
 

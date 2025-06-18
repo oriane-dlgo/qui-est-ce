@@ -95,10 +95,11 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
     }
 
-    fun nextRound() {
+    fun nextRound() : Int {
         roundCounter++
         roundByPlayer =
             (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
+        return this.roundCounter
     }
     /*fun nextRound(iCloseIt :Boolean = false) {
         this.roundCounter += 1
@@ -298,22 +299,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
         return null
     }
-
-
-    /*
-        fun checkGuess(player: Int): Boolean {
-            return this.characterGuess == this.characterPicked[player]
-        }
-
-
-
-                 fun endOfMatch(player : Int) {
-                     this.winner = this.playersList[player]
-                     this.question = ""
-                     this.answer = ""
-                     this.saved = true
-                 }
-                  */
     fun updateKeySel(key: Int) {
         this.keySel = key
     }
@@ -343,25 +328,5 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getListSelChar() = this.listSelChar
     fun getRoundByPlayer() = this.roundByPlayer
     fun getKeyHide() = this.keyHide
-
-
-    /*
-    fun getBoardByName(player: Int): List<String> {
-        return boardList[player].mapIndexed { index, perso -> "${index + 1}. ${perso.prenom}" }
-    }
-
-
-
-
-    fun getMatchInfo(): String {
-        val info =
-            "**Joueur 1**\n Nom : ${this.playersList[0]}\n Board : ${this.boardList[0]}\n Personnage choisis : ${this.characterPicked[0]}\n\n**Joueur 2**\n Nom : ${this.playersList[1]}\n Board : ${this.boardList[1]}\n Personnage choisis : ${this.characterPicked[1]}"
-        return info
-    }
-     */
-// ETC
-// ETC
-// ETC
-
 
 }

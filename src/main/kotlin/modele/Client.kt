@@ -8,8 +8,10 @@ import info.but1.sae2025.exceptions.QuiEstCeException
 import javafx.animation.FadeTransition
 import javafx.util.Duration
 import kotlinx.serialization.json.Json
+import vue.GameBoard
 import vue.Login
 import vue.MainView
+import vue.NextRound
 import java.io.File
 
 class Client(server: QuiEstCeClient, val mainView: MainView) {
@@ -165,7 +167,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         return newList
     }
 /*
-    fun showPopUp(viewToPop: Pane, viewToBack: Pane, time: Double, stat: Boolean = false) {
+    fun nextRoundPopUp(viewToPop: Pane, viewToBack: Pane, time: Double, stat: Boolean = false) {
         viewToPop.opacity = 0.0
         this.mainView.center = viewToPop
 
@@ -196,7 +198,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         fadeIn.play()
     }
     */
-    fun start(welcome: Welcome, login: Login, time: Double, stat: Boolean = false) {
+    fun start(welcome: Welcome, login: Login, time: Double) {
         welcome.opacity = 0.0
         this.mainView.center = welcome
 
@@ -227,38 +229,49 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
 
         fadeIn.play()
     }
+
+
+    fun nextRoundPopUp(match : Match, gameBoard : GameBoard, nextRound : NextRound) : MutableList<Int>{
+        nextRound.opacity = 0.0
+        this.mainView.center = nextRound
+        var keyPass = mutableListOf<Int>()
+
+        // Transition d'apparition
+        val fadeIn = FadeTransition(Duration.seconds( 1.0), nextRound).apply {
+            fromValue = 0.0
+            toValue = 1.0
+            delay = Duration.seconds(0.0)
+        }
+
+        // Transition de disparition après `time` secondes
+        val fadeOut = FadeTransition(Duration.seconds(1.0), nextRound).apply {
+            fromValue = 1.0
+            toValue = 0.0
+            delay = Duration.seconds(0.0)
+        }
+
+
+        // Une fois la disparition finie, on remet viewToBack
+        fadeOut.setOnFinished {
+            this.mainView.center = gameBoard
+        }
+
+        // Enchaîner les transitions
+        fadeIn.setOnFinished {
+            fadeOut.play()
+        }
+
+        fadeIn.play()
+        return keyPass
+    }
     /*
     fun playerIsInList(server: QuiEstCeClient, lastName: String, name: String): Boolean {
         var tmpPlayer = Joueur(lastName, name)
         return (tmpPlayer in getPlayerListServer())
     }
-
-
      */
 
-///// FONCTION QUI CREE UNE LISTE POUR AFFICHAGE DANS LE CLIENT, A VOIR SI UTILE  //////
-    /* fun createPlayerList(server : QuiEstCeClient): MutableList<Pair<String, Int>>{
-        val playerList = getServerPlayerList(server)
-        val idList = server.requeteJoueurs()
-        val list = mutableMapOf<IdentificationJoueur, Joueur>()
-
-        val pairs = mutableListOf<Pair<String, Int>>()
-
-        for (i in playerList.indices) {
-            val player = playerList[i]
-            val id = idList[i]
-
-            var name = "${player.prenom[0].uppercase()}${player.prenom.substring(1)} "
-            var lastName = "${player.nom[0].uppercase()}${player.nom.substring(1)} "
-
-            pairs.add("$name $lastName" to id)
-        }
-        return pairs
-    }
-     */
-
-
-    //
+//
 //
 //
 //
@@ -272,14 +285,4 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
     fun getCurrentMatch() = this.currentMatch
     fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
     fun getPlayerById(id : Int) = server.requeteJoueur(id)
-
-
-
 }
-
-
-/*         this.playerListJson =File("data/playerList.json")
-if (!this.playerListJson.exists()) {
-    playerListJson.parentFile.mkdirs() // crée le dossier si nécessaire
-    playerListJson.writeText("[]") // initialise avec une liste vide
-*/
