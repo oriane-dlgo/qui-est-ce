@@ -13,19 +13,19 @@ import ui.createSecondButton
 import ui.createTextLabel
 
 class Question : VBox() {
-    val label : Label
+    val labelQst : Label
     val textArea : TextArea
     val btnOk : Button
 
 
     init{
-        label = createTextLabel("Pose ta question :")
+        labelQst = createTextLabel("Pose ta question :")
         textArea = TextArea("")
         textArea.isWrapText = true
         textArea.maxHeight = 150.0
         btnOk = createSecondButton("Valider")
 
-        children.addAll(label,textArea,btnOk)
+        children.addAll(labelQst,textArea,btnOk)
 
         this.alignment = Pos.CENTER
         this.spacing = 20.0
