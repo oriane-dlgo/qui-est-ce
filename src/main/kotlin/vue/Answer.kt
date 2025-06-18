@@ -1,5 +1,6 @@
 package vue
 
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -14,21 +15,25 @@ import ui.createSmallButton
 
 class Answer(question : String) : VBox (){
 
-    var question : Label
+    var labelQuestion : Label
     val btnOui : Button
     val btnNon : Button
-    val contain : VBox
+    val btnBox : VBox
 
     init{
-        this.question = createHomeLabel(question)
-        btnOui = createSecondButton("Oui")
+        labelQuestion = createHomeLabel(question)
+        labelQuestion.isWrapText = true
 
+
+        btnOui = createSecondButton("Oui")
         btnNon = createSecondButton("Non")
 
-        contain = VBox()
-        contain.children.addAll(btnOui, btnNon)
-        this.children.addAll(this.question, contain)
-        contain.alignment = Pos.CENTER
+        btnBox = VBox(10.0,btnOui,btnNon)
+        this.children.addAll(labelQuestion, btnBox)
+        btnBox.alignment = Pos.CENTER
+        btnBox.padding = Insets(15.0,0.0,0.0,0.0)
         this.alignment = Pos.CENTER
+        this.padding = Insets(20.0,0.0,0.0,0.0)
+        this.spacing = 20.0
     }
 }
