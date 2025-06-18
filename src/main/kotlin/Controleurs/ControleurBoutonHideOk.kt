@@ -15,15 +15,15 @@ class ControleurBoutonHideOk(val match: Match, val gameBoard: GameBoard, val hid
 
         if (hide){
             val list = match.getListSelChar()
-            gameBoard.gridCharacter = match.updateGrid( gameBoard.gridCharacter, true , list)
-
+            match.addToListHideChar(list)
+            gameBoard.gridCharacter = match.updateGrid( gameBoard.gridCharacter, true)//list
         }else{
             var idChar = match.getListSelChar()[0]
             match.makeGuess(idChar)
-            match.resetListSelChar(gameBoard)
+            gameBoard.gridCharacter = match.updateGrid( gameBoard.gridCharacter, true)//list
         }
-
         match.resetListSelChar(gameBoard)
+
     }
 }
 

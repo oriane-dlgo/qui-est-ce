@@ -60,9 +60,11 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         gridPanel.padding = Insets(20.0)
 
 
-        gridCharacter = GridPane()
-        gridCharacter.hgap = 5.0
-        gridCharacter.vgap = 5.0
+        gridCharacter = GridPane().apply {
+            hgap = 5.0
+            vgap = 5.0
+        }
+
 
         /*
         gridCharacter.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px;"
@@ -115,7 +117,7 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         rightPanel.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
         rightPanel.alignment = Pos.CENTER
         rightPanel.padding = Insets(10.0)
-        rightPanel.spacing = 40.0
+        rightPanel.spacing = 0.0
 
 
         character = VBox()

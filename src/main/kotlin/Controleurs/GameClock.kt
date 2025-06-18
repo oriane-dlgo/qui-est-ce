@@ -44,6 +44,10 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
+                print("KEY SEL : ${ match.getKeySel() }")
+                print("LIST SEL : ${match.getListSelChar()}")
+                println("LIST HIDE : ${match.getListHide()}")
+
 
                 // ***** CREE *****
                 if (matchState == ETAPE.CREEE) {
@@ -105,6 +109,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
 
                         // Ajout de la KeyPass
                         match.updateKeyPass(3)
+                        match.resetKeyHide()
 
                         // Switch View - Question
                         val question = Question()
@@ -216,6 +221,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
 
                         // Ajout de la KeyPass
                         match.updateKeyPass(3)
+                        match.resetKeyHide()
 
                         // Switch View - Question
                         val waitingPlayer = WaitingPlayer()

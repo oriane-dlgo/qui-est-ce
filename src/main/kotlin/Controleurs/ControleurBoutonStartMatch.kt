@@ -63,7 +63,6 @@ class ControleurBoutonStartMatch(
 
 
     }
-
 }
 
 //        if (match.getMatchState().toString() == "TERMINEE") {

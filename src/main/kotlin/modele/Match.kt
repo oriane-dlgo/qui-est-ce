@@ -140,11 +140,14 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun resetListSelChar(gameBoard: GameBoard) {
         this.listSelChar.clear()
 
+        /*
         gameBoard.gridCharacter.children.forEach { node ->
             if (node is StackPane) {
                 node.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
             }
         }
+
+         */
     }
 
     fun pickCharacter(row: Int, col: Int) {
@@ -182,7 +185,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     }
 
 
-    fun updateGrid(gridCharacter: GridPane, opponent: Boolean, listHideChar: List<Int> = listOf()): GridPane {
+    fun updateGrid(gridCharacter: GridPane, opponent: Boolean): GridPane { // , listHideChar: List<Int> = listOf()
 
 
         gridCharacter.children.clear()
@@ -196,12 +199,12 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
                 val picture = getPictureOf(row, col, opponent)
 
-                if (index in listHideChar) {
+                if (index in this.listHideChar) {
                     picture.opacity = 0.2
                 }
 
                 stack.children.add(picture)
-                stack.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 1;"
+                stack.style = "-fx-border-color: rgba(255, 255, 255, 0.9) ; -fx-border-width: 4;"
                 stack.prefHeight = 108.0
                 stack.minHeight = 108.0
                 stack.prefWidth = 108.0
@@ -221,22 +224,25 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
                         // Réinitialise styles des autres cases
                         gridCharacter.children.forEach { node ->
                             if (node is StackPane) {
-                                node.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 4;"
+                                node.style = "-fx-border-color: rgba(255, 255, 255, 0.9); -fx-border-width: 4;"
                             }
                         }
 
                         // Ajoute la nouvelle sélection
                         this.listSelChar.add(id)
                         stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
+
                     }
                     if (this.keySel == 2) {
                         // SELECTION MULTIPLE
+                        // QUAND ON CLIQUE SUR UNE CELULE EN KEYSEL2, AJOUTE AU LIST SEL ET MET CONTOUR BLEU
                         if (!this.listSelChar.contains(id)) {
                             this.listSelChar.add(id)
                             stack.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
+                        // SI ON RECLIQUE DESSUS ELLE SE REMET SANS BLEU
                         } else {
                             this.listSelChar.remove(id)
-                            stack.style = "-fx-border-color: rgba(1, 1, 1, 0.2); -fx-border-width: 4;"
+                            stack.style = "-fx-border-color: rgba(255, 255, 255, 0.9); -fx-border-width: 4;"
 
                         }
                     }
@@ -258,6 +264,8 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     }
 
     fun updateKeyHide() {
+
+
         this.keyHide++
     }
 
@@ -303,6 +311,13 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         this.keySel = key
     }
 
+    fun resetKeyHide(){
+        this.keyHide = 0
+    }
+
+    fun addToListHideChar(list : List<Int>){
+        this.listHideChar += list
+    }
     //
 //
 //
@@ -328,5 +343,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     fun getListSelChar() = this.listSelChar
     fun getRoundByPlayer() = this.roundByPlayer
     fun getKeyHide() = this.keyHide
+    fun getKeySel() = this.keySel
+    fun getListHide() = this.listHideChar
 
 }
