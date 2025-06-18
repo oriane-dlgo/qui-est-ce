@@ -130,7 +130,8 @@ class MatchList(matchList: List<Int>) : StackPane() {
     }
 
     fun updateMatchListGrid(){
-        for ((i, match) in matchList.withIndex()) {
+        gridlist.children.clear()
+        for ((i, match) in matchList.asReversed().withIndex()) {
             val label = Label(match.toString())
 
             val label2 = createNomLabel("Partie n° ")
