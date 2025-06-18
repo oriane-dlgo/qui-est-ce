@@ -20,26 +20,25 @@ class HideCharacter(val answer : String) : VBox() {
     val btnNo : Button
     val btnOk : Button
     val btnBox : VBox
-    val box1 : VBox
+    //val box1 : VBox
     // val box2 : VBox
 
 
     init{
-        label1 = createTextLabel("Réponse :$answer ")
+        label1 = createTextLabel("Réponse : $answer ")
         label1.isWrapText = true
-        label1.padding = Insets(0.0,0.0,5.0,0.0)
+        //label1.padding = Insets(10.0)
 
-        label2 = createTextLabel("Voulez vous caché \ndes personnages ?")
-        label2.padding = Insets(0.0,0.0,9.0,0.0)
-
+        label2 = createTextLabel("Voulez vous cacher \ndes personnages ?")
+        //label2.padding = Insets(0.0,0.0,9.0,0.0)
         label2.isWrapText = true
 
         btnYes = createSecondButton("Oui")
         btnNo = createSecondButton("Non")
         btnBox = VBox(10.0,btnYes,btnNo)
         btnBox.alignment = Pos.CENTER
-        box1 = VBox(15.0,label1,label2,btnBox)
-        box1.alignment = Pos.CENTER
+        //box1 = VBox(10.0,label1,label2,btnBox)
+        //box1.alignment = Pos.CENTER
 
         label3 = createTextLabel("Selectionnez sur la grille")
         label3.isWrapText = true
@@ -48,7 +47,7 @@ class HideCharacter(val answer : String) : VBox() {
         label4 = createTextLabel("Voulez vous faire un guess ?")
         label4.style = "-fx-font-size: 16px"
         label4.isWrapText = true
-        label4.padding = Insets(0.0, 0.0, 40.0, 0.0)
+        label4.padding = Insets(0.0, 0.0, 10.0, 0.0)
 
 
         /*box2 = VBox()
@@ -69,7 +68,7 @@ class HideCharacter(val answer : String) : VBox() {
     fun switchHideView(key : Int){
         this.children.clear()
        when(key){
-           0 -> this.children.addAll(label1,label2, btnYes, btnNo)
+           0 -> this.children.addAll(label1,label2, btnYes,btnNo)
            1 -> this.children.addAll(label3, btnOk)
            2 -> this.children.addAll(label4, btnYes, btnNo)
            3 -> this.children.addAll(label3, btnOk)

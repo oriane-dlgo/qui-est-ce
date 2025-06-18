@@ -30,7 +30,7 @@ class Answer(question : String) : VBox (){
 
         btnBox = VBox(10.0,btnOui,btnNon)
         btnBox.alignment = Pos.CENTER
-        btnBox.padding = Insets(15.0,0.0,0.0,0.0)
+        //btnBox.padding = Insets(15.0,0.0,0.0,0.0)
 
         this.children.addAll(labelQuestion, btnBox)
         this.alignment = Pos.CENTER
