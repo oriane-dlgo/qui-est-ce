@@ -2,14 +2,13 @@ package Controleurs
 
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.scene.control.Label
 import modele.Client
-import vue.GameBoard
 import vue.MainView
 import vue.MatchList
-import vue.MatchMaking
 
-class ControleurBoutonRejoindrePartie(val client : Client, val view : MainView, val matchList: MatchList) : EventHandler<ActionEvent> {
+
+class ControleurBoutonRejoindrePartie(val client: Client, val view: MainView, val matchList: MatchList) :
+    EventHandler<ActionEvent> {
 
     // AFFICHE -> Vue MatchList
     override fun handle(event: ActionEvent) {

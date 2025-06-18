@@ -17,29 +17,25 @@ import java.io.File
 class Client(server: QuiEstCeClient, val mainView: MainView) {
 
     private var server: QuiEstCeClient
-    private var playerList: MutableList<Pair<Joueur, IdentificationJoueur>>
+    private var playerListLocal: MutableList<Pair<Joueur, IdentificationJoueur>>
     private var playerListServer: MutableList<Pair<Joueur, IdentificationJoueur?>>
     private lateinit var currentMatch: Match
     private var matchList: List<Int>
     private var currentPlayer: Pair<Joueur, IdentificationJoueur>
-    var title: String
 
     init {
         this.server = server
-        this.playerList = getPlayerListJson()
+        this.playerListLocal = getPlayerListJson()
         this.playerListServer = getPlayerListServer()
-        //this.matchList = mutableListOf()
         this.matchList = server.requeteListeParties()
-        this.title = "Match n°$this.id"
-
         this.currentPlayer = Pair(Joueur("", ""), IdentificationJoueur(0, ""))
-
     }
+
     //
 //
 //
 //
-// Fonctions principales
+/// Fonctions principales
     fun playerLogin(lastName: String, name: String): Pair<String, String> {
 
         var lastName = lastName.uppercase()
@@ -49,7 +45,7 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         playerListServer = getPlayerListServer()
 
         var matchingPlayerServer = playerListServer.find { it.first == player }
-        var matchingPlayerJson = playerList.find { it.first == player }
+        var matchingPlayerJson = playerListLocal.find { it.first == player }
 
         println("find on server $matchingPlayerServer")
         println("find on local : $matchingPlayerJson")
@@ -57,12 +53,12 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         if (matchingPlayerServer == null) {
             var idKey = server.requeteCreationJoueur(lastName, name)
             println("***  Un joueur a été crée  ***")
-            this.playerList.add(Pair(player, idKey))
+            this.playerListLocal.add(Pair(player, idKey))
             this.currentPlayer = Pair(player, idKey)
 
             // Sérialisation → JSON
             checkJsonPresent()
-            val jsonData = Json.encodeToString(playerList)
+            val jsonData = Json.encodeToString(playerListLocal)
             File("data/playerList.json").writeText(jsonData)
         } else {
             if (matchingPlayerJson == null) {
@@ -73,8 +69,6 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
             }
         }
         return Pair(lastName, name)
-
-
     }
 
     fun matchCreate(): Match {
@@ -85,13 +79,9 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         val match = Match(server, matchId, playerIdKey, 1)
         this.currentMatch = match
 
-
         println("\nLa partie n°$matchId vient d'être crée\n")
         return match
-
     }
-
-
 
     fun matchJoin(matchId: Int): Match {
         val playerIdKey = this.currentPlayer.second
@@ -101,43 +91,12 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         this.currentMatch = match
         return match
     }
-//
-//
-//
-//
-/// Fonctions SERVER
 
-    fun getIdWithName(id: Int) {
-
-        for (id in server.requeteJoueurs())
-            return
-
-
-
-        return
-    }
-
-
-    fun getPlayerListServer(): MutableList<Pair<Joueur, IdentificationJoueur?>> {
-        var pairList: MutableList<Pair<Joueur, IdentificationJoueur?>> = mutableListOf()
-
-        for (i in 0 until this.server.requeteJoueurs().size) {
-            val id = this.server.requeteJoueurs()[i]
-            var player = this.server.requeteJoueur(id)
-
-            var matchingPlayer = playerList.find { it.first == player }
-
-            if (matchingPlayer != null) {
-                pairList.add(matchingPlayer)
-            } else {
-                pairList.add(Pair(player, null))
-            }
-        }
-
-        return pairList
-    }
-
-
+    //
+    //
+    //
+    //
+    /// JSON MANAGE
     fun getPlayerListJson(): MutableList<Pair<Joueur, IdentificationJoueur>> {
 
         checkJsonPresent()
@@ -154,51 +113,46 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         if (!dataDir.exists()) {
             dataDir.mkdirs()
         }
-
         val jsonFile = File(dataDir, "playerList.json")
         if (!jsonFile.exists()) {
             jsonFile.writeText("[]")
         }
-
     }
 
-    fun updateMatchList() : List<Int>{
+    //
+//
+//
+//
+/// Fonctions SERVER
+    fun getPlayerListServer(): MutableList<Pair<Joueur, IdentificationJoueur?>> {
+        var pairList: MutableList<Pair<Joueur, IdentificationJoueur?>> = mutableListOf()
+
+        for (i in 0 until this.server.requeteJoueurs().size) {
+            val id = this.server.requeteJoueurs()[i]
+            var player = this.server.requeteJoueur(id)
+
+            var matchingPlayer = playerListLocal.find { it.first == player }
+
+            if (matchingPlayer != null) {
+                pairList.add(matchingPlayer)
+            } else {
+                pairList.add(Pair(player, null))
+            }
+        }
+        return pairList
+    }
+
+    fun updateMatchList(): List<Int> {
         val newList = server.requeteListeParties()
         this.matchList = newList
         return newList
     }
-/*
-    fun nextRoundPopUp(viewToPop: Pane, viewToBack: Pane, time: Double, stat: Boolean = false) {
-        viewToPop.opacity = 0.0
-        this.mainView.center = viewToPop
 
-        // Transition d'apparition
-        val fadeIn = FadeTransition(Duration.seconds(time + 0.5), viewToPop).apply {
-            fromValue = 0.0
-            toValue = 1.0
-            delay = Duration.seconds(0.5)
-        }
-
-        // Transition de disparition après `time` secondes
-        val fadeOut = FadeTransition(Duration.seconds(time + 0.5), viewToPop).apply {
-            fromValue = 1.0
-            toValue = 0.0
-            delay = Duration.seconds(0.5)
-        }
-
-        // Une fois la disparition finie, on remet viewToBack
-        fadeOut.setOnFinished {
-            this.mainView.center = viewToBack
-        }
-
-        // Enchaîner les transitions
-        fadeIn.setOnFinished {
-            fadeOut.play()
-        }
-
-        fadeIn.play()
-    }
-    */
+    //
+    //
+    //
+    //
+    /// POPUPS
     fun start(welcome: Welcome, login: Login, time: Double) {
         welcome.opacity = 0.0
         this.mainView.center = welcome
@@ -231,14 +185,13 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         fadeIn.play()
     }
 
-
-    fun nextRoundPopUp(match : Match, gameBoard : GameBoard, nextRound : NextRound) : MutableList<Int>{
+    fun nextRoundPopUp(match: Match, gameBoard: GameBoard, nextRound: NextRound): MutableList<Int> {
         nextRound.opacity = 0.0
         this.mainView.center = nextRound
         var keyPass = mutableListOf<Int>()
 
         // Transition d'apparition
-        val fadeIn = FadeTransition(Duration.seconds( 1.0), nextRound).apply {
+        val fadeIn = FadeTransition(Duration.seconds(1.0), nextRound).apply {
             fromValue = 0.0
             toValue = 1.0
             delay = Duration.seconds(0.0)
@@ -250,7 +203,6 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
             toValue = 0.0
             delay = Duration.seconds(0.0)
         }
-
 
         // Une fois la disparition finie, on remet viewToBack
         fadeOut.setOnFinished {
@@ -265,25 +217,19 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         fadeIn.play()
         return keyPass
     }
-    /*
-    fun playerIsInList(server: QuiEstCeClient, lastName: String, name: String): Boolean {
-        var tmpPlayer = Joueur(lastName, name)
-        return (tmpPlayer in getPlayerListServer())
-    }
-     */
 
-//
+    //
 //
 //
 //
 /// Fonctions de recuperations de données
-    fun getPlayerList() = this.playerList
-    fun getListMatchFini() = server.requeteListePartiesTerminees()
+    //fun getPlayerList() = this.playerList
+    //fun getListMatchFini() = server.requeteListePartiesTerminees()
     //fun getMatchList() = this.matchList
     fun getMatchList() = this.matchList
     fun getListMatchCreate() = server.requeteListePartiesCreees()
     fun getCurrentPlayer() = this.currentPlayer
-    fun getCurrentMatch() = this.currentMatch
-    fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
-    fun getPlayerById(id : Int) = server.requeteJoueur(id)
+    //fun getCurrentMatch() = this.currentMatch
+    //fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
+    //fun getPlayerById(id : Int) = server.requeteJoueur(id)
 }

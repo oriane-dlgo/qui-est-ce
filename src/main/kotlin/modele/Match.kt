@@ -33,21 +33,13 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     private var keySel: Int
     private var keyHide: Int
     private var roundByPlayer: Boolean
-
     private var matchState: ETAPE
-
     private var characterPicked: Personnage
     var charPickedNo: Int = -1
-
-    // A CHECK
     private lateinit var characterGuess: Personnage
-
-    //private var boardList: List<MutableList<Personnage>>
     private var roundCounter: Int
-
     private lateinit var winner: IdentificationJoueur
-    //private var haveWinner: Boolean
-    //private var saved: Boolean
+
 
 
     init {
@@ -77,12 +69,9 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         } else {
             this.opponentId = server.requeteEtatPartie(matchId).idJoueur1
         }
-
         if (this.opponentId != -1) {
             this.opponentGrid = server.requeteGrilleJoueur(this.matchId, this.opponentId)
         }
-
-
     }
     //
     //
@@ -91,37 +80,17 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     // Fonctions principales
 
     fun endOfRound() {
-
         server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
     }
-
     fun nextRound() : Int {
         roundCounter++
         roundByPlayer =
             (this.playerNo == 1 && this.roundCounter % 2 != 0) || (this.playerNo == 2 && this.roundCounter % 2 == 0)
         return this.roundCounter
     }
-    /*fun nextRound(iCloseIt :Boolean = false) {
-        this.roundCounter += 1
-        if (iCloseIt){
-            server.requeteChercherEncore(this.matchId, this.playerIdKey.id, this.playerIdKey.cle)
-        }
-    }*/
-
-    fun printState(matchState: ETAPE): String {
-        val state = server.requeteEtatPartie(this.matchId)
-        val log =
-            "     Etape match : ${matchState}                    Tour n° $roundCounter                    Joueur n° $playerNo"
-        val match =
-            "\n     Etape serveur : ${state.etape}     id joueur 1 :${state.idJoueur1}     id joueur 2 :${state.idJoueur2}     question : ${state.questionCourante}     reponse : ${state.reponseCourante}     id match : ${this.matchId}"
-
-        return log + match
-    }
-
     fun getMatchState(): ETAPE {
         return this.matchState
     }
-
     fun initOponentInfo() {
 
         if (playerNo == 1) {
@@ -139,21 +108,11 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
     fun resetListSelChar(gameBoard: GameBoard) {
         this.listSelChar.clear()
-
-        /*
-        gameBoard.gridCharacter.children.forEach { node ->
-            if (node is StackPane) {
-                node.style = "-fx-border-color: #78a9af; -fx-border-width: 4;"
-            }
-        }
-
-         */
     }
 
     fun pickCharacter(row: Int, col: Int) {
         server.requeteChoixPersonnage(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         this.characterPicked = this.playerGrid[row][col]
-
     }
 
     fun getPictureOf(row: Int, col: Int, opponent: Boolean = true): Node {
@@ -184,9 +143,7 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 
     }
 
-
     fun updateGrid(gridCharacter: GridPane, opponent: Boolean): GridPane { // , listHideChar: List<Int> = listOf()
-
 
         gridCharacter.children.clear()
         gridCharacter.isGridLinesVisible = false
@@ -265,8 +222,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
     }
 
     fun updateKeyHide() {
-
-
         this.keyHide++
     }
 
@@ -278,7 +233,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
         return keyPass
     }
-
     fun getKeyPass(): MutableList<Int> {
         return this.keyPass
     }
@@ -292,8 +246,6 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
             val (row, col) = position
             server.requeteTrouve(this.matchId, this.playerIdKey.id, this.playerIdKey.cle, row, col)
         }
-
-
     }
 
     fun getRowCol(caseId: Int): Pair<Int, Int>? {
@@ -308,14 +260,13 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
         }
         return null
     }
+
     fun updateKeySel(key: Int) {
         this.keySel = key
     }
-
     fun resetKeyHide(){
         this.keyHide = 0
     }
-
     fun addToListHideChar(list : List<Int>){
         this.listHideChar += list
     }
@@ -324,30 +275,23 @@ class Match(server: QuiEstCeClient, matchId: Int, playerIdKey: IdentificationJou
 //
 //
 // Fonctions de recuperations de variables
-    fun getId() = this.matchId
-
-    //fun getPlayerList() = this.playerList
-    fun getCharacterPicked() = this.characterPicked
-
-    //fun getBoardList() = this.boardList
     fun getQuestion() = server.requeteEtatPartie(this.matchId).questionCourante
     fun getAnswer() = server.requeteEtatPartie(this.matchId).reponseCourante
-
-    //fun getState() = this.saved
-//fun getWinner() = this.haveWinner
     fun getRound() = this.roundCounter
-    fun getGuess() = this.characterGuess
     fun getGrid() = this.playerGrid
     fun getOpponentGrid() = this.opponentGrid
-    fun getCurrentPlayer() = this.playerNo
-    fun getPlayerNo() = this.playerNo
     fun getListSelChar() = this.listSelChar
     fun getRoundByPlayer() = this.roundByPlayer
     fun getKeyHide() = this.keyHide
-    fun getKeySel() = this.keySel
-    fun getListHide() = this.listHideChar
     fun isPlayerSelected() = (this.listSelChar.size != 0)
     fun getMatchId() = this.matchId
+    //fun getKeySel() = this.keySel
+    //fun getListHide() = this.listHideChar
+    //fun getCurrentPlayer() = this.playerNo
+    //fun getPlayerNo() = this.playerNo
+    //fun getGuess() = this.characterGuess
+    //fun getState() = this.saved
+    //fun getWinner() = this.haveWinner
 
 
 }

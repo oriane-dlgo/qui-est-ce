@@ -27,6 +27,7 @@ import ui.createSecondButton
 class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane() {
 
     var globalContainer : HBox
+    var match : Match
     var gridPanel : VBox
     var gridCharacter: GridPane
     var rightPanel : VBox
@@ -35,30 +36,16 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
     var picture : Rectangle
     var labelChar : Label
     var viewContainer : VBox
-    val match : Match
-    val charSelOnGrid : MutableList<Int>
     var btnAgain : Button = createSecondButton("Recommencer")
-    //var labelLog : Label
     val gameClock : GameClock
-
     val labelIdMatch : Label
 
-    var index: Int
-   // val zoneIdPerso : TextField
-
     init {
-        this.charSelOnGrid = mutableListOf()
+
+        this.match = match
+        this.gameClock = GameClock(client, match, this, mainView)
+
         globalContainer = HBox()
-
-
-        labelIdMatch = Label("ID partie : ${ match.getMatchId().toString() }").apply {
-            style = "-fx-font-family: \"Satisfy\";"
-        }
-
-        // LOG A SUPRIMER
-        // labelLog = Label(match.printState(ETAPE.CREEE))
-        // this.bottom = labelLog
-
 
         // CENTER PANEL - GRID
         gridPanel = VBox()
@@ -67,36 +54,13 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         gridPanel.minWidth = 700.0
         gridPanel.prefWidth = 700.0
         gridPanel.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 4);"
-        gridPanel.alignment = Pos.CENTER //centre la VBox qui contient "Entrer votre nom et prénom :"
+        gridPanel.alignment = Pos.CENTER
         gridPanel.padding = Insets(20.0)
-
 
         gridCharacter = GridPane().apply {
             hgap = 5.0
             vgap = 5.0
         }
-
-
-        /*
-        gridCharacter.style = "-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10px;"
-        gridCharacter.maxWidth = 600.0
-        gridCharacter.maxHeight = 430.0
-        gridCharacter.prefWidth = 650.0
-        gridCharacter.prefHeight = 400.0
-        gridCharacter.isGridLinesVisible = true
-
-
-
-        gridCharacter = gridCharacter.apply {
-            prefWidth = 100.0
-            prefHeight = 100.0
-            background = Background(
-                BackgroundFill(Color.rgb(255, 255, 255, 0.9), CornerRadii(10.0), Insets.EMPTY)
-            )
-        }
-
-         */
-
         //Contraintes des 6 colonnes, sur les 6 colonnes du grid, on va occuper tout l'espace dispo et comme ça c'est responsive
         repeat(6) {
             val col = ColumnConstraints().apply {
@@ -113,10 +77,6 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
             }
             gridCharacter.rowConstraints.add(row)
         }
-
-
-        this.match = match
-        this.gameClock = GameClock(client, match, this, mainView)
         this.match.updateGrid(gridCharacter, false)
 
         // RIGHT PANEL
@@ -130,20 +90,13 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         rightPanel.padding = Insets(20.0)
         rightPanel.spacing = 0.0
 
-
         character = VBox()
 
         picture = Rectangle(100.0, 100.0).apply {
             fill = Color.WHITE
             stroke = Color.BLACK
         }
-
         pictureContainer = StackPane(picture)
-
-
-
-        //pictureContainer.maxWidth = Double.MAX_VALUE
-        //pictureContainer.maxHeight = Double.MAX_VALUE
 
         labelChar = Label()
 
@@ -151,16 +104,17 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         viewContainer.maxHeight = 350.0
         viewContainer.prefHeight = 350.0
 
+        labelIdMatch = Label("ID partie : ${ match.getMatchId().toString() }").apply {
+            style = "-fx-font-family: \"Satisfy\";"
+        }
 
+
+        // ADD
         character.children.addAll(pictureContainer, labelChar)
-        rightPanel.children.addAll(character, viewContainer, labelIdMatch)
-
-
         character.padding = Insets(18.0)
         character.alignment = Pos.CENTER
 
-
-
+        rightPanel.children.addAll(character, viewContainer, labelIdMatch)
 
         gridPanel.children.add(gridCharacter)
 
@@ -168,34 +122,15 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         globalContainer.alignment = Pos.CENTER
         globalContainer.spacing = 20.0
 
-        this.index = 0
         this.center = globalContainer
 
     }
-/*
-    fun setRightView(newVue: Node) {
-        val nodesToRemove = dynamicView.children.filter {
-            GridPane.getColumnIndex(it) == 0 && GridPane.getRowIndex(it) == 3
-        }
-        dynamicView.children.removeAll(nodesToRemove)
-        dynamicView.add(newVue, 0, 3)
-    }
-*/
-
-
     fun switchChildView(view : Pane){
         this.viewContainer.children.setAll(view)
     }
-
     fun switchEndView(view : VBox){
         this.gridPanel.children.setAll(view)
-
     }
-
-    //fun afficherBtnReplay(button : Button){
-    //  this.viewContainer.children.setAll((button))
-    //}
-
     fun initBtnAgain(){
         this.viewContainer.children.clear()
         this.viewContainer.children.add(btnAgain)
@@ -203,11 +138,3 @@ class GameBoard(client : Client, mainView: MainView, match: Match) : BorderPane(
         viewContainer.padding = Insets(50.0, 0.0, 0.0, 0.0)
     }
 }
-
-
-/*
-                val cell = Rectangle(80.0, 80.0).apply {
-                    fill = Color.LIGHTGRAY
-                    stroke = Color.BLACK
-                }
- */

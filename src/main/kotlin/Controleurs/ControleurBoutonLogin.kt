@@ -13,10 +13,13 @@ import vue.MainView
 import vue.MatchMaking
 import vue.Login
 
-class ControleurBoutonLogin(val client: Client, val mainView: MainView, val login: Login, val matchMaking: MatchMaking) : EventHandler<ActionEvent> {
+class ControleurBoutonLogin(
+    val client: Client,
+    val mainView: MainView,
+    val login: Login,
+    val matchMaking: MatchMaking
+) : EventHandler<ActionEvent> {
     override fun handle(event: ActionEvent) {
-        val matchMakingView = MatchMaking()
-
         try {
             // Connexion joueur
             var player = client.playerLogin(login.textFieldLastName.text, login.textFieldName.text)
@@ -27,24 +30,6 @@ class ControleurBoutonLogin(val client: Client, val mainView: MainView, val logi
             // Changement de vue
             matchMaking.player = player
             mainView.center = matchMaking
-
-//            val dialog = Alert(AlertType.INFORMATION)
-//            dialog.title = "Bienvenue"
-//            dialog.headerText = ""
-//            dialog.contentText = "Bonjour ${login.textFieldName.text}, vous venez de vous connecter au JEU C KI LUI :)"
-//            val image = javaClass.getResource("/assets/error_80dp_61888C_FILL0_wght400_GRAD0_opsz48.png")
-//            if (image != null) {
-//                val imagee = Image(image.toExternalForm())
-//                val imageView = ImageView(imagee)
-//                imageView.fitHeight = 80.0
-//                imageView.fitWidth = 80.0
-//                dialog.graphic = imageView}
-//
-//            val css = javaClass.getResource("/style.css")
-//            if (css != null) {
-//                dialog.dialogPane.stylesheets.add(css.toExternalForm())
-//            }
-//            dialog.showAndWait()
 
         } catch (e: QuiEstCeException) {
             val dialog = Alert(AlertType.INFORMATION)
@@ -60,11 +45,11 @@ class ControleurBoutonLogin(val client: Client, val mainView: MainView, val logi
                 dialog.graphic = imageView
             }
 
-
             val css = javaClass.getResource("/style.css")
             if (css != null) {
                 dialog.dialogPane.stylesheets.add(css.toExternalForm())
             }
             dialog.showAndWait()
-
-        }}}
+        }
+    }
+}

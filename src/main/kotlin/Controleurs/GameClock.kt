@@ -9,7 +9,6 @@ import javafx.event.EventHandler
 import javafx.util.Duration
 import modele.Client
 import modele.Match
-import ui.createSecondButton
 import vue.Answer
 import vue.GameBoard
 import vue.Question
@@ -29,12 +28,10 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
     EventHandler<ActionEvent> {
 
     var waitingPlayer: WaitingPlayer = WaitingPlayer()
-
     var keyPass: MutableList<Int>
     val answer = Answer(match.getQuestion())
     val pickView = PickCharacter()
     val question = Question()
-
     val hideChar = HideCharacter(match.getAnswer())
 
     //var charPickBool: Boolean
@@ -51,8 +48,6 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
             KeyFrame(Duration.seconds(0.5), EventHandler {
 
                 match.updateMatchState()
-                println("KEY HIDE : ${match.getKeyHide()}")
-
 
                 // ***** CREE *****
                 if (matchState == ETAPE.CREEE) {
@@ -64,9 +59,6 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                     // Switch view - Waiting player
                     waitingPlayer.setMessage("En attente d'un adversaire...")
                     gameBoard.switchChildView(waitingPlayer)
-
-                    val test = TestPopUp()
-                    test.btn.onAction = ControleurBoutonTest(mainView, gameBoard)
                 }
                 // ***** INITIALISATION ***** // ***** PICK CHAR *****
                 if (matchState == ETAPE.INITIALISATION && match.charPickedNo == -1 && keyPass.find { it == 1 } == null) {
@@ -85,7 +77,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                     pickView.btnOk.onAction = ControleurBoutonValiderPerso(match, gameBoard)
 
                 }
-                if (matchState == ETAPE.INITIALISATION && match.charPickedNo == -1){
+                if (matchState == ETAPE.INITIALISATION && match.charPickedNo == -1) {
                     pickView.updateBtn(match)
                 }
                 // ***** INITIALISATION ***** // ***** WAITING *****
@@ -128,7 +120,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                     if (matchState == ETAPE.ATTENTE_QUESTION && matchState != match.getMatchState() && keyPass.any { it == 3 }) {
                         matchState = ETAPE.ATTENTE_REPONSE
                     }
-                    if (matchState == ETAPE.ATTENTE_QUESTION){
+                    if (matchState == ETAPE.ATTENTE_QUESTION) {
                         question.updateBtn()
                     }
 
@@ -186,10 +178,6 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                                 hideChar.btnOk.onAction = ControleurBoutonHideOk(match, gameBoard, false)
                             }
                         }
-
-                        // Update de la keySel dans les controleurs
-
-
                     }
                     // ANTI JUMP_OVER_STATE // Passage a ATTENTE_QUESTION ou TERMINE si serveur & client OK et win ou non
                     if (matchState == ETAPE.ATTENTE_REFLEXION && matchState != match.getMatchState() && keyPass.any { it == 5 }) {
@@ -203,7 +191,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                             keyPass = match.updateKeyPass(0, true)
                         }
                     }
-                    if (matchState == ETAPE.ATTENTE_REFLEXION && match.getKeyHide() == 3){
+                    if (matchState == ETAPE.ATTENTE_REFLEXION && match.getKeyHide() == 3) {
                         hideChar.updateBtn(match)
                     }
 
@@ -271,7 +259,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                     if (matchState == ETAPE.ATTENTE_REPONSE && matchState != match.getMatchState() && keyPass.any { it == 4 }) {
                         matchState = ETAPE.ATTENTE_REFLEXION
                     }
-                    if (matchState == ETAPE.ATTENTE_REPONSE){
+                    if (matchState == ETAPE.ATTENTE_REPONSE) {
                         answer.updateQuestion(match.getQuestion())
                     }
 
@@ -325,18 +313,13 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         matchMaking.btnReturn.onAction = ControleurBoutonBack(mainView, login)
                         gameBoard.initBtnAgain()
                         gameBoard.btnAgain.onAction = ControleurBoutonLogin(client, mainView, login, matchMaking)
-
-
                     }
                 }
-
-
             })
         )
         timeline.cycleCount = Animation.INDEFINITE
         timeline.play()
     }
-
 
     override fun handle(p0: ActionEvent?) {
         TODO("Not yet implemented")

@@ -23,9 +23,6 @@ class ControleurBoutonStartMatch(
     val mainView: MainView,
     val matchList: MatchList,
     val create: Boolean
-
-
-
 ) : EventHandler<ActionEvent> {
 
     override fun handle(event: ActionEvent) {
@@ -55,17 +52,13 @@ class ControleurBoutonStartMatch(
                     dialog.graphic = imageView
                 }
 
-
                 val css = javaClass.getResource("/style.css")
                 if (css != null) {
                     dialog.dialogPane.stylesheets.add(css.toExternalForm())
                 }
                 dialog.showAndWait()
-
             }
-
         }
-
         val matchListe = matchList.matchList
         val matchListCree = client.getListMatchCreate()
 
@@ -76,10 +69,3 @@ class ControleurBoutonStartMatch(
         }
     }
 }
-
-//        if (match.getMatchState().toString() == "TERMINEE") {
-//            println("Le match ${match.getId()} est terminé.")
-//            matchList.desactiverLigne(match.getId())
-//        }
-
-//

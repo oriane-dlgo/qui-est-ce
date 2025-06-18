@@ -13,7 +13,6 @@ class ControleurBoutonHideYes(val match: Match, val multipleSel : Boolean) : Eve
         }else{
             match.updateKeySel(1)
         }
-
         match.updateKeyHide()
         match.updateKeyPass(0, true)
     }
