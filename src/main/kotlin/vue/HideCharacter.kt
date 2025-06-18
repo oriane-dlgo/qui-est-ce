@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
+import modele.Match
 import ui.createHomeLabel
 import ui.createSecondButton
 import ui.createTextLabel
@@ -69,5 +70,12 @@ class HideCharacter(val answer : String) : VBox() {
            2 -> this.children.addAll(box2)
            3 -> this.children.addAll(label3, btnOk)
        }
+    }
+    fun updateBtn(match: Match){
+        if (!match.isPlayerSelected()) {
+            btnOk.isDisable = true  // désactive le bouton (grisé, non cliquable)
+        }else{
+            btnOk.isDisable = false
+        }
     }
 }

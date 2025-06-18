@@ -47,6 +47,7 @@ class ControleurBoutonValiderPerso(val match: Match, val gameBoard: GameBoard) :
             match.resetListSelChar(gameBoard)
             gameBoard.gridCharacter = match.updateGrid(gameBoard.gridCharacter, true)
             match.charPickedNo = 1
+
         }
     }
 }

@@ -23,7 +23,7 @@ class Win(val round: Int) : VBox() {
 
     init {
 
-        labelV = createFascinateLabel("Victoire ! ")
+        labelV = createFascinateLabel("Victoire !")
         labelV.padding = Insets(50.0, 0.0, 30.0, 0.0)
         label = createTextLabel("Félicitation, tu as réussi à deviner le personnage choisi par ton adversaire !")
         label1 = createTextLabel("Et ça en seulement $round tours.")

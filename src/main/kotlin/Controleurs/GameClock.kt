@@ -9,7 +9,6 @@ import javafx.event.EventHandler
 import javafx.util.Duration
 import modele.Client
 import modele.Match
-import ui.createSecondButton
 import vue.Answer
 import vue.GameBoard
 import vue.Question
@@ -32,6 +31,11 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
 
     var keyPass: MutableList<Int>
 
+    val pickView = PickCharacter()
+    val question = Question()
+
+    val hideChar = HideCharacter(match.getAnswer())
+
     //var charPickBool: Boolean
     var matchState: ETAPE
 
@@ -49,6 +53,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                 print("KEY SEL : ${match.getKeySel()}")
                 print("LIST SEL : ${match.getListSelChar()}")
                 println("LIST HIDE : ${match.getListHide()}")
+                println("${match.isPlayerSelected()}")
 
 
                 // ***** CREE *****
@@ -77,10 +82,13 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                     match.initOponentInfo()
 
                     // Switch View - Pick char
-                    val pickView = PickCharacter()
+                    //val pickView = PickCharacter(match)
                     gameBoard.switchChildView(pickView)
-                    pickView.btnValid.onAction = ControleurBoutonValiderPerso(match, gameBoard)
+                    pickView.btnOk.onAction = ControleurBoutonValiderPerso(match, gameBoard)
 
+                }
+                if (matchState == ETAPE.INITIALISATION && match.charPickedNo == -1){
+                    pickView.updateBtn(match)
                 }
                 // ***** INITIALISATION ***** // ***** WAITING *****
                 if (matchState == ETAPE.INITIALISATION && match.charPickedNo != -1 && keyPass.find { it == 2 } == null && keyPass.any { it == 1 }) {
@@ -114,13 +122,16 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         match.resetKeyHide()
 
                         // Switch View - Question
-                        val question = Question()
+                        //val question = Question()
                         gameBoard.switchChildView(question)
                         question.btnOk.onAction = ControleurBoutonQuestion(match, gameBoard, question)
                     }
                     // ANTI JUMP_OVER_STATE // Passage a ATTENTE_REPONSE si serveur & client OK
                     if (matchState == ETAPE.ATTENTE_QUESTION && matchState != match.getMatchState() && keyPass.any { it == 3 }) {
                         matchState = ETAPE.ATTENTE_REPONSE
+                    }
+                    if (matchState == ETAPE.ATTENTE_QUESTION){
+                        question.updateBtn()
                     }
 
 
@@ -151,7 +162,7 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         match.updateKeyPass(5)
 
                         // Switch View - Reflexion
-                        val hideChar = HideCharacter(match.getAnswer())
+                        //val hideChar = HideCharacter(match.getAnswer())
                         gameBoard.switchChildView(hideChar)
 
                         when (match.getKeyHide()) {
@@ -194,6 +205,9 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                             keyPass = match.updateKeyPass(0, true)
                         }
                     }
+                    if (matchState == ETAPE.ATTENTE_REFLEXION && match.getKeyHide() == 3){
+                        hideChar.updateBtn(match)
+                    }
 
 
                     // ***** END OF MATCH *****
@@ -233,7 +247,6 @@ class GameClock(val client: Client, val match: Match, val gameBoard: GameBoard, 
                         match.resetKeyHide()
 
                         // Switch View - Question
-                        val waitingPlayer = WaitingPlayer()
                         waitingPlayer.setMessage("Ton adversaire pose sa question...")
                         gameBoard.switchChildView(waitingPlayer)
                     }
