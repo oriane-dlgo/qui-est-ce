@@ -1,15 +1,18 @@
 package Controleurs
 
+import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.exceptions.QuiEstCeException
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.ButtonType
+import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import modele.Client
 import modele.Match
+import ui.createNomLabel
 import vue.GameBoard
 import vue.MainView
 import vue.MatchList
@@ -20,6 +23,9 @@ class ControleurBoutonStartMatch(
     val mainView: MainView,
     val matchList: MatchList,
     val create: Boolean
+
+
+
 ) : EventHandler<ActionEvent> {
 
     override fun handle(event: ActionEvent) {
@@ -60,8 +66,14 @@ class ControleurBoutonStartMatch(
 
         }
 
+        val matchListe = matchList.matchList
+        val matchListCree = client.getListMatchCreate()
 
-
+        for (matchItem in matchListe) {
+            if (matchItem !in matchListCree) {
+                matchList.desactiverLigne(matchItem)
+            }
+        }
     }
 }
 

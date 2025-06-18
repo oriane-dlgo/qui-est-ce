@@ -9,6 +9,7 @@ import javafx.event.EventHandler
 import javafx.util.Duration
 import modele.Client
 import modele.Match
+import ui.createSecondButton
 import vue.Answer
 import vue.GameBoard
 import vue.Question

@@ -128,6 +128,7 @@ class MatchList(matchList: List<Int>) : StackPane() {
     fun getIdCreator(){
 
     }
+    val gridTest = GridPane()
 
     fun updateMatchListGrid(){
         gridlist.children.clear()
@@ -137,13 +138,15 @@ class MatchList(matchList: List<Int>) : StackPane() {
             val label2 = createNomLabel("Partie n° ")
 
             this.styleGridPane(label)
-            this.gridlist.add(label, 1, i)
-            this.gridlist.add(label2, 0, i)
+            this.gridTest.add(label, 1, i)
+            this.gridTest.add(label2, 0, i)
 
 
             matchIdToRow[match] = i
         }
     }
+
+
 
     fun styleGridPane(label: Label) {
         label.style = "-fx-padding: 5px;"
@@ -178,19 +181,17 @@ class MatchList(matchList: List<Int>) : StackPane() {
 //    fun getNameCreatorMatch(nom : String, prenom : String){
 //        nom.text = "Créé par le joueur $nom $prenom"
 //    }
-//fun desactiverLigne(matchId: Int) {
-//    val rowIndex = matchIdToRow[matchId] ?: return
-//    println("Désactivation ligne $rowIndex pour matchId = $matchId")
-//
-//    for (node in gridlist.children) {
-//        val nodeRow = GridPane.getRowIndex(node) ?: 0
-//        if (nodeRow == rowIndex) {
-//            node.isDisable = true
-//            node.style += " -fx-opacity: 0.5;"
-//        }
-//    }
-//}
 
+    fun desactiverLigne(matchId: Int) {
+        val rowIndex = matchIdToRow[matchId] ?: return
+        println("Désactivation ligne $rowIndex pour matchId = $matchId")
 
-
+        for (node in gridlist.children) {
+            val nodeRow = GridPane.getRowIndex(node) ?: 0
+            if (nodeRow == rowIndex) {
+                node.isDisable = true
+                node.style += " -fx-opacity: 0.5;"
+            }
+        }
+    }
 }

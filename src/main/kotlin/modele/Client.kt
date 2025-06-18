@@ -35,7 +35,6 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
         this.currentPlayer = Pair(Joueur("", ""), IdentificationJoueur(0, ""))
 
     }
-
     //
 //
 //
@@ -279,10 +278,10 @@ class Client(server: QuiEstCeClient, val mainView: MainView) {
 //
 /// Fonctions de recuperations de données
     fun getPlayerList() = this.playerList
-
+    fun getListMatchFini() = server.requeteListePartiesTerminees()
     //fun getMatchList() = this.matchList
     fun getMatchList() = this.matchList
-
+    fun getListMatchCreate() = server.requeteListePartiesCreees()
     fun getCurrentPlayer() = this.currentPlayer
     fun getCurrentMatch() = this.currentMatch
     fun getMatchState() = server.requeteEtatPartie(this.currentMatch.getId())
