@@ -23,9 +23,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation(files("libs/sae-qui-est-ce-client-1.0.jar"))
 
-    implementation("org.openjfx:javafx-controls:21")
-    implementation("org.openjfx:javafx-fxml:21")
 }
+
 
 
 tasks.test {
