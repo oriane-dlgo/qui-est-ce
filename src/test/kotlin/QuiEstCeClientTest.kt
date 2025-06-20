@@ -17,7 +17,8 @@ class QuiEstCeClientTest {
    client = QuiEstCeClient("localhost", 8080)
   }
  }
-//méthode requeteCreationJoueur
+
+ //méthode requeteCreationJoueur
  @Test
  fun requeteCreationJoueur_retourneUnIdentifiantValide() {
   val ident = client.requeteCreationJoueur("Piastri", "Pierre")
@@ -356,6 +357,7 @@ class QuiEstCeClientTest {
    client.requeteChoixPersonnage(idPartie, joueur.id, joueur.cle, 0, 0)
   }
  }
+
  @Test
  fun testRequeteChoixPersonnage_positionIncorrecte() {
   val client = QuiEstCeClient("localhost", 8080)
@@ -439,6 +441,6 @@ class QuiEstCeClientTest {
   }
  }
 
-
+//}
 }
 
