@@ -1,9 +1,20 @@
 package modele
 
+import info.but1.sae2025.QuiEstCeClient
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import vue.MainView
 
 class MatchTest {
+
+    val mainView = MainView()
+    val client = Client(QuiEstCeClient("localhost", 8080), mainView)
+    val player = client.playerLogin("Roger", "Federer")
+    val match = client.matchCreate()
+
+
+
+
 
     // PICK CHARACTER
     @Test
@@ -62,6 +73,10 @@ class MatchTest {
         // Entrée : caseId=1
         // Classe d’équivalence : caseId valide
         // Résultat attendu : (0, 0)
+
+        val id = 1
+        val res = Pair(0,0)
+        assertEquals(match.getRowCol(id),res )
     }
 
     @Test
@@ -69,6 +84,10 @@ class MatchTest {
         // Entrée : caseId=24
         // Classe d’équivalence : caseId valide
         // Résultat attendu : (3, 5)
+
+        val id = 24
+        val res = Pair(3,5)
+        assertEquals(match.getRowCol(id),res )
     }
 
     @Test
@@ -76,6 +95,10 @@ class MatchTest {
         // Entrée : caseId=0
         // Classe d’équivalence : caseId invalide
         // Résultat attendu : null
+
+        val id = 0
+        val res = null
+        assertEquals(match.getRowCol(id),res )
     }
 
     @Test
@@ -83,6 +106,10 @@ class MatchTest {
         // Entrée : caseId=25
         // Classe d’équivalence : caseId invalide
         // Résultat attendu : null
+
+        val id = 25
+        val res = null
+        assertEquals(match.getRowCol(id),res )
     }
 
     // NEXT ROUND

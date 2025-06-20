@@ -1,9 +1,18 @@
 package modele
 
+import info.but1.sae2025.QuiEstCeClient
+import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import vue.MainView
 
 class ClientTest {
+
+    val mainView = MainView()
+    val client = Client(QuiEstCeClient("localhost", 8080), mainView)
+
+
     // PLAYER LOGIN
     @Test
     fun `playerLogin T1`() {
